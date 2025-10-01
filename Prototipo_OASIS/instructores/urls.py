@@ -1,22 +1,19 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
+# instructores/urls.py
 
-# Función de test para asegurar que solo los admins accedan
-def is_admin(user):
-    return user.is_authenticated and user.rol == 'ADMIN' and user.is_staff
+from django.urls import path
+from . import views
 
-@user_passes_test(is_admin)
-def dashboard_admin(request):
-    return render(request, 'admin/dashboard_admin.html')
+app_name = 'instructores'
 
-@user_passes_test(is_admin)
-def listar_usuarios(request):
-    return render(request, 'admin/listar_usuarios.html')
+urlpatterns = [
+    # Vistas de Admin
+    path('admin/dashboard/', views.dashboard_admin, name='dashboard_admin'),
+    path('admin/usuarios/', views.listar_usuarios, name='listar_usuarios'),
+    path('admin/programas/', views.gestion_programas, name='gestion_programas'),
+    path('admin/reportes/', views.reportes, name='reportes'),
 
-@user_passes_test(is_admin)
-def gestion_programas(request):
-    return render(request, 'admin/gestion_programas.html')
-
-@user_passes_test(is_admin)
-def reportes(request):
-    return render(request, 'admin/reportes.html')
+    # Vistas de Instructor
+    path('dashboard/', views.dashboard_instructor, name='dashboard_instructor'),
+    path('solicitudes/', views.gestionar_solicitudes, name='gestionar_solicitudes'),
+    path('asignar/', views.asignar_proyectos, name='asignar_proyectos'),
+]

@@ -23,12 +23,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Nuestras aplicaciones personalizadas
-    'home.apps.HomeConfig',
-    'usuario.apps.UsuarioConfig',
-    'empresas.apps.EmpresasConfig',
-    'aprendices.apps.AprendicesConfig',
-    'instructores.apps.InstructoresConfig',
-    'admin.apps.AdminConfig', 
+    'home',
+    'usuario',
+    'empresas',
+    'aprendices',
+    'instructores',
+    'gestion', 
 ]
 
 MIDDLEWARE = [

@@ -1,22 +1,12 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.urls import path
+from . import views
 
-@login_required
-def dashboard_aprendiz(request):
-    # Lógica: Mostrar sus proyectos asignados y pendientes.
-    return render(request, 'aprendices/dashboard_aprendiz.html')
+app_name = 'aprendices'  # para nombres de espacio en URLs
 
-@login_required
-def proyectos_disponibles(request):
-    # Lógica: Mostrar proyectos filtrados por su programa.
-    return render(request, 'aprendices/proyectos_disponibles.html')
-
-@login_required
-def detalle_proyecto(request, pk):
-    # Lógica: Mostrar detalles de un proyecto.
-    return render(request, 'aprendices/detalle_proyecto.html')
-
-@login_required
-def asignacion_list(request):
-    # Lógica: Listado de proyectos en los que se postuló/fue asignado.
-    return render(request, 'aprendices/asignacion_list.html')
+urlpatterns = [
+    path('dashboard/', views.dashboard_aprendiz, name='dashboard_aprendiz'),
+    path('proyectos/', views.ver_proyectos, name='ver_proyectos'),
+    path('perfil/', views.perfil_aprendiz, name='perfil_aprendiz'),
+    path('detalle_proyecto/<int:pk>/', views.detalle_proyecto, name='detalle_proyecto'),
+    path('asignaciones/', views.asignacion_list, name='asignacion_list'),
+]

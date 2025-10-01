@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 
-# ¡ESTA VARIABLE DEBE EXISTIR Y LLAMARSE EXACTAMENTE ASÍ!
 urlpatterns = [
     # Ruta principal del dominio (/)
     path('', views.index, name='inicio'), 
