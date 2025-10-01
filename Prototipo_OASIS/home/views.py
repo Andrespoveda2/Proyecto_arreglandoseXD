@@ -7,4 +7,4 @@ def index(request):
 
 def acerca_de(request):
     """Renderiza la página 'Acerca de Nosotros'."""
-    return render(request, 'home/acerca_de_nosotros.html')
+    return render(request, 'home/acerca_de.html')

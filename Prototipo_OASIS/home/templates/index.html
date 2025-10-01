@@ -1,0 +1,14 @@
+<!-- home/templates/home/index.html -->
+{% extends "home/base.html" %}
+
+{% block title %}Inicio - Prototipo OASIS{% endblock %}
+
+{% block content %}
+    <h2>Bienvenido a Prototipo OASIS</h2>
+    <p>Esta es la página principal de la aplicación.</p>
+    <p>Explora nuestras funcionalidades y conoce más sobre nosotros.</p>
+
+    <a href="{% url 'login' %}">Iniciar Sesión</a>
+    <a href="{% url 'elegir_registro' %}">Registrarse</a>
+
+{% endblock %}
