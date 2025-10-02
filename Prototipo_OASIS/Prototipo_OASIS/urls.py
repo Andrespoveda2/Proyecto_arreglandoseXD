@@ -35,6 +35,5 @@ urlpatterns = [
     path('aprendiz/', include('aprendices.urls')),
     path('instructor/', include('instructores.urls')),
     path('gestion/', include('gestion.urls')), # Gestión del superusuario
-
     # Si se necesitan archivos estáticos en desarrollo
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Elegir tipo de registro{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; padding: 2rem; text-align: center;">
+    <h2>Selecciona el tipo de cuenta que deseas crear</h2>
+    <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;">
+        <a href="{% url 'registro_aprendiz' %}" class="registro-btn">Registrarse como Aprendiz</a>
+        <a href="{% url 'registro_empresa' %}" class="registro-btn">Registrarse como Empresa</a>
+        <a href="{% url 'registro_instructor' %}" class="registro-btn">Registrarse como Instructor</a>
+    </div>
+</div>
+
+<style>
+    .registro-btn {
+        display: block;
+        padding: 12px 20px;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+    .registro-btn:hover {
+        background-color: #2980b9;
+    }
+</style>
+{% endblock %}

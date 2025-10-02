@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.views import LogoutView
+
 
 urlpatterns = [
     # Página para elegir tipo de registro
@@ -12,4 +14,6 @@ urlpatterns = [
 
     # Login único
     path('login/', views.login_view, name='login'),
+    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
 ]
+

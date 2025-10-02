@@ -4,9 +4,10 @@ from . import views
 app_name = 'gestion'
 
 urlpatterns = [
-    path('dashboard/', views.dashboard_gestion, name='dashboard_gestion'),
-    path('usuarios/', views.gestionar_usuarios, name='gestionar_usuarios'),
-    path('proyectos_asignados/', views.proyectos_asignados, name='proyectos_asignados'),
-    path('seguimiento/<int:pk>/', views.seguimiento_avance, name='seguimiento_avance'),
+    path('dashboard/', views.dashboard_admin, name='dashboard_admin'),
+    path('usuarios/', views.listar_usuarios, name='listar_usuarios'),
+    path('programas/', views.gestion_programas, name='gestion_programas'),
+    path('reportes/', views.reportes, name='reportes'),
+
 ]
 

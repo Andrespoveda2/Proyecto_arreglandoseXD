@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+# views.py en la app home
+
 def index(request):
-    """Renderiza la página de inicio (landing page)."""
-    return render(request, 'home/index.html')
+    return render(request, 'index.html')
 
 def acerca_de(request):
-    """Renderiza la página 'Acerca de Nosotros'."""
-    return render(request, 'home/acerca_de.html')
+    return render(request, 'acerca_de.html')

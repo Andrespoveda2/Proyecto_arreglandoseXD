@@ -1,38 +1,23 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpResponse
-
-# --- ADMIN ---
-
-def is_admin(user):
-    return user.is_authenticated and user.rol == 'ADMIN' and user.is_staff
-
-@user_passes_test(is_admin)
-def dashboard_admin(request):
-    return render(request, 'admin/dashboard_admin.html')
-
-@user_passes_test(is_admin)
-def listar_usuarios(request):
-    return render(request, 'admin/listar_usuarios.html')
-
-@user_passes_test(is_admin)
-def gestion_programas(request):
-    return render(request, 'admin/gestion_programas.html')
-
-@user_passes_test(is_admin)
-def reportes(request):
-    return render(request, 'admin/reportes.html')
+from usuario.utils import role_required  # Importamos el decorador centralizado
 
 # --- INSTRUCTOR ---
 
-@login_required
+@role_required("INSTRUCTOR")
 def dashboard_instructor(request):
-    return render(request, 'instructores/dashboard.html')
+    """Dashboard exclusivo para instructores."""
+    return render(request, 'dashboard.html')  
 
-@login_required
-def gestionar_solicitudes(request):
-    return HttpResponse("Página para gestionar solicitudes (Instructor)")
 
-@login_required
-def asignar_proyectos(request):
-    return HttpResponse("Página para asignar proyectos (Instructor)")
+@role_required("INSTRUCTOR")
+def proyectos_asignados(request):
+    """Ver proyectos asignados al instructor."""
+    return render(request, 'proyectos_asignados.html')
+
+
+@role_required("INSTRUCTOR")
+def seguimiento_avance(request, pk):
+    """Ver o editar el avance de un proyecto específico."""
+    return render(request, 'seguimiento_avance.html', {'proyecto_id': pk})
+
+   

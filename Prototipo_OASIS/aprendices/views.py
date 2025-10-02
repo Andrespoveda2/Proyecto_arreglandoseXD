@@ -1,28 +1,24 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from usuario.utils import role_required
 
-@login_required
+# --- APRENDIZ ---
+
+@role_required("APRENDIZ")
 def dashboard_aprendiz(request):
     """Renderiza el dashboard específico para el rol de Aprendiz."""
-    return render(request, 'aprendices/dashboard.html')
+    return render(request, 'dashboard_aprendiz.html')
 
-@login_required
+@role_required("APRENDIZ")
 def ver_proyectos(request):
-    """Placeholder para la función de ver proyectos disponibles."""
-    return HttpResponse("Página para ver proyectos disponibles (Aprendiz)")
+    """Ver proyectos disponibles para el aprendiz."""
+    return render(request, 'proyectos_disponibles.html')
 
-@login_required
+@role_required("APRENDIZ")
 def perfil_aprendiz(request):
-    """Placeholder para la vista del perfil del aprendiz."""
-    return HttpResponse("Página de Perfil (Aprendiz)")
+    """Vista del perfil del aprendiz."""
+    return render(request, 'perfil_aprendiz.html')
 
-@login_required
+@role_required("APRENDIZ")
 def detalle_proyecto(request, pk):
-    """Mostrar detalles de un proyecto específico."""
-    return HttpResponse(f"Detalle del proyecto con ID {pk} (Aprendiz)")
-
-@login_required
-def asignacion_list(request):
-    """Listado de proyectos en los que el aprendiz se postuló o fue asignado."""
-    return HttpResponse("Listado de asignaciones (Aprendiz)")
+    """Mostrar detalles de el proyecto específico al que esta asignado el aprendiz."""
+    return render(request, 'detalle_proyecto.html', {'proyecto_id': pk})

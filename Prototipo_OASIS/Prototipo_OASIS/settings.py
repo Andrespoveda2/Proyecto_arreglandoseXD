@@ -89,7 +89,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # =========================================================================
 
 AUTH_USER_MODEL = 'usuario.Usuario' 
-LOGIN_URL = 'usuario:login_empresa' # Redirección por defecto si no está logueado
+LOGIN_URL = 'login' # Redirección por defecto si no está logueado
 LOGIN_REDIRECT_URL = '/auth/redirect/' # La vista que maneja la redirección por rol
 
 # Internationalization... (dejamos los defaults)
