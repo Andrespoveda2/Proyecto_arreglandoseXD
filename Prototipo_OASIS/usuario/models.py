@@ -20,11 +20,21 @@ class SectorProductivo(models.Model):
 
 
 class ProgramaFormativo(models.Model):
-    """
-    Define los programas de formación (ej: ADSO, Análisis de datos).
-    Usado por PerfilAprendiz y SolicitudProyecto.
-    """
+    TECNICO = "TECNICO"
+    TECNOLOGO = "TECNOLOGO"
+    ESPECIALIZACION = "ESPECIALIZACION"
+    UNIVERSITARIO = "UNIVERSITARIO"
+
+    TIPOS = [
+        (TECNICO, "Técnico"),
+        (TECNOLOGO, "Tecnólogo"),
+        (ESPECIALIZACION, "Especialización Tecnológica"),
+        (UNIVERSITARIO, "Universitario"),
+    ]
+
     nombre = models.CharField(max_length=150, unique=True, verbose_name="Programa de Formación")
+    descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
+    tipo = models.CharField(max_length=20, choices=TIPOS, verbose_name="Tipo de Programa")
     codigo = models.CharField(max_length=20, unique=True, verbose_name="Código del Programa")
     
     def __str__(self):
@@ -55,6 +65,11 @@ class Usuario(AbstractUser):
     
     # Campo extra si queremos deshabilitar al usuario sin borrarlo
     esta_activo = models.BooleanField(default=True, verbose_name="Está Activo")
+    
+    def save(self, *args, **kwargs):
+        if self.is_superuser:
+            self.rol = self.ADMIN
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.username} ({self.get_rol_display()})"

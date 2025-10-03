@@ -130,3 +130,12 @@ class PerfilInstructorForm(forms.ModelForm):
             'documento': 'Documento',
             'area_conocimiento': 'Área de conocimiento',
         }
+        
+class ProgramaFormativoForm(forms.ModelForm):
+    class Meta:
+        model = ProgramaFormativo
+        fields = ['nombre', 'descripcion', 'tipo', 'codigo']
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'rows': 3}),
+            'tipo': forms.Select(attrs={'class': 'form-select'}),
+        }

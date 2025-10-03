@@ -3,14 +3,68 @@
 {% block title %}Dashboard Administrador{% endblock %}
 
 {% block content %}
-  <h1>Bienvenido, Administrador</h1>
+  <h1>Bienvenido, {{ user.username }}</h1>
   <p>Este es tu panel de control. Desde aquí puedes administrar el sistema.</p>
 
+  <p><strong>Último acceso:</strong> {{ user.last_login|date:"d/m/Y H:i" }}</p>
+
+  <h2>Estadísticas</h2>
   <ul>
-    <li><a href="#">Ver usuarios registrados</a></li>
-    <li><a href="#">Revisar proyectos</a></li>
-    <li><a href="#">Generar reportes</a></li>
+    <li>Total de usuarios: {{ total_usuarios }}</li>
+    <li>Administradores: {{ usuarios_por_rol.admins }}</li>
+    <li>Instructores: {{ usuarios_por_rol.instructores }}</li>
+    <li>Empresas: {{ usuarios_por_rol.empresas }}</li>
   </ul>
+
+  <h2>Acciones rápidas</h2>
+  {% if usuario.id %}
+  <ul>
+    <li><a href="{% url 'gestion:editar_usuario' usuario.id %}">Editar</a></li>
+    <li><a href="{% url 'gestion:eliminar_usuario' usuario.id %}" onclick="return confirm('¿Eliminar a {{ usuario.username }}?');">Eliminar</a></li>
+  </ul>
+{% else %}
+  <p>No se puede mostrar acciones rápidas porque el ID del usuario no está disponible.</p>
+{% endif %}
+
+  <a href="{% url 'gestion:gestion_programas' %}" class="btn btn-secondary">
+    <i class="fas fa-book-open"></i> Gestionar Programas Formativos
+  </a>
+
+  <h2>Usuarios recientes</h2>
+  {% if usuarios_recientes %}
+    <table border="1" cellpadding="6" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Fecha de registro</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios_recientes %}
+          <tr>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.get_rol_display }}</td>
+            <td>{{ usuario.date_joined|date:"d/m/Y H:i" }}</td>
+            <td>
+              {% if usuario.is_active %}
+                Activo
+              {% else %}
+                Inactivo
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No hay usuarios recientes registrados.</p>
+  {% endif %}
+
+  <hr>
 
   <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}

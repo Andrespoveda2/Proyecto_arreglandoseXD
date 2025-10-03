@@ -1,12 +1,14 @@
 from django.contrib.auth import authenticate, login
+from usuario.utils import role_required
 from django.shortcuts import render, redirect
 from .forms import (
     LoginForm,
     RegistroAprendizForm,
     RegistroEmpresaForm,
-    RegistroInstructorForm
+    RegistroInstructorForm,
+    ProgramaFormativoForm
 )
-from .models import Usuario
+from .models import Usuario, ProgramaFormativo
 
 
 # -------- Login General --------
@@ -71,3 +73,20 @@ def registro_instructor(request):
     else:
         form = RegistroInstructorForm()
     return render(request, 'registro_instructor.html', {'form': form})
+
+@role_required("ADMIN")  # o quien sea que pueda gestionar programas
+def gestion_programas(request):
+    if request.method == "POST":
+        form = ProgramaFormativoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('gestion:gestion_programas')  # Asegúrate de poner bien el namespace y nombre
+    else:
+        form = ProgramaFormativoForm()
+
+    programas = ProgramaFormativo.objects.all().order_by('nombre')
+
+    return render(request, 'gestion_programas.html', {
+        'form': form,
+        'programas': programas,
+    })
