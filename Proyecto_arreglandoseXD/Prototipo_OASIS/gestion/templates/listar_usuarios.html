@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Usuarios{% endblock %}
+
+{% block content %}
+  <h1>Gestión de Usuarios</h1>
+
+  <p><a href="{% url 'gestion:crear_usuario' %}">+ Crear nuevo usuario</a></p>
+
+  <!-- Formulario de filtros -->
+  <form method="get">
+    <label for="buscar">Buscar por nombre:</label>
+    <input type="text" name="buscar" id="buscar" value="{{ buscar_actual }}">
+
+    <label for="rol">Filtrar por rol:</label>
+    <select name="rol" id="rol">
+      <option value="">-- Todos --</option>
+      {% for value, label in roles %}
+        <option value="{{ value }}" {% if rol_actual == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Filtrar</button>
+    <a href="{% url 'gestion:listar_usuarios' %}">Limpiar</a>
+  </form>
+
+  <hr>
+
+  <!-- Tabla de usuarios -->
+  {% if usuarios %}
+    <table border="1" cellpadding="6" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Fecha Registro</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+          <tr>
+            <td>{{ usuario.username }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.get_rol_display }}</td>
+            <td>{{ usuario.date_joined|date:"d/m/Y H:i" }}</td>
+            <td>{{ usuario.is_active|yesno:"Activo,Inactivo" }}</td>
+            <td>
+                <a href="{% url 'gestion:editar_usuario' usuario.id %}">Editar</a> 
+                <a href="{% url 'gestion:eliminar_usuario' usuario.id %}" onclick="return confirm('¿Eliminar a {{ usuario.username }}?');">Eliminar</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div>
+      {% if usuarios.has_previous %}
+        <a href="?page={{ usuarios.previous_page_number }}&rol={{ rol_actual }}&buscar={{ buscar_actual }}">Anterior</a>
+      {% endif %}
+
+      {% for num in usuarios.paginator.page_range %}
+        {% if usuarios.number == num %}
+          <strong>{{ num }}</strong>
+        {% else %}
+          <a href="?page={{ num }}&rol={{ rol_actual }}&buscar={{ buscar_actual }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if usuarios.has_next %}
+        <a href="?page={{ usuarios.next_page_number }}&rol={{ rol_actual }}&buscar={{ buscar_actual }}">Siguiente</a>
+      {% endif %}
+    </div>
+
+  {% else %}
+    <p>No se encontraron usuarios.</p>
+  {% endif %}
+{% endblock %}

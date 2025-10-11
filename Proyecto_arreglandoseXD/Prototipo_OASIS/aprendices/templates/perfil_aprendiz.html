@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil del Aprendiz{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="text-center mb-4">{{ aprendiz.user.first_name }} {{ aprendiz.user.last_name }}</h3>
+
+            <p><strong>Usuario:</strong> {{ aprendiz.user.username }}</p>
+            <p><strong>Correo:</strong> {{ aprendiz.user.email }}</p>
+            <p><strong>Programa:</strong> {{ aprendiz.programa }}</p>
+            <p><strong>Ficha:</strong> {{ aprendiz.ficha }}</p>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'aprendices:dashboard_aprendiz' %}" class="btn btn-primary">Volver al Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Gestión de Sectores Productivos</h2>
+
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Agregar Sector</button>
+    </form>
+
+    <h3>Lista de Sectores Existentes</h3>
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sector in sectores %}
+            <tr>
+                <td>{{ sector.nombre }}</td>
+                <td>{{ sector.descripcion }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2">No hay sectores registrados aún.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

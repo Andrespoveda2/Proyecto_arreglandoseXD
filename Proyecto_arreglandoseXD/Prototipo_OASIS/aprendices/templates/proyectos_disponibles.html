@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Proyectos Disponibles{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Proyectos Disponibles</h2>
+
+    {% if proyectos %}
+        <div class="row">
+            {% for proyecto in proyectos %}
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ proyecto.nombre }}</h5>
+                            <p class="card-text text-muted">{{ proyecto.descripcion|truncatewords:20 }}</p>
+                            <p><strong>Estado:</strong> {{ proyecto.estado }}</p>
+                            <a href="{% url 'aprendices:detalle_proyecto' proyecto.id %}" class="btn btn-outline-primary btn-sm">Ver Detalles</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted text-center">No hay proyectos disponibles en este momento.</p>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{% url 'aprendices:dashboard_aprendiz' %}" class="btn btn-secondary">Volver al Dashboard</a>
+    </div>
+</div>
+{% endblock %}

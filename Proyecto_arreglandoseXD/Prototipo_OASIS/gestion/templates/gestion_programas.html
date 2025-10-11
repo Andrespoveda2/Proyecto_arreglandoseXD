@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Programas - Sistema OASIS{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="fas fa-graduation-cap text-primary"></i> Gestión de Programas de Formación</h2>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Crear nuevo programa</strong>
+        </div>
+        <div class="card-body">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.nombre.label_tag }}
+                    {{ form.nombre }}
+                    {% if form.nombre.errors %}
+                        <div class="text-danger">{{ form.nombre.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.descripcion.label_tag }}
+                    {{ form.descripcion }}
+                    {% if form.descripcion.errors %}
+                        <div class="text-danger">{{ form.descripcion.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.tipo.label_tag }}
+                    {{ form.tipo }}
+                    {% if form.tipo.errors %}
+                        <div class="text-danger">{{ form.tipo.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.codigo.label_tag }}
+                    {{ form.codigo }}
+                    {% if form.codigo.errors %}
+                        <div class="text-danger">{{ form.codigo.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> Crear Programa
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <h3>Programas existentes</h3>
+    <table class="table table-striped table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Tipo</th>
+                <th>Código</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for programa in programas %}
+            <tr>
+                <td>{{ programa.nombre }}</td>
+                <td>{{ programa.descripcion|default:"-" }}</td>
+                <td>{{ programa.get_tipo_display }}</td>
+                <td>{{ programa.codigo }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center text-muted">No hay programas registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

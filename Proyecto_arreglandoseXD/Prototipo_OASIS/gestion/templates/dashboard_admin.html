@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Centro de Control Administrativo{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Jumbotron de Bienvenida del Administrador -->
+    <div class="welcome-jumbotron p-5 mb-5 text-white rounded-3 bg-dark shadow-lg">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-shield-lock-fill me-4 fs-1"></i>
+            <div>
+                <h1 class="display-5 fw-bold mb-1">Centro de Control OASIS</h1>
+                <p class="fs-6 mb-0 text-muted">Gestión de plataforma y administración de usuarios y contenidos.</p>
+            </div>
+        </div>
+        <div class="mt-3 small text-end text-white-50">
+            Último acceso: {{ user.last_login|date:"d/m/Y H:i" }}
+        </div>
+    </div>
+
+    <!-- Estadísticas generales -->
+    <h3 class="mb-4 text-center text-secondary">Estadísticas de la Plataforma</h3>
+    <div class="row text-center g-3 mb-5">
+        
+        <!-- Tarjeta 1: Total de Usuarios -->
+        <div class="col-md-3">
+            <div class="stat-card p-3 border-start border-4 border-primary rounded-3 shadow-sm">
+                <i class="bi bi-people-fill text-primary fs-3 mb-2"></i>
+                <p class="mb-0 text-muted small">Total de Usuarios</p>
+                <h5 class="fs-4 fw-bold text-primary">{{ total_usuarios }}</h5>
+            </div>
+        </div>
+
+        <!-- Tarjeta 2: Instructores -->
+        <div class="col-md-3">
+            <div class="stat-card p-3 border-start border-4 border-success rounded-3 shadow-sm">
+                <i class="bi bi-person-video3 text-success fs-3 mb-2"></i>
+                <p class="mb-0 text-muted small">Instructores Activos</p>
+                <h5 class="fs-4 fw-bold text-success">{{ usuarios_por_rol.instructores }}</h5>
+            </div>
+        </div>
+        
+        <!-- Tarjeta 3: Empresas -->
+        <div class="col-md-3">
+            <div class="stat-card p-3 border-start border-4 border-info rounded-3 shadow-sm">
+                <i class="bi bi-building-fill text-info fs-3 mb-2"></i>
+                <p class="mb-0 text-muted small">Empresas Registradas</p>
+                <h5 class="fs-4 fw-bold text-info">{{ usuarios_por_rol.empresas }}</h5>
+            </div>
+        </div>
+
+        <!-- Tarjeta 4: Proyectos Pendientes (Nueva Métrica Relevante) -->
+        <div class="col-md-3">
+            <div class="stat-card p-3 border-start border-4 border-warning rounded-3 shadow-sm">
+                <i class="bi bi-file-earmark-bar-graph text-warning fs-3 mb-2"></i>
+                <p class="mb-0 text-muted small">Proyectos Pendientes</p>
+                <h5 class="fs-4 fw-bold text-warning">{{ proyectos_pendientes_count|default:0 }}</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acciones principales -->
+    <h3 class="mb-4 text-center">Accesos de Gestión Rápida</h3>
+    <div class="card shadow-lg p-4 mb-5">
+        <div class="row g-3 text-center">
+            
+            <div class="col-md-4">
+                <a href="{% url 'gestion:listar_usuarios' %}" class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-person-lines-fill me-2 fs-5"></i> Listar Usuarios
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'gestion:crear_usuario' %}" class="btn btn-success w-100 py-3 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-person-plus-fill me-2 fs-5"></i> Crear Usuario
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'gestion:gestion_programas' %}" class="btn btn-info w-100 py-3 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-book-fill me-2 fs-5"></i> Gestionar Programas
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'gestion:gestion_sectores' %}" class="btn btn-warning w-100 py-3 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-house-door-fill me-2 fs-5"></i> Gestionar Sectores
+                </a>
+            </div>
+            <div class="col-md-4">
+                <!-- URL CORREGIDA: De 'gestion_proyectos' a 'proyectos_pendientes' -->
+                <a href="{% url 'gestion:proyectos_pendientes' %}" class="btn btn-danger w-100 py-3 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-check-square-fill me-2 fs-5"></i> Aprobar Proyectos
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'gestion:reportes' %}" class="btn btn-secondary w-100 py-3 d-flex align-items-center justify-content-center">
+                    <i class="bi bi-bar-chart-line-fill me-2 fs-5"></i> Ver Reportes
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Usuarios recientes -->
+    <h3 class="mt-5 mb-3">Últimos Usuarios Registrados</h3>
+    {% if usuarios_recientes %}
+        <div class="table-responsive mt-3">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th><i class="bi bi-person-vcard-fill me-1"></i> Usuario</th>
+                        <th><i class="bi bi-envelope-fill me-1"></i> Email</th>
+                        <th><i class="bi bi-tag-fill me-1"></i> Rol</th>
+                        <th><i class="bi bi-calendar-check-fill me-1"></i> Registro</th>
+                        <th class="text-center"><i class="bi bi-lightning-fill me-1"></i> Estado</th>
+                        <th class="text-center"><i class="bi bi-tools me-1"></i> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios_recientes %}
+                    <tr>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.get_rol_display }}</td>
+                        <td>{{ usuario.date_joined|date:"d/m/Y H:i" }}</td>
+                        <td class="text-center">
+                            {% if usuario.is_active %}
+                                <span class="badge bg-success"><i class="bi bi-toggle-on"></i> Activo</span>
+                            {% else %}
+                                <span class="badge bg-secondary"><i class="bi bi-toggle-off"></i> Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'gestion:editar_usuario' usuario.id %}" class="btn btn-sm btn-outline-primary me-2" title="Editar"><i class="bi bi-pencil-fill"></i></a>
+                            <!-- IMPORTANTE: Reemplazar el onclick por un modal de confirmación en producción -->
+                            <a href="{% url 'gestion:eliminar_usuario' usuario.id %}" class="btn btn-sm btn-outline-danger" title="Eliminar" onclick="return false;">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center shadow-sm">
+            <i class="bi bi-info-circle-fill me-2"></i> No hay usuarios recientes registrados.
+        </div>
+    {% endif %}
+
+    <!-- Cerrar sesión -->
+    <hr class="mt-5 mb-4">
+    <form method="post" action="{% url 'logout' %}" class="text-center mb-5">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger px-4 py-2">
+            <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+        </button>
+    </form>
+</div>
+{% endblock %}

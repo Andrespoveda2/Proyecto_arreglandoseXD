@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Proyectos Asignados</h2>
+    {% if proyectos %}
+        <div class="list-group mt-3">
+            {% for proyecto in proyectos %}
+                <div class="list-group-item">
+                    <h5>{{ proyecto.nombre }}</h5>
+                    <p><strong>Descripción:</strong> {{ proyecto.descripcion }}</p>
+                    <p><strong>Fecha de inicio:</strong> {{ proyecto.fecha_inicio|date:"d M Y" }}</p>
+                    <p><strong>Estado:</strong> {{ proyecto.estado }}</p>
+                    <a href="{% url 'seguimiento_avance' proyecto.id %}" class="btn btn-sm btn-info">Ver seguimiento</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted mt-3">No tienes proyectos asignados.</p>
+    {% endif %}
+    <a href="{% url 'instructores:dashboard_instructor' %}" class="btn btn-secondary mt-3">Volver al panel</a>
+</div>
+{% endblock %}

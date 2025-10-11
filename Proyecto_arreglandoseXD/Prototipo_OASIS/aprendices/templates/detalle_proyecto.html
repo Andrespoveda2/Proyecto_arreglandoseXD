@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles del Proyecto{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 700px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="mb-3">{{ proyecto.nombre }}</h3>
+            <p><strong>Descripción:</strong></p>
+            <p>{{ proyecto.descripcion }}</p>
+
+            <p class="mt-3"><strong>Estado:</strong> {{ proyecto.estado }}</p>
+
+            {% if proyecto.asignado_a %}
+                <p><strong>Asignado a:</strong> {{ proyecto.asignado_a.user.username }}</p>
+            {% else %}
+                <p class="text-muted"><em>Este proyecto aún no ha sido asignado.</em></p>
+            {% endif %}
+
+            <div class="mt-4 text-center">
+                <a href="{% url 'aprendices:dashboard_aprendiz' %}" class="btn btn-secondary">Volver al Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

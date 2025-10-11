@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Perfil del Instructor</h2>
+    <div class="card p-3 mt-3">
+        <p><strong>Nombre de usuario:</strong> {{ request.user.username }}</p>
+        <p><strong>Correo electrónico:</strong> {{ request.user.email }}</p>
+        <p><strong>Nombre completo:</strong> {{ request.user.get_full_name }}</p>
+        <p><strong>Último acceso:</strong> {{ request.user.last_login|date:"d M Y, H:i" }}</p>
+    </div>
+    <a href="{% url 'instructores:dashboard_instructor' %}" class="btn btn-secondary mt-3">Volver al panel</a>
+</div>
+{% endblock %}

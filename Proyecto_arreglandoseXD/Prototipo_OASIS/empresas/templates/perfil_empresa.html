@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil de la Empresa{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 700px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="text-center mb-4">{{ empresa.razon_social }}</h3>
+
+            <p><strong>Usuario:</strong> {{ empresa.usuario.username }}</p>
+            <p><strong>Correo:</strong> {{ empresa.usuario.email }}</p>
+            <p><strong>NIT:</strong> {{ empresa.nit }}</p>
+            <p><strong>Teléfono:</strong> {{ empresa.telefono }}</p>
+            <p><strong>Sector Productivo:</strong> {{ empresa.sector.nombre }}</p>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-primary">Volver al Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Seguimiento de Avance</h2>
+    <div class="card p-3 mt-3">
+        <h4>{{ proyecto.nombre }}</h4>
+        <p><strong>Descripción:</strong> {{ proyecto.descripcion }}</p>
+        <p><strong>Progreso:</strong> {{ proyecto.porcentaje_avance }}%</p>
+        <div class="progress mb-3">
+            <div class="progress-bar" role="progressbar"
+                style="width: {{ proyecto.porcentaje_avance }}%;"
+                aria-valuenow="{{ proyecto.porcentaje_avance }}"
+                aria-valuemin="0"
+                aria-valuemax="100">
+                {{ proyecto.porcentaje_avance }}%
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'instructores:dashboard_instructor' %}" class="btn btn-secondary mt-3">Volver al panel</a>
+</div>
+{% endblock %}

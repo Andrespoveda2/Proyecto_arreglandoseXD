@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block content %}
+  <h1>Editar usuario: {{ form.instance.username }}</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Guardar cambios</button>
+    <a href="{% url 'gestion:listar_usuarios' %}">Cancelar</a>
+  </form>
+{% endblock %}

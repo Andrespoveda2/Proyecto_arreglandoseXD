@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Proyecto{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 700px;">
+    <h2 class="text-center mb-4">Editar Proyecto</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Actualizar Proyecto</button>
+            <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-secondary ms-2">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
