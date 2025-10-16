@@ -1,13 +1,16 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm # Importar SetPasswordForm
+from django.utils.translation import gettext_lazy as _ # Importar gettext_lazy
 from .models import Usuario, PerfilEmpresa, PerfilInstructor, PerfilAprendiz, ProgramaFormativo, SectorProductivo, MensajeContacto
 
 # --- Registro Aprendiz ---
 class RegistroAprendizForm(UserCreationForm):
     documento = forms.CharField(label="Documento de Identidad", max_length=10)
     ficha = forms.CharField(label="Ficha de Formación", max_length=20)
+    
+    # Asumo que se debe filtrar por 'activo=True' para evitar el OperationalError anterior
     programa = forms.ModelChoiceField(
-        queryset=ProgramaFormativo.objects.all(),
+        queryset=ProgramaFormativo.objects.filter(activo=True),
         label="Programa de Formación",
         empty_label="No hay programas disponibles",
         help_text="Si no ves tu programa, contacta a un administrador."
@@ -32,7 +35,7 @@ class RegistroAprendizForm(UserCreationForm):
                 usuario=user,
                 documento=self.cleaned_data['documento'],
                 ficha=self.cleaned_data['ficha'],
-                programa=self.cleaned_data['programa'],  # Ahora es un objeto ProgramaFormativo
+                programa=self.cleaned_data['programa'], 
             )
         return user
 
@@ -176,15 +179,11 @@ class SectorProductivoForm(forms.ModelForm):
             'descripcion': forms.Textarea(attrs={'rows': 3}),
         }
         
-
-
 class ContactoForm(forms.ModelForm):
     """
     Formulario basado en el modelo MensajeContacto para capturar
     las solicitudes de soporte de los usuarios.
     """
-    
-    # Sobrescribimos el campo 'asunto' para usar un placeholder inicial
     asunto = forms.ChoiceField(
         choices=[('', 'Selecciona el tema')] + list(MensajeContacto.ASUNTO_CHOICES),
         label='Asunto',
@@ -219,3 +218,21 @@ class ContactoForm(forms.ModelForm):
             'email': 'Correo Electrónico',
             'mensaje': 'Mensaje Detallado',
         }
+
+# --- FORMULARIO PARA MOSTRAR CONTRASEÑA EN EL RESETEO ---
+class RestablecerContrasenaForm(SetPasswordForm):
+    # ¡IMPORTANTE! Vuelve a usar forms.PasswordInput, o quita el widget para usar el predeterminado
+    new_password1 = forms.CharField(
+        label=_("Nueva contraseña"),
+        # Revertimos a PasswordInput para que el campo inicie oculto (type="password")
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}), 
+        strip=False,
+        help_text=("Ingresa una contraseña segura (mínimo 8 caracteres).")
+    )
+    
+    new_password2 = forms.CharField(
+        label=_("Confirmación de contraseña"),
+        strip=False,
+        # Revertimos a PasswordInput
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}),
+    )
