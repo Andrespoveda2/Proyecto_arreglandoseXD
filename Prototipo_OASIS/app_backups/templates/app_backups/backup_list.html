@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>📦 Copias de seguridad</h2>
+
+    <form method="POST" action="{% url 'crear_backup' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success mt-2">💾 Crear respaldo</button>
+    </form>
+
+    <hr>
+    <table class="table table-striped mt-3 align-middle text-center">
+        <thead class="table-light">
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Tamaño (MB)</th>
+                <th>Ruta</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for backup in backups %}
+            <tr>
+                <td>{{ backup.nombre }}</td>
+                <td>{{ backup.fecha_creacion|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ backup.tamano }}</td>
+                <td>{{ backup.ruta }}</td>
+                <td>
+                    <a href="{% url 'restaurar_backup' backup.id %}" 
+                       class="btn btn-sm btn-outline-primary"
+                       onclick="return confirm('⚠️ ¿Seguro que deseas restaurar este respaldo? Esto reemplazará la base de datos actual.');">
+                        ♻️ Restaurar
+                    </a>
+
+                    <a href="{% url 'eliminar_backup' backup.id %}" 
+                       class="btn btn-sm btn-outline-danger"
+                       onclick="return confirm('¿Eliminar este respaldo permanentemente?');">
+                        🗑️ Eliminar
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">No hay copias de seguridad aún.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

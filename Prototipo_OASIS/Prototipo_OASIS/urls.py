@@ -53,6 +53,8 @@ urlpatterns = [
     path('aprendiz/', include('aprendices.urls')), # Prefijo para aprendices
     path('instructor/', include('instructores.urls')), # Prefijo para instructores
     path('gestion/', include('gestion.urls')), # Prefijo para administradores
+    path('backups/', include('app_backups.urls')),
+
 
     # Si se necesitan archivos estáticos en desarrollo
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
