@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Solicitudes de Proyectos Pendientes</h2>
+
+    {% if pendientes %}
+        <ul class="list-group">
+            {% for proyecto in pendientes %}
+            <li class="list-group-item mb-2 shadow-sm rounded">
+                <h5 class="mb-1">{{ proyecto.nombre }}</h5>
+                <p class="mb-2">{{ proyecto.descripcion|truncatewords:25 }}</p>
+                <p class="mb-1"><strong>Área:</strong> {{ proyecto.area }}</p>
+                <p class="mb-1"><strong>Empresa:</strong> {{ proyecto.empresa.usuario.username }}</p>
+                <p class="text-muted"><small>Creado el {{ proyecto.creado_en|date:"d/m/Y H:i" }}</small></p>
+
+                <div class="mt-3">
+                    <form method="post" action="{% url 'gestion:aprobar_proyecto' proyecto.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button class="btn btn-success btn-sm">Aprobar</button>
+                    </form>
+
+                    <form method="post" action="{% url 'gestion:rechazar_proyecto' proyecto.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button class="btn btn-danger btn-sm">Rechazar</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="alert alert-info mt-4">
+            No hay solicitudes pendientes por revisar.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

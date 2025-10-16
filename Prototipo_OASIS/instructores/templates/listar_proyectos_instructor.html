@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Proyectos Disponibles{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Proyectos Disponibles</h2>
+
+    {% if proyectos %}
+        <div class="list-group">
+            {% for proyecto in proyectos %}
+                <a href="{% url 'instructores:detalle_proyecto_instructor' proyecto.id %}"
+                   class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ proyecto.nombre }}</h5>
+                        <small>{{ proyecto.get_area_display }}</small>
+                    </div>
+                    <p class="mb-1 text-muted">{{ proyecto.descripcion|truncatewords:15 }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">No hay proyectos aprobados disponibles por el momento.</p>
+    {% endif %}
+</div>
+{% endblock %}

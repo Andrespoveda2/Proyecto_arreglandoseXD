@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestión de Usuarios{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Encabezado y Acción Principal -->
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <h1 class="text-secondary"><i class="fas fa-users-cog me-2"></i> Gestión de Usuarios</h1>
+        <a href="{% url 'gestion:crear_usuario' %}" class="btn btn-success btn-lg shadow-sm">
+            <i class="fas fa-user-plus me-2"></i> Crear Nuevo Usuario
+        </a>
+    </div>
+
+    <!-- Card de Filtros y Búsqueda -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title text-muted mb-3"><i class="fas fa-filter me-2"></i> Filtros de Búsqueda</h5>
+            <form method="get" class="row g-3 align-items-end">
+                
+                <div class="col-md-5">
+                    <label for="buscar" class="form-label">Buscar por Nombre o Email:</label>
+                    <input type="text" name="buscar" id="buscar" class="form-control" placeholder="Escribe el nombre o email..." value="{{ buscar_actual|default:'' }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="rol" class="form-label">Filtrar por Rol:</label>
+                    <select name="rol" id="rol" class="form-select">
+                        <option value="">-- Todos los Roles --</option>
+                        {% for value, label in roles %}
+                            <option value="{{ value }}" {% if rol_actual == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-search me-1"></i> Filtrar</button>
+                    <a href="{% url 'gestion:listar_usuarios' %}" class="btn btn-outline-secondary"><i class="fas fa-sync-alt me-1"></i> Limpiar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Tabla de usuarios -->
+    {% if usuarios %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered shadow-sm">
+                <thead class="bg-light">
+                    <tr>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Registro</th>
+                        <th scope="col" class="text-center">Estado</th>
+                        <th scope="col" class="text-center" style="min-width: 150px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                        <tr>
+                            <td><i class="fas fa-user me-1"></i> {{ usuario.username }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td><span class="badge bg-secondary">{{ usuario.get_rol_display }}</span></td>
+                            <td>{{ usuario.date_joined|date:"d M Y" }}</td>
+                            <td class="text-center">
+                                {% if usuario.is_active %}
+                                    <span class="badge bg-success"><i class="fas fa-check-circle"></i> Activo</span>
+                                {% else %}
+                                    <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Inactivo</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {# Botón 1: Ver Detalle (Ojo) #}
+                                <a href="{% url 'gestion:detalle_usuario' usuario.id %}" 
+                                   class="btn btn-sm btn-info text-white me-1" 
+                                   title="Ver Detalle">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                
+                                {# Botón 2: Editar (Lápiz) #}
+                                <a href="{% url 'gestion:editar_usuario' usuario.id %}" 
+                                   class="btn btn-sm btn-warning text-dark me-1" 
+                                   title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a> 
+                                
+                                {# Botón 3: Eliminar (Cubo de basura) #}
+                                <a href="{% url 'gestion:eliminar_usuario' usuario.id %}" 
+                                   class="btn btn-sm btn-danger" 
+                                   title="Eliminar"
+                                   onclick="return confirm('¿Está seguro de que desea eliminar a {{ usuario.username }}? Esta acción es irreversible.');">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="d-flex justify-content-center mt-4">
+            <nav>
+                <ul class="pagination shadow-sm">
+                    {% if usuarios.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ usuarios.previous_page_number }}&rol={{ rol_actual|default:'' }}&buscar={{ buscar_actual|default:'' }}">Anterior</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                    {% endif %}
+
+                    {% for num in usuarios.paginator.page_range %}
+                        <li class="page-item {% if usuarios.number == num %}active{% endif %}">
+                            <a class="page-link" href="?page={{ num }}&rol={{ rol_actual|default:'' }}&buscar={{ buscar_actual|default:'' }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {% if usuarios.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ usuarios.next_page_number }}&rol={{ rol_actual|default:'' }}&buscar={{ buscar_actual|default:'' }}">Siguiente</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+    {% else %}
+        <div class="alert alert-info text-center mt-4" role="alert">
+            <i class="fas fa-info-circle me-2"></i> No se encontraron usuarios con los criterios de búsqueda o filtro aplicados.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Avance: {{ proyecto.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-danger"><i class="fas fa-chart-line me-2"></i> Seguimiento de Avance del Proyecto</h2>
+                <a href="{% url 'instructores:dashboard_instructor' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Volver al Dashboard
+                </a>
+            </div>
+
+            <div class="card shadow-lg mb-4 border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">Proyecto: {{ proyecto.nombre }}</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted"><i class="fas fa-info-circle me-1"></i> {{ proyecto.descripcion }}</p>
+
+                    <div class="row align-items-center mt-3">
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Progreso Actual:</h5>
+                            <div class="progress" style="height: 30px;">
+                                <div class="progress-bar {% if proyecto.porcentaje_avance < 50 %}bg-warning{% elif proyecto.porcentaje_avance < 100 %}bg-primary{% else %}bg-success{% endif %}" 
+                                    role="progressbar"
+                                    style="width: {{ proyecto.porcentaje_avance }}%;"
+                                    aria-valuenow="{{ proyecto.porcentaje_avance }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                    <strong class="h6">{{ proyecto.porcentaje_avance }}%</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <ul class="list-group list-group-flush mt-3 mt-md-0">
+                                <li class="list-group-item">
+                                    <strong><i class="fas fa-percentage me-2"></i> Avance:</strong> 
+                                    <span class="badge bg-{{% if proyecto.porcentaje_avance == 100 %}success{% else %}danger{% endif %} me-1">{{ proyecto.porcentaje_avance }}%</span>
+                                </li>
+                                {% if proyecto.fecha_ultima_actualizacion %}
+                                <li class="list-group-item">
+                                    <strong><i class="far fa-calendar-alt me-2"></i> Última Actualización:</strong> 
+                                    {{ proyecto.fecha_ultima_actualizacion|date:"d M Y" }}
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Si tienes una lista de tareas (proyecto.tareas) asociadas, aquí podrías listarlas #}
+            {% comment %}
+            <h4 class="mt-5 mb-3">Hitos y Tareas (Ejemplo)</h4>
+            <ul class="list-group">
+                {% for tarea in proyecto.tareas.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ tarea.nombre }}
+                    {% if tarea.completada %}
+                        <span class="badge bg-success"><i class="fas fa-check"></i> Completada</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Pendiente</span>
+                    {% endif %}
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">No hay tareas listadas para este proyecto.</li>
+                {% endfor %}
+            </ul>
+            {% endcomment %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

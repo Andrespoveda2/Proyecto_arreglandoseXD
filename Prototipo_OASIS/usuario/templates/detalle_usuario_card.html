@@ -1,0 +1,168 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-md-11">
+            
+            <!-- Botón para volver al dashboard de gestión -->
+            <div class="mb-4">
+                <a href="{% url 'gestion:listar_usuarios' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Volver a la lista de usuarios
+                </a>
+            </div>
+
+            <!-- Tarjeta Principal del Perfil -->
+            <div class="card shadow-lg border-0 overflow-hidden profile-card">
+                
+                <!-- Header con color y datos principales -->
+                <div class="card-header {{ card_header_class }} text-white p-4">
+                    <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+                        <!-- Foto de Perfil -->
+                        <div class="position-relative">
+                            {% if perfil.foto.url %}
+                                <img src="{{ perfil.foto.url }}" alt="Foto de {{ usuario_seleccionado.username }}" class="profile-avatar rounded-circle border border-4 {{ avatar_border }} shadow-sm">
+                            {% elif perfil.logo.url %} {# Para empresas #}
+                                <img src="{{ perfil.logo.url }}" alt="Logo de {{ usuario_seleccionado.username }}" class="profile-avatar rounded-circle border border-4 {{ avatar_border }} shadow-sm">
+                            {% else %}
+                                <div class="profile-avatar-placeholder d-flex align-items-center justify-content-center rounded-circle border border-4 {{ avatar_border }} shadow-sm">
+                                    <i class="{{ card_icon }} display-4 text-secondary"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Información Principal -->
+                        <div class="text-center text-md-start">
+                            <h2 class="mb-1 fw-bold">
+                                {% if rol == 'EMPRESA' %}
+                                    {{ perfil.razon_social|default:usuario_seleccionado.username }}
+                                {% else %}
+                                    {{ usuario_seleccionado.get_full_name|default:usuario_seleccionado.username }}
+                                {% endif %}
+                            </h2>
+                            <p class="mb-1 text-white-75 fs-5">@{{ usuario_seleccionado.username }}</p>
+                            <span class="badge bg-light text-dark px-3 py-2 mt-2">
+                                <i class="{{ card_icon }} me-2"></i>
+                                {{ usuario_seleccionado.get_rol_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <div class="row g-5">
+                        <!-- Columna 1: Información General y de Contacto -->
+                        <div class="col-lg-6">
+                            <h5 class="section-title text-primary mb-4">
+                                <i class="bi bi-person-lines-fill me-2"></i>
+                                Datos Generales
+                            </h5>
+                            <div class="info-grid">
+                                <!-- Email -->
+                                <div class="info-item">
+                                    <div class="info-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-envelope-fill"></i></div>
+                                    <div class="info-content">
+                                        <small class="text-muted">Correo Electrónico</small>
+                                        <strong class="text-dark">{{ usuario_seleccionado.email }}</strong>
+                                    </div>
+                                </div>
+                                <!-- Teléfono -->
+                                <div class="info-item">
+                                    <div class="info-icon bg-success bg-opacity-10 text-success"><i class="bi bi-telephone-fill"></i></div>
+                                    <div class="info-content">
+                                        <small class="text-muted">Teléfono</small>
+                                        <strong class="text-dark">{{ perfil.telefono|default:"No especificado" }}</strong>
+                                    </div>
+                                </div>
+                                <!-- Fecha de Registro -->
+                                <div class="info-item">
+                                    <div class="info-icon bg-secondary bg-opacity-10 text-secondary"><i class="bi bi-calendar-plus-fill"></i></div>
+                                    <div class="info-content">
+                                        <small class="text-muted">Miembro desde</small>
+                                        <strong class="text-dark">{{ usuario_seleccionado.date_joined|date:"d M, Y" }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Columna 2: Detalles Específicos del Rol -->
+                        <div class="col-lg-6">
+                            <h5 class="section-title text-success mb-4">
+                                <i class="bi bi-briefcase-fill me-2"></i>
+                                Detalles del Perfil
+                            </h5>
+                            <div class="info-grid">
+                                {% if rol == 'APRENDIZ' %}
+                                    <div class="info-item">
+                                        <div class="info-icon bg-info bg-opacity-10 text-info"><i class="bi bi-book-fill"></i></div>
+                                        <div class="info-content">
+                                            <small class="text-muted">Programa Formativo</small>
+                                            <strong class="text-dark">{{ perfil.programa.nombre|default:"No asignado" }}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-hash"></i></div>
+                                        <div class="info-content">
+                                            <small class="text-muted">Número de Ficha</small>
+                                            <strong class="text-dark">{{ perfil.ficha|default:"No asignada" }}</strong>
+                                        </div>
+                                    </div>
+                                {% elif rol == 'INSTRUCTOR' %}
+                                    <div class="info-item">
+                                        <div class="info-icon bg-info bg-opacity-10 text-info"><i class="bi bi-card-checklist"></i></div>
+                                        <div class="info-content">
+                                            <small class="text-muted">Especialidad</small>
+                                            <strong class="text-dark">{{ perfil.especialidad|default:"No especificada" }}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-person-badge-fill"></i></div>
+                                        <div class="info-content">
+                                            <small class="text-muted">Número de Identificación</small>
+                                            <strong class="text-dark">{{ perfil.numero_identificacion|default:"No especificado" }}</strong>
+                                        </div>
+                                    </div>
+                                {% elif rol == 'EMPRESA' %}
+                                    <div class="info-item">
+                                        <div class="info-icon bg-info bg-opacity-10 text-info"><i class="bi bi-building-fill-check"></i></div>
+                                        <div class="info-content">
+                                            <small class="text-muted">NIT</small>
+                                            <strong class="text-dark">{{ perfil.nit|default:"No especificado" }}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-diagram-3-fill"></i></div>
+                                        <div class="info-content">
+                                            <small class="text-muted">Sector</small>
+                                            <strong class="text-dark">{{ perfil.sector.nombre|default:"No especificado" }}</strong>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="info-item">
+                                        <div class="info-icon bg-danger bg-opacity-10 text-danger"><i class="bi bi-shield-lock-fill"></i></div>
+                                        <div class="info-content">
+                                            <small class="text-muted">Permisos</small>
+                                            <strong class="text-dark">
+                                                {% if usuario_seleccionado.is_superuser %}Superusuario{% elif usuario_seleccionado.is_staff %}Staff{% else %}Usuario Base{% endif %}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer de la tarjeta con acciones -->
+                <div class="card-footer bg-light text-end p-3">
+                    {% if request.user == usuario_seleccionado %}
+                        {% if rol == 'APRENDIZ' %}
+                            <a href="{% url 'aprendices:editar_perfil_aprendiz' %}" class="btn btn-primary"><i class="bi bi-pencil-square me-2"></i>Editar Mi Perfil</a>
+                        {% elif rol == 'INSTRUCTOR' %}
+                            <a href="{% url 'instructores:editar_perfil_instructor' %}" class="btn btn-primary"><i class="bi bi-pencil-square me-2"></i>Editar Mi Perfil</a>
+                        {% elif rol == 'EMPRESA' %}
+                            <a href="{% url 'empresas:editar_perfil_empresa' %}" class="btn btn-primary"><i class="bi bi-pencil-square me-2"></i>Editar Mi Perfil</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

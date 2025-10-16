@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manual de Usuario - Plataforma OASIS{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <!-- Encabezado del Manual -->
+            <div class="text-center mb-5">
+                <i class="bi bi-book-half display-3 text-success mb-3"></i>
+                <h1 class="display-4 fw-bold">Manual de Usuario Unificado</h1>
+                <p class="lead text-muted">Guía completa para todos los roles en la plataforma OASIS.</p>
+            </div>
+
+            <!-- Pestañas de Navegación por Rol -->
+            <ul class="nav nav-pills nav-fill mb-4" id="manualTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general-tab-pane" type="button" role="tab" aria-controls="general-tab-pane" aria-selected="true">
+                        <i class="bi bi-info-circle-fill me-2"></i>General
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="aprendiz-tab" data-bs-toggle="tab" data-bs-target="#aprendiz-tab-pane" type="button" role="tab" aria-controls="aprendiz-tab-pane" aria-selected="false">
+                        <i class="bi bi-mortarboard-fill me-2"></i>Aprendiz
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="empresa-tab" data-bs-toggle="tab" data-bs-target="#empresa-tab-pane" type="button" role="tab" aria-controls="empresa-tab-pane" aria-selected="false">
+                        <i class="bi bi-building-fill me-2"></i>Empresa
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="instructor-tab" data-bs-toggle="tab" data-bs-target="#instructor-tab-pane" type="button" role="tab" aria-controls="instructor-tab-pane" aria-selected="false">
+                        <i class="bi bi-person-video3 me-2"></i>Instructor
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Contenido de las Pestañas -->
+            <div class="tab-content" id="manualTabContent">
+
+                <!-- Pestaña General -->
+                <div class="tab-pane fade show active" id="general-tab-pane" role="tabpanel" aria-labelledby="general-tab" tabindex="0">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4 p-md-5">
+                            <h2 class="card-title h4 fw-bold border-bottom pb-2 mb-3"><i class="bi bi-book-half me-2"></i>1. Introducción a OASIS</h2>
+                            <p>¡Bienvenido a OASIS! Esta es una guía unificada para ayudarte a navegar y utilizar eficazmente la plataforma según tu rol. OASIS es el Sistema de Gestión de Proyectos del SENA, diseñado para conectar el talento de nuestros aprendices con las necesidades del sector productivo.</p>
+                            <p>Selecciona la pestaña correspondiente a tu rol (Aprendiz, Empresa o Instructor) para ver una guía detallada de las funcionalidades disponibles para ti.</p>
+                            
+                            <h3 class="h5 fw-semibold mt-5">Funciones Comunes para Todos los Roles</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><i class="bi bi-box-arrow-in-right text-primary me-2"></i><strong>Inicio de Sesión:</strong> Accede con tu usuario y contraseña. Serás redirigido automáticamente a tu panel de control (Dashboard) personalizado.</li>
+                                <li class="list-group-item"><i class="bi bi-person-fill-gear text-info me-2"></i><strong>Gestión de Perfil:</strong> Todos los usuarios pueden y deben mantener su perfil actualizado. Un perfil completo mejora la interacción y las oportunidades dentro de la plataforma.</li>
+                                <li class="list-group-item"><i class="bi bi-headset text-success me-2"></i><strong>Contacto y Soporte:</strong> Si encuentras algún problema o tienes una sugerencia, puedes usar la sección de "Contactar Soporte" para comunicarte con el equipo de administración.</li>
+                                <li class="list-group-item"><i class="bi bi-box-arrow-right text-danger me-2"></i><strong>Cerrar Sesión:</strong> Por seguridad, recuerda siempre cerrar tu sesión al terminar de usar la plataforma.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña Aprendiz -->
+                <div class="tab-pane fade" id="aprendiz-tab-pane" role="tabpanel" aria-labelledby="aprendiz-tab" tabindex="0">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4 p-md-5">
+                            <h2 class="card-title h4 fw-bold border-bottom pb-2 mb-3"><i class="bi bi-mortarboard-fill me-2"></i>Guía para el Aprendiz</h2>
+                            <p>Como aprendiz, OASIS es tu puerta de entrada a la experiencia profesional. Aquí puedes encontrar y participar en proyectos reales que complementarán tu formación.</p>
+
+                            <h3 class="h5 fw-semibold mt-4">2.1. Panel de Control (Dashboard)</h3>
+                            <p>Tu dashboard te muestra un resumen de tu actividad:</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Proyectos Activos:</strong> El número de proyectos en los que estás participando actualmente.</li>
+                                <li class="list-group-item"><strong>Tus Proyectos Asignados:</strong> Una lista de los proyectos en los que has sido aceptado. Haz clic en "Ver" para acceder a los detalles.</li>
+                                <li class="list-group-item"><strong>Acciones Rápidas:</strong> Enlaces para buscar nuevos proyectos, editar tu perfil y contactar a soporte.</li>
+                            </ul>
+
+                            <h3 class="h5 fw-semibold mt-5">2.2. Flujo de Trabajo del Aprendiz</h3>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item"><strong>Completa tu Perfil:</strong> Un perfil detallado con tus habilidades y hoja de vida aumenta tus posibilidades de ser seleccionado. Ve a "Editar Mi Perfil".</li>
+                                <li class="list-group-item"><strong>Busca Oportunidades:</strong> Haz clic en "Ver Proyectos Disponibles" para explorar los retos publicados por las empresas.</li>
+                                <li class="list-group-item"><strong>Postúlate:</strong> Cuando encuentres un proyecto que te interese, lee los requisitos y haz clic en el botón para postularte.</li>
+                                <li class="list-group-item"><strong>Espera la Aprobación:</strong> La empresa revisará tu perfil y decidirá si aprueba tu postulación. Recibirás una notificación con el resultado.</li>
+                                <li class="list-group-item"><strong>Participa y Aprende:</strong> Una vez aceptado, colabora con la empresa y tu equipo para llevar el proyecto al éxito.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña Empresa -->
+                <div class="tab-pane fade" id="empresa-tab-pane" role="tabpanel" aria-labelledby="empresa-tab" tabindex="0">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4 p-md-5">
+                            <h2 class="card-title h4 fw-bold border-bottom pb-2 mb-3"><i class="bi bi-building-fill me-2"></i>Guía para la Empresa</h2>
+                            <p>¡Bienvenido a OASIS! Esta guía está diseñada para ayudarte a gestionar tus proyectos formativos, revisar postulaciones y mantener actualizado el perfil de tu compañía.</p>
+
+                            <h3 class="h5 fw-semibold mt-4">3.1. Panel de Control (Dashboard)</h3>
+                            <p>Tu dashboard es tu centro de operaciones. Aquí puedes ver:</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Métricas Clave:</strong> Un resumen de tus proyectos publicados, activos, solicitudes pendientes y el porcentaje de perfil completado.</li>
+                                <li class="list-group-item"><strong>Tus Proyectos Publicados:</strong> Una tabla con todos tus proyectos, su estado (Pendiente, Aprobado, Rechazado) y el número de aprendices asignados.</li>
+                                <li class="list-group-item"><strong>Acciones por Proyecto:</strong>
+                                    <ul>
+                                        <li><strong>Ver Postulaciones:</strong> Revisa los perfiles de los aprendices que han aplicado.</li>
+                                        <li><strong>Editar:</strong> Modifica los detalles de tu proyecto.</li>
+                                        <li><strong>Eliminar:</strong> Borra un proyecto.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <h3 class="h5 fw-semibold mt-5">3.2. Flujo de Trabajo de la Empresa</h3>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item"><strong>Publica un Proyecto:</strong> Haz clic en "Crear Nuevo Proyecto", completa el formulario con todos los detalles del reto y envíalo para revisión del SENA.</li>
+                                <li class="list-group-item"><strong>Espera la Aprobación:</strong> Tu proyecto aparecerá como "Pendiente" hasta que un administrador lo apruebe.</li>
+                                <li class="list-group-item"><strong>Revisa Postulaciones:</strong> Una vez aprobado, los aprendices podrán postularse. Ve a "Ver Postulaciones" para revisar a los candidatos.</li>
+                                <li class="list-group-item"><strong>Selecciona a tu Equipo:</strong> Analiza los perfiles y haz clic en "Aprobar" para los candidatos que se ajusten a tus necesidades.</li>
+                                <li class="list-group-item"><strong>Gestiona el Proyecto:</strong> Colabora con los aprendices e instructores asignados para desarrollar el proyecto.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pestaña Instructor -->
+                <div class="tab-pane fade" id="instructor-tab-pane" role="tabpanel" aria-labelledby="instructor-tab" tabindex="0">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4 p-md-5">
+                            <h2 class="card-title h4 fw-bold border-bottom pb-2 mb-3"><i class="bi bi-person-video3 me-2"></i>Guía para el Instructor</h2>
+                            <p>Como instructor, tu rol es fundamental para guiar y supervisar a los aprendices en sus proyectos, asegurando la calidad y el cumplimiento de los objetivos formativos.</p>
+
+                            <h3 class="h5 fw-semibold mt-4">4.1. Panel de Control (Dashboard)</h3>
+                            <p>Tu dashboard te permite supervisar la actividad de tus equipos:</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Métricas Clave:</strong> Un resumen de tus proyectos asignados, revisiones pendientes y el total de aprendices que supervisas.</li>
+                                <li class="list-group-item"><strong>Seguimiento de Proyectos:</strong> Una lista de los proyectos bajo tu supervisión, con una barra de progreso que indica su avance.</li>
+                                <li class="list-group-item"><strong>Acciones Rápidas:</strong> Enlaces para ver todos tus proyectos, editar tu perfil y contactar a soporte.</li>
+                            </ul>
+
+                            <h3 class="h5 fw-semibold mt-5">4.2. Flujo de Trabajo del Instructor</h3>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item"><strong>Completa tu Perfil:</strong> Asegúrate de que tu perfil esté actualizado con tu especialidad y experiencia.</li>
+                                <li class="list-group-item"><strong>Busca Proyectos para Guiar:</strong> Explora los proyectos aprobados en la plataforma y postúlate como instructor guía en aquellos que se alineen con tu área de conocimiento.</li>
+                                <li class="list-group-item"><strong>Supervisa a tus Equipos:</strong> Una vez asignado a un proyecto, accede a la vista de "Seguimiento" para monitorear el avance, comunicarte con los aprendices y la empresa.</li>
+                                <li class="list-group-item"><strong>Registra el Avance:</strong> Utiliza las herramientas de seguimiento para registrar el progreso y las evaluaciones correspondientes a cada fase del proyecto.</li>
+                                <li class="list-group-item"><strong>Brinda Soporte:</strong> Sé el punto de apoyo académico y técnico para los aprendices, resolviendo dudas y asegurando que el proyecto cumpla con los estándares del SENA.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Pie de página del manual -->
+            <div class="text-center mt-5">
+                <p class="text-muted">Esperamos que este manual te sea de gran utilidad para sacar el máximo provecho de la plataforma OASIS.</p>
+                <p class="text-muted small">© {% now "Y" %} OASIS - Conectando Talento.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .nav-pills .nav-link {
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: var(--sena-gris);
+        background-color: var(--sena-gris-claro);
+        border: 1px solid #dee2e6;
+    }
+
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+        color: #fff;
+        background: linear-gradient(135deg, var(--sena-verde) 0%, var(--sena-verde-oscuro) 100%);
+        border-color: var(--sena-verde);
+        box-shadow: 0 4px 12px rgba(57, 169, 0, 0.3);
+    }
+
+    .nav-pills .nav-link:not(.active):hover {
+        background-color: #e9ecef;
+        color: var(--sena-verde-oscuro);
+    }
+
+    .tab-content {
+        border: 1px solid #dee2e6;
+        border-top: none;
+        border-radius: 0 0 0.5rem 0.5rem;
+        background-color: #fff;
+    }
+
+    .tab-pane {
+        animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+{% endblock %}

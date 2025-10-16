@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Aprendiz - {{ aprendiz.user.username }}{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <!-- Bloque de Bienvenida Estilizado (Jumbotron) -->
+        <div class="welcome-jumbotron">
+            <h1 class="display-5 fw-bold mb-1">¡Bienvenido de vuelta {{ aprendiz.user.username }}!</h1>
+            <p class="lead">
+                Tu centro de operaciones para gestionar tus proyectos y avanzar en tu formación.
+            </p>
+            <hr class="my-3 bg-light opacity-50">
+            <p class="mb-0">
+                <i class="bi bi-calendar-event me-2"></i> Hoy es un gran día para aprender y crear.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Tarjetas de Estadísticas Clave -->
+<div class="row g-4 mb-5">
+    
+    <!-- Tarjeta 1: Proyectos Activos -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-folder-check fs-3 text-success me-3"></i>
+                <div>
+                    <p class="text-uppercase mb-0 text-muted">Proyectos Activos</p>
+                    <h3 class="fw-bold mb-0">{% if proyectos %}{{ proyectos|length }}{% else %}0{% endif %}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta 2: Tarea Próxima (Placeholder) -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-calendar-x fs-3 text-warning me-3"></i>
+                <div>
+                    <p class="text-uppercase mb-0 text-muted">Próximo Vencimiento</p>
+                    <h3 class="fw-bold mb-0">15/05/2025</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta 3: Empresas Colaboradoras (Placeholder) -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-building fs-3 text-info me-3"></i>
+                <div>
+                    <p class="text-uppercase mb-0 text-muted">Empresas Asignadas</p>
+                    <h3 class="fw-bold mb-0">2</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tarjeta 4: Progreso General (Placeholder) -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-graph-up-arrow fs-3 text-primary me-3"></i>
+                <div>
+                    <p class="text-uppercase mb-0 text-muted">Progreso General</p>
+                    <h3 class="fw-bold mb-0">55%</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row g-4">
+    <!-- Columna Principal: Lista de Proyectos -->
+    <div class="col-lg-8">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-list-task me-2"></i>Tus Proyectos Asignados</h5>
+            </div>
+            <div class="card-body p-0">
+                {% if proyectos %}
+                    <ul class="list-group list-group-flush">
+                        {% for proyecto in proyectos %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center py-3 list-group-item-action">
+                        <div>
+                            <h6 class="mb-1">{{ proyecto.nombre }}</h6>
+                            <small class="text-muted">ID: {{ proyecto.id }}</small>
+                        </div>
+
+                        {% if proyecto.postulacion_set.all|length > 0 %}
+                            <span class="badge rounded-pill bg-info text-dark me-3">Postulado</span>
+                        {% else %}
+                            <span class="badge rounded-pill bg-success text-white me-3">Asignado</span>
+                        {% endif %}
+
+                        <a href="{% url 'aprendices:detalle_proyecto' proyecto.id %}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye"></i> Ver
+                        </a>
+                    </li>
+                    {% endfor %}
+
+                    </ul>
+                {% else %}
+                    <div class="p-4 text-center">
+                        <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                        <p class="text-muted mt-3 mb-0">¡Estás al día! No tienes proyectos pendientes.</p>
+                        <a href="{% url 'aprendices:ver_proyectos' %}" class="btn btn-success btn-sm mt-3">Explorar Oportunidades</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna Lateral: Acciones Rápidas y Perfil -->
+    <div class="col-lg-4">
+        <div class="card shadow-lg border-0 quick-links-card">
+            <div class="card-header bg-secondary text-dark">
+                <h5 class="mb-0"><i class="bi bi-lightning-charge me-2"></i>Acciones Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'aprendices:ver_proyectos' %}" class="btn btn-success btn-lg shadow-sm">
+                    <i class="bi bi-search me-2"></i> Ver Proyectos Disponibles
+                </a>
+                <a href="{% url 'aprendices:perfil_aprendiz' %}" class="btn btn-outline-dark btn-lg shadow-sm">
+                    <i class="bi bi-person-fill me-2"></i> Editar Mi Perfil
+                </a>
+                <a href="{% url 'auth:contacto' %}" class="btn btn-outline-info btn-lg shadow-sm">
+                    <i class="bi bi-chat-dots me-2"></i> Soporte y Ayuda
+                </a>
+            </div>
+        </div>
+        
+        <!-- Tarjeta de Perfil Rápido -->
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-body text-center">
+                <i class="bi bi-person-circle fs-1 text-primary mb-3"></i>
+                <h5 class="card-title">{{ aprendiz.user.username }}</h5>
+                <p class="card-text text-muted small">
+                    <i class="bi bi-tag me-1"></i> Rol: Aprendiz
+                </p>
+                <button class="btn btn-sm btn-link text-primary mt-2" data-bs-toggle="modal" data-bs-target="#profileModal">
+                    Ver Detalles
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Detalles de Perfil -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="profileModalLabel">Perfil de {{ aprendiz.usuario.username }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Email:</strong> {{ aprendiz.usuario.email }}</p>
+                <p><strong>Documento:</strong> {{ aprendiz.documento }}</p>
+                <p><strong>Ficha:</strong> {{ aprendiz.ficha }}</p>
+                <p><strong>Programa:</strong> {{ aprendiz.programa.nombre }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <a href="{% url 'aprendices:perfil_aprendiz' %}" class="btn btn-primary">Ir a Editar Perfil</a>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Variables de Color (Ejemplo basado en un esquema SENA/OASIS) */
+:root {
+    --color-primary: #126b38; /* Verde SENA */
+    --color-secondary: #ffc107; /* Amarillo/Dorado (Para acentos) */
+    --color-dark: #212529;
+    --color-light: #f8f9fa;
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--color-light); /* Fondo suave */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: var(--color-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.navbar-brand {
+    font-weight: 700;
+}
+.nav-link.active {
+    font-weight: 600;
+    color: var(--color-secondary) !important;
+}
+
+/* Main Content Styling */
+main.container {
+    flex: 1; /* Permite que el contenido principal ocupe el espacio restante */
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+
+/* Footer Styling */
+.container-footer {
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    font-size: 0.9rem;
+}
+.container-footer a {
+    color: var(--color-light);
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+.container-footer a:hover {
+    color: var(--color-secondary);
+    opacity: 1;
+}
+
+/* Dashboard Specific Styles */
+.stat-card {
+    border: none;
+    border-left: 5px solid var(--color-primary);
+    transition: transform 0.3s;
+}
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-jumbotron {
+    background: linear-gradient(90deg, #126b38da, #126b3855), url('https://placehold.co/1200x200/126b38/ffffff?text=OASIS'); /* Placeholder/Fondo */
+    background-size: cover;
+    color: white;
+    padding: 40px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.quick-links-card .btn {
+    width: 100%;
+    margin-bottom: 10px;
+}
+</style>
+
+{% endblock %}

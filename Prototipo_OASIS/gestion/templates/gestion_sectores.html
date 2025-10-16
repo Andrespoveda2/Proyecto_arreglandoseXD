@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{# Si usas widget_tweaks, descomenta la siguiente línea #}
+{% load widget_tweaks %}
+
+{% block title %}Gestión de Sectores Productivos{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    
+    <h1 class="text-info mb-4 border-bottom pb-2">
+        <i class="fas fa-industry me-2"></i> Gestión de Sectores Productivos
+    </h1>
+    
+    <div class="card shadow-lg mb-5 border-info">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Registrar Nuevo Sector</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" novalidate class="row g-3">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger col-12" role="alert">
+                        <strong>Errores Generales:</strong>
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                <div class="col-md-6">
+                    <label for="{{ form.nombre.id_for_label }}" class="form-label fw-bold">Nombre del Sector</label>
+                    {% render_field form.nombre class="form-control" placeholder="Ej: Tecnología, Energía, Alimentos" %}
+                    {% for error in form.nombre.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ form.descripcion.id_for_label }}" class="form-label fw-bold">Descripción (Opcional)</label>
+                    {% render_field form.descripcion class="form-control" placeholder="Detalles clave del sector" %}
+                    {% for error in form.descripcion.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="col-12 mt-4 text-end">
+                    <button type="submit" class="btn btn-info text-white btn-lg">
+                        <i class="fas fa-save me-1"></i> Agregar Sector
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h2 class="mb-3"><i class="fas fa-list-alt me-2"></i> Lista de Sectores Existentes</h2>
+    
+    {% if sectores %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" style="width: 30%;">Nombre</th>
+                        <th scope="col" style="width: 50%;">Descripción Breve</th>
+                        <th scope="col" class="text-center" style="width: 20%; min-width: 120px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sector in sectores %}
+                    <tr>
+                        <td class="fw-bold">{{ sector.nombre }}</td>
+                        <td>{{ sector.descripcion|truncatechars:100|default:"Sin descripción." }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'gestion:editar_sector' sector.id %}" 
+                               class="btn btn-sm btn-warning text-dark me-1" 
+                               title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a> 
+                            <a href="{% url 'gestion:eliminar_sector' sector.id %}" 
+                               class="btn btn-sm btn-danger" 
+                               title="Eliminar"
+                               onclick="return confirm('¿Eliminar el sector: {{ sector.nombre }}?');">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <i class="fas fa-info-circle me-2"></i> No hay sectores productivos registrados aún.
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

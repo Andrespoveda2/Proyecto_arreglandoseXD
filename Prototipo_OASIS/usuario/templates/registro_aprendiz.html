@@ -1,0 +1,679 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro de Aprendiz - OASIS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9 col-sm-11">
+            <!-- Tarjeta Principal de Registro -->
+            <div class="card shadow-lg border-0 registro-card">
+                <!-- Header con Diseño Mejorado -->
+                <div class="card-header bg-gradient-sena text-white text-center py-5 position-relative overflow-hidden">
+                    <div class="header-decoration-1"></div>
+                    <div class="header-decoration-2"></div>
+                    
+                    <div class="header-content position-relative">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-person-workspace display-3"></i>
+                        </div>
+                        <h2 class="fw-bold mb-2">Registro de Aprendiz</h2>
+                        <p class="mb-0 opacity-90">
+                            <i class="bi bi-star-fill me-1"></i>
+                            Únete a OASIS y potencia tus habilidades profesionales
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <!-- Alerta de Bienvenida -->
+                    <div class="welcome-banner mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="welcome-icon">
+                                <i class="bi bi-lightbulb-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">¡Bienvenido al Sistema OASIS!</h6>
+                                <p class="small text-muted mb-0">
+                                    Completa el formulario para crear tu cuenta y comenzar a participar en proyectos empresariales.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Manejo de Errores Generales -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-modern d-flex align-items-start mb-4" role="alert">
+                            <div class="alert-icon">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="alert-heading mb-2">Se encontraron algunos errores:</h6>
+                                <ul class="mb-0 ps-3">
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Formulario -->
+                    <form method="post" novalidate class="registro-form">
+                        {% csrf_token %}
+
+                        <!-- Indicador de Progreso -->
+                        <div class="progress-indicator mb-4">
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" 
+                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted d-block mt-2 text-center">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Completa todos los campos requeridos (*)
+                            </small>
+                        </div>
+
+                        <!-- Campos del Formulario con Diseño Mejorado -->
+                        {% for field in form %}
+                            <div class="mb-4 field-group">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-semibold d-flex align-items-center">
+                                    <!-- Iconos según el tipo de campo -->
+                                    {% if 'username' in field.name %}
+                                        <i class="bi bi-person-badge me-2 text-primary"></i>
+                                    {% elif 'email' in field.name %}
+                                        <i class="bi bi-envelope me-2 text-info"></i>
+                                    {% elif 'password' in field.name %}
+                                        <i class="bi bi-shield-lock me-2 text-warning"></i>
+                                    {% elif 'first_name' in field.name or 'last_name' in field.name %}
+                                        <i class="bi bi-person-fill me-2 text-success"></i>
+                                    {% elif 'programa' in field.name %}
+                                        <i class="bi bi-book me-2 text-danger"></i>
+                                    {% elif 'ficha' in field.name %}
+                                        <i class="bi bi-credit-card me-2 text-secondary"></i>
+                                    {% elif 'telefono' in field.name %}
+                                        <i class="bi bi-telephone me-2 text-info"></i>
+                                    {% else %}
+                                        <i class="bi bi-pencil me-2 text-muted"></i>
+                                    {% endif %}
+                                    
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="badge bg-danger ms-2 badge-required">Requerido</span>
+                                    {% endif %}
+                                </label>
+
+                                <div class="input-wrapper">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="validation-icon error">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                {% if field.help_text %}
+                                    <div class="form-text text-muted small mt-2">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        {{ field.help_text|safe }}
+                                    </div>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <div class="invalid-feedback d-block mt-2">
+                                        {% for error in field.errors %}
+                                            <div class="error-item">
+                                                <i class="bi bi-exclamation-circle me-1"></i>{{ error }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        <!-- Términos y Condiciones -->
+                        <div class="terms-box mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="acceptTerms" required>
+                                <label class="form-check-label small" for="acceptTerms">
+                                    Acepto los <a href="{% url 'home:tyc' %}" class="text-success fw-semibold">términos y condiciones</a> 
+                                    y la <a href="{% url 'home:Policy_Data_Protection' %}"  class="text-success fw-semibold">política de privacidad</a> de OASIS
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Registro -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg btn-registro fw-bold py-3">
+                                <span class="btn-content">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    Crear Mi Cuenta de Aprendiz
+                                </span>
+                                <span class="btn-loader">
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    Registrando...
+                                </span>
+                            </button>
+                        </div>
+
+                        <!-- Información de Seguridad -->
+                        <div class="security-info mt-4">
+                            <div class="d-flex align-items-center justify-content-center gap-3 flex-wrap">
+                                <small class="text-muted">
+                                    <i class="bi bi-shield-check text-success me-1"></i>
+                                    Datos protegidos
+                                </small>
+                                <small class="text-muted">
+                                    <i class="bi bi-lock-fill text-success me-1"></i>
+                                    Conexión segura
+                                </small>
+                                <small class="text-muted">
+                                    <i class="bi bi-patch-check text-success me-1"></i>
+                                    Verificado por SENA
+                                </small>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Separador -->
+                    <div class="divider-custom my-4">
+                        <span class="divider-text">o</span>
+                    </div>
+
+                    <!-- Enlaces Adicionales -->
+                    <div class="text-center">
+                        <p class="mb-3">
+                            <i class="bi bi-person-check-fill text-success me-2"></i>
+                            ¿Ya tienes una cuenta? 
+                            <a href="{% url 'auth:login' %}" class="fw-bold text-success text-decoration-none link-hover">
+                                Inicia sesión aquí
+                                <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </p>
+                        <p class="mb-0 small text-muted">
+                            ¿Necesitas ayuda? 
+                            <a href="{% url 'auth:contacto' %}" class="text-muted text-decoration-none">
+                                <i class="bi bi-question-circle me-1"></i>
+                                Centro de soporte
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer de la Tarjeta -->
+                <div class="card-footer bg-light text-center py-3 border-0">
+                    <small class="text-muted">
+                        <i class="bi bi-shield-fill-check me-1"></i>
+                        Registro seguro y verificado por el SENA
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos Personalizados para Registro -->
+<style>
+.registro-card {
+    animation: fadeInUp 0.6s ease-out;
+    overflow: hidden;
+}
+
+.bg-gradient-sena {
+    background: linear-gradient(135deg, #39A900 0%, #2D7A00 100%);
+    position: relative;
+}
+
+.header-decoration-1,
+.header-decoration-2 {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.header-decoration-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    right: -100px;
+    animation: float 8s ease-in-out infinite;
+}
+
+.header-decoration-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -100px;
+    left: -50px;
+    animation: float 6s ease-in-out infinite reverse;
+}
+
+.header-content {
+    z-index: 1;
+}
+
+.icon-wrapper {
+    display: inline-block;
+    animation: bounceIn 1s ease-out;
+}
+
+.icon-wrapper i {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left: 4px solid #39A900;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    animation: slideInLeft 0.5s ease-out;
+}
+
+.welcome-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #39A900 0%, #2D7A00 100%);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-right: 1rem;
+    animation: rotate 3s ease-in-out infinite;
+}
+
+.alert-modern {
+    border-radius: 0.75rem;
+    border: none;
+    border-left: 4px solid #dc2626;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    animation: shakeX 0.5s ease-out;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.progress-indicator .progress {
+    border-radius: 1rem;
+    background: #e5e7eb;
+    overflow: hidden;
+}
+
+.progress-indicator .progress-bar {
+    animation: progressFill 2s ease-out forwards;
+    background: linear-gradient(90deg, #39A900 0%, #4BC800 100%);
+}
+
+@keyframes progressFill {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+.field-group {
+    position: relative;
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.field-group:nth-child(1) { animation-delay: 0.1s; }
+.field-group:nth-child(2) { animation-delay: 0.15s; }
+.field-group:nth-child(3) { animation-delay: 0.2s; }
+.field-group:nth-child(4) { animation-delay: 0.25s; }
+.field-group:nth-child(5) { animation-delay: 0.3s; }
+.field-group:nth-child(6) { animation-delay: 0.35s; }
+
+.field-group label i {
+    font-size: 1.1rem;
+}
+
+.badge-required {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    font-weight: 600;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper input,
+.input-wrapper select,
+.input-wrapper textarea {
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.input-wrapper input:focus,
+.input-wrapper select:focus,
+.input-wrapper textarea:focus {
+    border-color: #39A900;
+    box-shadow: 0 0 0 4px rgba(57, 169, 0, 0.1);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.input-wrapper .is-invalid {
+    border-color: #dc2626 !important;
+}
+
+.validation-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+}
+
+.validation-icon.error {
+    color: #dc2626;
+    animation: shake 0.5s ease-out;
+}
+
+.invalid-feedback {
+    background: #fef2f2;
+    border-left: 3px solid #dc2626;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.error-item {
+    display: flex;
+    align-items: center;
+    color: #991b1b;
+    font-weight: 500;
+}
+
+.terms-box {
+    background: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.terms-box:hover {
+    background: white;
+    border-color: #39A900;
+}
+
+.btn-registro {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #39A900 0%, #2D7A00 100%);
+    border: none;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(57, 169, 0, 0.3);
+}
+
+.btn-registro::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-registro:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+.btn-registro:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(57, 169, 0, 0.4);
+    background: linear-gradient(135deg, #2D7A00 0%, #1F5500 100%);
+}
+
+.btn-registro:active {
+    transform: translateY(-1px);
+}
+
+.btn-content {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+}
+
+.btn-loader {
+    display: none;
+}
+
+.btn-registro.loading .btn-content {
+    display: none;
+}
+
+.btn-registro.loading .btn-loader {
+    display: inline-block;
+}
+
+.security-info {
+    padding: 1rem;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-radius: 0.75rem;
+}
+
+.divider-custom {
+    position: relative;
+    text-align: center;
+}
+
+.divider-custom::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #d1d5db, transparent);
+}
+
+.divider-text {
+    position: relative;
+    background: white;
+    padding: 0 1rem;
+    color: #9ca3af;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+}
+
+.link-hover {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.link-hover::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #39A900;
+    transition: width 0.3s ease;
+}
+
+.link-hover:hover::after {
+    width: 100%;
+}
+
+.link-hover:hover {
+    color: #2D7A00 !important;
+    transform: translateX(3px);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes shakeX {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-50%) rotate(-5deg);
+    }
+    75% {
+        transform: translateY(-50%) rotate(5deg);
+    }
+}
+
+@keyframes rotate {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(5deg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem !important;
+    }
+
+    .welcome-banner {
+        padding: 1rem;
+    }
+
+    .welcome-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+
+    .field-group label i {
+        font-size: 1rem;
+    }
+
+    .btn-registro {
+        padding: 0.875rem 1rem !important;
+    }
+
+    .security-info {
+        padding: 0.75rem;
+    }
+
+    .security-info small {
+        font-size: 0.75rem;
+    }
+}
+</style>
+
+<!-- Script para mejorar la interacción -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación del botón de registro
+    const form = document.querySelector('.registro-form');
+    const submitBtn = document.querySelector('.btn-registro');
+    
+    if (form && submitBtn) {
+        form.addEventListener('submit', function(e) {
+            submitBtn.classList.add('loading');
+        });
+    }
+
+    // Validación en tiempo real
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.value.trim() !== '') {
+                this.style.borderColor = '#10B981';
+            }
+        });
+    });
+
+    // Actualizar barra de progreso
+    const totalFields = inputs.length;
+    let filledFields = 0;
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            filledFields = Array.from(inputs).filter(i => i.value.trim() !== '').length;
+            const progress = (filledFields / totalFields) * 100;
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+                progressBar.setAttribute('aria-valuenow', progress);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,385 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Perfil de {{ aprendiz.user.username }} {% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Tarjeta Principal del Perfil -->
+            <div class="card shadow-lg border-0 overflow-hidden profile-card">
+                <!-- Header con Degradado -->
+                <div class="card-header bg-gradient-sena text-white text-center py-4 position-relative">
+                    <div class="header-decoration"></div>
+                    <h4 class="mb-0 fw-bold">
+                        <i class="bi bi-person-circle me-2"></i>
+                        Mi Perfil en OASIS
+                    </h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Sección de Avatar y Nombre -->
+                    <div class="text-center mb-4 profile-header">
+                        <div class="avatar-wrapper mb-3">
+                            {% if aprendiz.foto_perfil %}
+                                <img src="{{ aprendiz.foto_perfil.url }}" 
+                                     alt="Avatar de {{ aprendiz.user.username }}" 
+                                     class="profile-avatar rounded-circle border border-4 border-success shadow-sm">
+                            {% else %}
+                                <div class="profile-avatar-placeholder d-inline-flex align-items-center justify-content-center 
+                                        bg-gradient-light text-success rounded-circle border border-4 border-success shadow-sm">
+                                    <i class="bi bi-person-fill" style="font-size: 4rem;"></i>
+                                </div>
+                            {% endif %}
+                            <div class="status-indicator online"></div>
+                        </div>
+
+                        <h2 class="mb-1 fw-bold text-dark">
+                            {{ aprendiz.user.get_full_name|default:"Aprendiz Registrado" }}
+                        </h2>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-at"></i>{{ aprendiz.user.username }}
+                        </p>
+                        <span class="badge bg-success mt-2 px-3 py-2">
+                            <i class="bi bi-shield-check me-1"></i>Aprendiz SENA
+                        </span>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Información de Contacto -->
+                    <div class="info-section mb-4">
+                        <h5 class="section-title text-primary mb-3">
+                            <i class="bi bi-envelope-fill me-2"></i>
+                            Información de Contacto
+                        </h5>
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-icon bg-primary bg-opacity-10">
+                                    <i class="bi bi-envelope-fill text-primary"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Correo Electrónico</small>
+                                    <strong class="text-dark">{{ aprendiz.user.email }}</strong>
+                                </div>
+                            </div>
+
+                            {% if aprendiz.telefono %}
+                            <div class="info-card">
+                                <div class="info-icon bg-success bg-opacity-10">
+                                    <i class="bi bi-telephone-fill text-success"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Teléfono</small>
+                                    <strong class="text-dark">{{ aprendiz.telefono }}</strong>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Datos del Programa -->
+                    <div class="info-section mb-4">
+                        <h5 class="section-title text-success mb-3">
+                            <i class="bi bi-mortarboard-fill me-2"></i>
+                            Datos del Programa
+                        </h5>
+                        <div class="info-grid">
+                            <div class="info-card program-info">
+                                <div class="info-icon bg-success bg-opacity-10">
+                                    <i class="bi bi-book-fill text-success"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Programa de Formación</small>
+                                    <strong class="text-dark">{{ aprendiz.programa }}</strong>
+                                </div>
+                            </div>
+
+                            <div class="info-card">
+                                <div class="info-icon bg-warning bg-opacity-10">
+                                    <i class="bi bi-credit-card-fill text-warning"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Número de Ficha</small>
+                                    <strong class="text-dark">{{ aprendiz.ficha }}</strong>
+                                </div>
+                            </div>
+
+                            {% if aprendiz.fecha_ingreso %}
+                            <div class="info-card">
+                                <div class="info-icon bg-info bg-opacity-10">
+                                    <i class="bi bi-calendar-check-fill text-info"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Fecha de Ingreso</small>
+                                    <strong class="text-dark">{{ aprendiz.fecha_ingreso|date:"d M Y" }}</strong>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Botones de Acción -->
+                    <div class="action-buttons d-grid gap-3">
+                        <a href="{% url 'aprendices:editar_perfil' %}" class="btn btn-primary btn-lg shadow-sm">
+                            <i class="bi bi-pencil-square me-2"></i>
+                            Editar Mi Perfil
+                        </a>
+                        
+                        
+                        <a href="{% url 'aprendices:dashboard_aprendiz' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="bi bi-arrow-left-circle me-2"></i>
+                            Volver al Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos Adicionales Personalizados -->
+<style>
+/* Estilos específicos para el perfil */
+.profile-card {
+    animation: fadeInUp 0.6s ease-out;
+    transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+.bg-gradient-sena {
+    background: linear-gradient(135deg, var(--sena-green, #39A900) 0%, var(--sena-green-dark, #2D7A00) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-decoration {
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(57, 169, 0, 0.3) !important;
+}
+
+.profile-avatar-placeholder {
+    width: 150px;
+    height: 150px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-avatar-placeholder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(57, 169, 0, 0.3) !important;
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.status-indicator.online {
+    background: #10B981;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.bg-gradient-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.section-title {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sena-green, #39A900), transparent);
+    border-radius: 2px;
+}
+
+.info-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.info-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(57, 169, 0, 0.05), transparent);
+    transition: left 0.5s ease;
+}
+
+.info-card:hover::before {
+    left: 100%;
+}
+
+.info-card:hover {
+    border-color: var(--sena-green, #39A900);
+    transform: translateX(5px);
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.info-card.program-info {
+    grid-column: 1 / -1;
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-content small {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.info-content strong {
+    font-size: 1rem;
+    word-break: break-word;
+}
+
+.action-buttons .btn {
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.action-buttons .btn i {
+    transition: transform 0.3s ease;
+}
+
+.action-buttons .btn:hover i {
+    transform: scale(1.2);
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-avatar,
+    .profile-avatar-placeholder {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-avatar-placeholder i {
+        font-size: 3rem !important;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card.program-info {
+        grid-column: 1;
+    }
+}
+</style>
+{% endblock %}

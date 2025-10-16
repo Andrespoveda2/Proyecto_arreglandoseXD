@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Detalle del Proyecto{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 700px;">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="mb-3">{{ proyecto.nombre }}</h3>
+            <p><strong>Descripción:</strong></p>
+            <p>{{ proyecto.descripcion }}</p>
+
+            <p class="mt-3"><strong>Área:</strong> {{ proyecto.get_area_display }}</p>
+            <p><strong>Duración:</strong> {{ proyecto.duracion_semanas }} semanas</p>
+            <p><strong>Estado:</strong> {{ proyecto.get_estado_display }}</p>
+
+            {% if proyecto.instructor %}
+                <p class="text-success"><strong>Instructor guía actual:</strong> {{ proyecto.instructor.usuario.get_full_name }}</p>
+            {% else %}
+                <p class="text-muted"><em>Este proyecto aún no tiene un instructor guía asignado.</em></p>
+            {% endif %}
+
+            <hr>
+
+            {% if ya_postulado %}
+                <span class="badge bg-success">Ya te postulaste como instructor guía</span>
+            {% else %}
+                <form method="POST" action="{% url 'instructores:postular_proyecto_instructor' pk=proyecto.id %}" class="mt-3">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary w-100">
+                        Postularme como Instructor Guía
+                    </button>
+                </form>
+            {% endif %}
+
+            <div class="mt-4 text-center">
+               <a href="{% url 'instructores:proyectos_disponibles' %}" class="btn btn-secondary">Volver a Proyectos</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

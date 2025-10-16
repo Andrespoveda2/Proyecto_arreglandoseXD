@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Perfil Corporativo: {{ form.instance.razon_social }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Tarjeta Principal del Formulario de Edición -->
+            <div class="card shadow-xl border-0 overflow-hidden profile-card">
+                <!-- Header con Degradado Corporativo (Edición) -->
+                <div class="card-header bg-gradient-corporativo text-white text-center py-4 position-relative">
+                    <div class="header-decoration"></div>
+                    <h4 class="mb-0 fw-bold">
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Editar Perfil de Empresa
+                    </h4>
+                    <p class="mb-0 text-white-50">Actualiza tus datos para mantener la información de tu empresa al día.</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <!-- Formulario de Edición -->
+                    <form method="POST" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Alertas de Errores Globales del Formulario -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>¡Error al Guardar!</strong>
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <h5 class="section-title text-primary mb-4 pb-2">
+                            <i class="bi bi-building me-2"></i>
+                            Información Básica de la Empresa
+                        </h5>
+
+                        <!-- Campo Razón Social (Nombre) -->
+                        <div class="mb-3">
+                            <label for="{{ form.razon_social.id_for_label }}" class="form-label fw-bold">Razón Social</label>
+                            {{ form.razon_social }}
+                            <div class="form-text text-muted">Nombre legal o comercial de la empresa.</div>
+                            {% for error in form.razon_social.errors %}
+                                <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Campo NIT (Normalmente no editable) -->
+                        <div class="mb-3">
+                            <label for="{{ form.nit.id_for_label }}" class="form-label fw-bold">NIT</label>
+                            <!-- El NIT se muestra como no editable para mantener la integridad de la cuenta -->
+                            <input type="text" class="form-control" value="{{ form.instance.nit }}" disabled readonly>
+                            <div class="form-text text-muted">El NIT es el identificador único y no puede ser modificado.</div>
+                        </div>
+
+                        <!-- Subida de Logo y Previsualización -->
+                        <div class="mb-4 d-flex flex-column flex-md-row align-items-center bg-light p-3 rounded-lg border">
+                            <div class="me-md-4 mb-3 mb-md-0 text-center">
+                                <label class="form-label fw-bold d-block">Logo Actual</label>
+                                <div class="avatar-wrapper">
+                                    {% if form.instance.logo %}
+                                        <img src="{{ form.instance.logo.url }}" 
+                                            alt="Logo actual" 
+                                            id="logo-preview"
+                                            class="profile-avatar-edit rounded-circle border border-4 border-info shadow-sm">
+                                    {% else %}
+                                        <div id="logo-preview" 
+                                             class="profile-avatar-placeholder-edit d-inline-flex align-items-center justify-content-center 
+                                                    bg-gradient-light text-info rounded-circle border border-4 border-info shadow-sm">
+                                            <i class="bi bi-briefcase-fill" style="font-size: 3rem;"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="flex-grow-1 w-100">
+                                <label for="{{ form.logo.id_for_label }}" class="form-label fw-bold">Cargar Nuevo Logo</label>
+                                {{ form.logo }}
+                                <div class="form-text text-muted">Sube una imagen cuadrada (máx. 1MB) para usar como logo corporativo.</div>
+                                {% for error in form.logo.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+
+                        <!-- Información de Contacto y Clasificación -->
+                        <h5 class="section-title text-primary mb-4 pb-2">
+                            <i class="bi bi-cone-striped me-2"></i>
+                            Clasificación y Contacto
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <!-- Campo Teléfono -->
+                            <div class="col-md-6">
+                                <label for="{{ form.telefono.id_for_label }}" class="form-label fw-bold"><i class="bi bi-telephone me-1 text-success"></i> Teléfono</label>
+                                {{ form.telefono }}
+                                {% for error in form.telefono.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Campo Sector Productivo -->
+                            <div class="col-md-6">
+                                <label for="{{ form.sector.id_for_label }}" class="form-label fw-bold"><i class="bi bi-tags me-1 text-info"></i> Sector Productivo</label>
+                                {{ form.sector }}
+                                {% for error in form.sector.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Campo Tamaño (Empleados) -->
+                            <div class="col-md-6">
+                                <label for="{{ form.tamano.id_for_label }}" class="form-label fw-bold"><i class="bi bi-people me-1 text-warning"></i> Tamaño (Empleados)</label>
+                                {{ form.tamano }}
+                                {% for error in form.tamano.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Campo Dirección -->
+                            <div class="col-md-6">
+                                <label for="{{ form.direccion.id_for_label }}" class="form-label fw-bold"><i class="bi bi-house-door-fill me-1 text-secondary"></i> Dirección</label>
+                                {{ form.direccion }}
+                                {% for error in form.direccion.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción -->
+                        <div class="action-buttons d-grid gap-3 mt-5">
+                            <button type="submit" class="btn btn-info btn-lg shadow-sm">
+                                <i class="bi bi-save-fill me-2"></i>
+                                Guardar Cambios
+                            </button>
+                            <a href="{% url 'empresas:mi_perfil_empresa' %}" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-x-circle me-2"></i>
+                                Cancelar y Volver
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos Adicionales y Scripts para Previsualización -->
+<style>
+    /* Asegurar que los inputs del formulario usen estilos Bootstrap de form-control */
+    .form-control, .form-select, .form-control-file {
+        border-radius: 0.5rem;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--bs-info);
+        box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.25); /* Sombra basada en info (corporativo) */
+    }
+
+    /* Clases de perfil adaptadas para edición */
+    .profile-avatar-edit {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+    }
+
+    .profile-avatar-placeholder-edit {
+        width: 100px;
+        height: 100px;
+    }
+
+    /* Heredar estilos del perfil de visualización para consistencia */
+    {% comment %}
+        Incluimos los estilos clave del perfil_empresa.html aquí para garantizar el look and feel
+        como .profile-card, .bg-gradient-corporativo, y .section-title
+    {% endcomment %}
+    .profile-card {
+        animation: fadeInUp 0.6s ease-out;
+        transition: transform 0.3s ease;
+    }
+
+    .bg-gradient-corporativo {
+        background: linear-gradient(135deg, var(--bs-info) 0%, #0c73a2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header-decoration {
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .section-title {
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--bs-primary), transparent); 
+        border-radius: 2px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .p-md-5 {
+            padding: 1.5rem !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const logoInput = document.getElementById('id_logo');
+        const logoPreview = document.getElementById('logo-preview');
+        
+        if (logoInput) {
+            logoInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Check if it's currently a placeholder div
+                        if (logoPreview.tagName === 'DIV') {
+                            // Convert the placeholder div to an img element
+                            const newImg = document.createElement('img');
+                            newImg.id = 'logo-preview';
+                            newImg.className = 'profile-avatar-edit rounded-circle border border-4 border-info shadow-sm';
+                            newImg.alt = 'Nuevo Logo';
+                            logoPreview.parentNode.replaceChild(newImg, logoPreview);
+                            logoPreview = newImg; // Update the reference
+                        }
+                        logoPreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

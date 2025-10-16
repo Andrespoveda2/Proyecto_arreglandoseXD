@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Selección de Rol - OASIS{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+        <div class="text-center mt-5 mb-5">
+            <i class="bi bi-person-rolodex display-4 text-primary mb-2"></i>
+            <h1 class="fw-bold text-dark">¿Cómo deseas unirte a OASIS?</h1>
+            <p class="lead text-muted">Selecciona el tipo de cuenta que crearás para empezar tu experiencia.</p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 shadow-lg border-0 role-card" onclick="window.location.href='{% url 'auth:registro_aprendiz' %}'" style="cursor: pointer;">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-mortarboard-fill display-3 text-success mb-3"></i>
+                        <h5 class="card-title fw-bold text-success">Soy Aprendiz SENA</h5>
+                        <p class="card-text text-muted small">Quiero participar en proyectos reales y desarrollar mis habilidades técnicas y blandas.</p>
+                        <a href="{% url 'auth:registro_aprendiz' %}" class="btn btn-outline-success mt-3 fw-semibold w-75">
+                            <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 shadow-lg border-0 role-card" onclick="window.location.href='{% url 'auth:registro_empresa' %}'" style="cursor: pointer;">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-building-fill display-3 text-primary mb-3"></i>
+                        <h5 class="card-title fw-bold text-primary">Somos una Empresa</h5>
+                        <p class="card-text text-muted small">Buscamos talento SENA para resolver retos de negocio y explorar nuevas ideas innovadoras.</p>
+                        <a href="{% url 'auth:registro_empresa' %}" class="btn btn-outline-primary mt-3 fw-semibold w-75">
+                            <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 shadow-lg border-0 role-card" onclick="window.location.href='{% url 'auth:registro_instructor' %}'" style="cursor: pointer;">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-person-video3 display-3 text-warning mb-3"></i>
+                        <h5 class="card-title fw-bold text-warning">Soy Instructor</h5>
+                        <p class="card-text text-muted small">Quiero supervisar el progreso de los equipos y validar los avances en proyectos empresariales.</p>
+                        <a href="{% url 'auth:registro_instructor' %}" class="btn btn-outline-warning mt-3 fw-semibold w-75">
+                            <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="text-center mt-5 mb-5">
+            ¿Ya tienes cuenta? <a href="{% url 'auth:login' %}" class="fw-semibold">Iniciar Sesión</a>
+        </div>
+        
+
+{# SE ELIMINÓ EL BLOQUE DE CÓDIGO CON EL DISEÑO SIMPLE QUE CAUSABA LA DUPLICIDAD #}
+
+
+    </div>
+</div>
+{% endblock %}

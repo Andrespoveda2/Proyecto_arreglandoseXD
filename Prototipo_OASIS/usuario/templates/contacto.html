@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto y Soporte - OASIS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Encabezado Principal -->
+    <header class="text-center mb-5">
+        <i class="bi bi-headset display-4 text-success mb-3"></i>
+        <h1 class="fw-bold text-dark">¿Necesitas Ayuda? Contacta a Soporte</h1>
+        <p class="lead text-muted">Estamos aquí para resolver tus dudas, escuchar tus sugerencias o asistirte con cualquier problema en OASIS.</p>
+    </header>
+
+    <div class="row g-5">
+        
+        <!-- Columna 1: Formulario de Contacto -->
+        <div class="col-lg-7">
+            <div class="card shadow-lg h-100 border-0">
+                <div class="card-body p-4 p-md-5">
+                    <h4 class="card-title fw-semibold text-primary mb-4">Envíanos un Mensaje Directo</h4>
+                    <p class="text-muted mb-4 small">Completa el formulario y te responderemos tan pronto como sea posible, generalmente en menos de 24 horas hábiles.</p>
+                    
+                    <!-- Simulación de Formulario Django (Asume que se pasará 'form' desde la vista) -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        <!-- Nota: En un entorno real, aquí irían los campos del formulario Django -->
+                        
+                        <div class="mb-3">
+                            <label for="id_nombre" class="form-label fw-semibold">Tu Nombre</label>
+                            <input type="text" class="form-control" id="id_nombre" name="nombre" placeholder="Ej: Daniel Gómez" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label fw-semibold">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="id_email" name="email" placeholder="Ej: tu.correo@sena.edu.co" required>
+                            <div class="form-text">Usaremos este correo para contactarte.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_asunto" class="form-label fw-semibold">Asunto</label>
+                            <select class="form-select" id="id_asunto" name="asunto" required>
+                                <option value="" disabled selected>Selecciona el tema</option>
+                                <option value="soporte_tecnico">Soporte Técnico (Error, Bug)</option>
+                                <option value="consulta_general">Consulta General sobre el Proyecto</option>
+                                <option value="sugerencia">Sugerencia o Colaboración</option>
+                                <option value="otro">Otro Motivo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="id_mensaje" class="form-label fw-semibold">Mensaje Detallado</label>
+                            <textarea class="form-control" id="id_mensaje" name="mensaje" rows="4" placeholder="Describe tu consulta o problema..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success fw-bold w-100 py-2">
+                            <i class="bi bi-send me-2"></i> Enviar Solicitud
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna 2: Centro de Soporte y Recursos -->
+        <div class="col-lg-5">
+            <h4 class="fw-semibold text-dark mb-4">¿Buscas Soporte Rápido?</h4>
+            
+            
+
+            <hr class="text-muted">
+
+            <!-- Recurso 2: Guías y Manuales -->
+            <div class="d-flex align-items-start mb-4">
+                <i class="bi bi-book-fill text-info fs-3 me-3 flex-shrink-0"></i>
+                <div>
+                    <h5 class="fw-bold mb-0">Guías de Usuario y Tutoriales</h5>
+                    <p class="text-muted small">Manuales detallados para Aprendices, Instructores y Empresas.</p>
+                    <a href="{% url 'auth:manual_usuario' %}" class="btn btn-sm btn-outline-info fw-semibold">Ver Manual de Usuario</a>
+                </div>
+            </div>
+
+            <hr class="text-muted">
+
+            <!-- Recurso 3: Contacto Urgente -->
+            <div class="d-flex align-items-start mb-4">
+                <i class="bi bi-telephone-fill text-danger fs-3 me-3 flex-shrink-0"></i>
+                <div>
+                    <h5 class="fw-bold mb-0">Línea de Atención SENA</h5>
+                    <p class="text-muted small">Para problemas muy urgentes o solicitudes que requieran atención inmediata.</p>
+                    <p class="mb-0 fw-semibold text-danger">+(57) 300 123 4567</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

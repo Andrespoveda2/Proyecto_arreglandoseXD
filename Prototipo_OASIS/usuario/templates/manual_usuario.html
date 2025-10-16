@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manual de Usuario - OASIS Integral{% endblock %}
+
+{% block content %}
+<style>
+    /* VARIABLES (Asumiendo que están en base.html, si no, se definen aquí) */
+    :root {
+        --sena-green: #39a935; 
+        --sena-green-dark: #2a8b27;
+        --sena-orange: #ff7f00;
+        --white: #ffffff;
+    }
+
+    /* Estilo para los encabezados de sección principales */
+    .role-section-title {
+        background: linear-gradient(90deg, var(--sena-green-dark), var(--sena-green));
+        color: var(--white);
+        padding: 1rem 1.5rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    /* Estilo de los iconos de paso a paso */
+    .step-icon {
+        color: var(--sena-green-dark);
+        font-size: 1.5rem;
+        margin-right: 1rem;
+    }
+
+    /* Estilo de la lista de pasos para mayor visibilidad */
+    .manual-steps .list-group-item {
+        border-left: 5px solid var(--sena-green);
+        margin-bottom: 0.5rem;
+        transition: background-color 0.3s;
+    }
+    .manual-steps .list-group-item:hover {
+        background-color: #f0fff0; /* Fondo sutilmente verde claro al pasar el ratón */
+    }
+
+    /* Estilo de los títulos secundarios dentro de las secciones */
+    .manual-card-title {
+        color: var(--sena-green);
+        font-weight: 600;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+
+            <!-- Encabezado Principal del Manual -->
+            <div class="text-center mb-5 p-4 border-bottom">
+                <h1 class="display-4 fw-bolder" style="color: var(--sena-green-dark);">Manual de Usuario Integral OASIS</h1>
+                <p class="lead text-muted">Guía completa para **Aprendices, Empresas e Instructores** del SENA.</p>
+            </div>
+
+            <!-- TABLA DE CONTENIDO (Para fácil navegación) -->
+            <div class="card shadow-lg mb-5 border-0" style="border-left: 5px solid var(--sena-orange);">
+                <div class="card-header bg-light">
+                    <h2 class="h5 mb-0"><i class="bi bi-list-nested me-2" style="color: var(--sena-orange);"></i>Índice de Contenidos</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6 class="text-uppercase text-sena"><i class="bi bi-mortarboard-fill me-1"></i> Aprendices</h6>
+                            <ul class="list-unstyled small">
+                                <li><a href="#aprendiz-busqueda" class="text-decoration-none">1.1 Buscar Proyectos</a></li>
+                                <li><a href="#aprendiz-postulacion" class="text-decoration-none">1.2 Proceso de Postulación</a></li>
+                                <li><a href="#aprendiz-seguimiento" class="text-decoration-none">1.3 Seguimiento de Estado</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-uppercase text-sena"><i class="bi bi-building-fill me-1"></i> Empresas</h6>
+                            <ul class="list-unstyled small">
+                                <li><a href="#empresa-perfil" class="text-decoration-none">2.1 Perfil y Dashboard</a></li>
+                                <li><a href="#empresa-publicar" class="text-decoration-none">2.2 Publicar Proyectos</a></li>
+                                <li><a href="#empresa-revision" class="text-decoration-none">2.3 Revisar Candidatos</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-uppercase text-sena"><i class="bi bi-person-video3 me-1"></i> Instructores</h6>
+                            <ul class="list-unstyled small">
+                                <li><a href="#instructor-aprobacion" class="text-decoration-none">3.1 Aprobación de Proyectos</a></li>
+                                <li><a href="#instructor-vinculacion" class="text-decoration-none">3.2 Vincular Programas</a></li>
+                                <li><a href="#instructor-reportes" class="text-decoration-none">3.3 Seguimiento y Reportes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 1. MANUAL DEL APRENDIZ -->
+            <!-- ============================================== -->
+            <div class="role-section-title" id="manual-aprendiz">
+                <i class="bi bi-mortarboard-fill me-3"></i>1. Manual del Aprendiz
+            </div>
+
+            <!-- 1.1 Buscar Proyectos -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="aprendiz-busqueda"><i class="step-icon bi bi-search"></i>1.1. Búsqueda y Filtros de Proyectos</h2>
+                    <p>La plataforma te permite encontrar rápidamente proyectos alineados con tu perfil formativo. Utiliza las herramientas de búsqueda para refinar tus resultados:</p>
+                    <ul class="list-group list-group-flush manual-steps">
+                        <li class="list-group-item"><i class="bi bi-funnel-fill me-2"></i>**Filtro por Programa:** Selecciona el programa de formación al que perteneces para ver solo proyectos relevantes.</li>
+                        <li class="list-group-item"><i class="bi bi-person-check-fill me-2"></i>**Filtro por Habilidades:** Usa palabras clave específicas (Ej: "Python", "Marketing Digital") para encontrar proyectos que requieran tus destrezas.</li>
+                        <li class="list-group-item"><i class="bi bi-geo-alt-fill me-2"></i>**Ubicación:** Filtra por proyectos presenciales, remotos o híbridos según la ciudad.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 1.2 Proceso de Postulación -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="aprendiz-postulacion"><i class="step-icon bi bi-file-earmark-person"></i>1.2. Postulación al Proyecto (Paso a Paso)</h2>
+                    <ol class="list-group list-group-numbered manual-steps">
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Prepara tu Perfil y Hoja de Vida</div>
+                                Asegúrate de que tu perfil de aprendiz esté completo al 100% y de haber subido la versión más reciente de tu hoja de vida y documentos requeridos (como cartas de presentación).
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Revisa el Detalle del Proyecto</div>
+                                Haz clic en el título del proyecto que te interese para leer la descripción, los requisitos de la empresa y las fechas límite.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Confirma la Postulación</div>
+                                En la parte inferior del detalle, haz clic en el botón **"Postularme"** (generalmente de color verde). Recibirás una notificación de confirmación.
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 1.3 Seguimiento de Estado -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="aprendiz-seguimiento"><i class="step-icon bi bi-hourglass-split"></i>1.3. Seguimiento de Postulaciones</h2>
+                    <p>En tu panel principal de Aprendiz, podrás ver el estado de cada solicitud. Presta atención a los siguientes indicadores:</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><span class="badge bg-warning text-dark me-2"><i class="bi bi-clock"></i> Pendiente</span>: La empresa aún no ha revisado tu solicitud. Ten paciencia, el proceso puede tardar unos días.</li>
+                        <li class="list-group-item"><span class="badge bg-success me-2"><i class="bi bi-check-circle-fill"></i> Aceptado</span>: ¡Felicidades! La empresa te ha seleccionado. Recibirás un correo electrónico con los siguientes pasos para formalizar tu vinculación.</li>
+                        <li class="list-group-item"><span class="badge bg-danger me-2"><i class="bi bi-x-circle-fill"></i> Rechazado</span>: La empresa ha seleccionado a otro candidato. No te desanimes, sigue buscando otras oportunidades.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- 2. MANUAL DE LA EMPRESA -->
+            <!-- ============================================== -->
+            <div class="role-section-title" id="manual-empresa">
+                <i class="bi bi-building-fill me-3"></i>2. Manual de la Empresa
+            </div>
+            
+            <!-- 2.1 Gestión del Perfil y Dashboard -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="empresa-perfil"><i class="step-icon bi bi-person-badge"></i>2.1. Gestión del Perfil y Dashboard</h2>
+                    <p>Tu perfil es la carta de presentación de tu compañía. Un perfil completo atrae mejores candidatos.</p>
+                    <ul class="list-group list-group-flush manual-steps">
+                        <li class="list-group-item"><i class="bi bi-image me-2"></i>**Cargar Logo:** Asegúrate de que tu logo sea visible para proyectar profesionalismo.</li>
+                        <li class="list-group-item"><i class="bi bi-globe me-2"></i>**Sector Industrial:** Selecciona el sector exacto para que los instructores del SENA puedan validar la pertinencia de tus proyectos.</li>
+                        <li class="list-group-item"><i class="bi bi-info-square me-2"></i>**Dashboard:** Utiliza las métricas rápidas (Proyectos Activos, Solicitudes Pendientes) como tu principal punto de control.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2.2 Publicar Proyectos -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="empresa-publicar"><i class="step-icon bi bi-journal-plus"></i>2.2. Publicación de Nuevos Proyectos Formativos</h2>
+                    <p>Sigue estos pasos para crear una oportunidad de proyecto en OASIS:</p>
+                    <ol class="list-group list-group-numbered manual-steps">
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Rellena la Información Esencial</div>
+                                Proporciona el **Nombre**, una **Descripción detallada** del problema o reto a resolver, la **Duración estimada**, y el **Número de Cupos**.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Define Habilidades y Requisitos</div>
+                                Sé específico en las competencias que buscas (Ej: manejo de Bases de Datos, diseño UX/UI). Esto ayuda a la plataforma a conectar con los aprendices correctos.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Envía para Aprobación (Instructor)</div>
+                                Una vez enviado, el proyecto aparecerá con el estado <span class="badge bg-warning text-dark">Pendiente</span> hasta que un Instructor del SENA lo valide.
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 2.3 Revisar Candidatos -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="empresa-revision"><i class="step-icon bi bi-people-fill"></i>2.3. Revisión y Selección de Candidatos</h2>
+                    <p>Cuando recibas postulaciones, ve a la sección **"Ver Postulaciones"** de tu proyecto:</p>
+                    <ul class="list-group list-group-flush manual-steps">
+                        <li class="list-group-item"><i class="bi bi-eye-fill me-2"></i>**Visualización Completa:** Accede a la vista de perfil ampliada de cada aprendiz para revisar habilidades, experiencia y documentos adjuntos.</li>
+                        <li class="list-group-item"><i class="bi bi-person-check-fill me-2"></i>**Decisión:** Utiliza los botones **Aprobar** o **Rechazar**. Recuerda que solo puedes aprobar hasta el número de cupos que definiste.</li>
+                        <li class="list-group-item"><i class="bi bi-chat-dots-fill me-2"></i>**Contacto:** Una vez aprobado, la plataforma te facilitará los datos de contacto para formalizar la relación.</li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- ============================================== -->
+            <!-- 3. MANUAL DEL INSTRUCTOR -->
+            <!-- ============================================== -->
+            <div class="role-section-title" id="manual-instructor">
+                <i class="bi bi-person-video3 me-3"></i>3. Manual del Instructor
+            </div>
+
+            <!-- 3.1 Aprobación de Proyectos -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="instructor-aprobacion"><i class="step-icon bi bi-check2-square"></i>3.1. Proceso de Aprobación de Proyectos</h2>
+                    <p>Tu rol es esencial para asegurar la calidad y pertinencia formativa de las oportunidades:</p>
+                    <ol class="list-group list-group-numbered manual-steps">
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Accede a "Aprobar Proyectos"</div>
+                                Esta sección lista todos los proyectos con estado <span class="badge bg-warning text-dark">Pendiente</span>.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Revisa Criterios</div>
+                                Evalúa si el proyecto es pertinente al sector, si las habilidades solicitadas son realistas y si la descripción es clara para el aprendiz.
+                            </div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">Decisión Final</div>
+                                Utiliza **Aprobar** (el proyecto se publica) o **Rechazar** (el proyecto regresa a la empresa con las observaciones que debiste incluir).
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- 3.2 Vincular Programas -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="instructor-vinculacion"><i class="step-icon bi bi-link-45deg"></i>3.2. Vinculación con Programas de Formación</h2>
+                    <p>La correcta vinculación es lo que permite al aprendiz encontrar el proyecto:</p>
+                    <ul class="list-group list-group-flush manual-steps">
+                        <li class="list-group-item"><i class="bi bi-code-square me-2"></i>**Módulo de Gestión de Programas:** Usa la opción para enlazar los proyectos a uno o varios programas de formación del SENA (Ej: ADSO, Análisis y Desarrollo de Software).</li>
+                        <li class="list-group-item"><i class="bi bi-list-check me-2"></i>**Actualización de Catálogos:** Mantén actualizado el listado de Programas y Sectores para reflejar la oferta institucional actual.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3.3 Seguimiento y Reportes -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-body p-4">
+                    <h2 class="manual-card-title h4 mb-3" id="instructor-reportes"><i class="step-icon bi bi-graph-up"></i>3.3. Monitoreo y Reportes de Progreso</h2>
+                    <p>Como mentor, puedes acceder a:</p>
+                    <ul class="list-group list-group-flush manual-steps">
+                        <li class="list-group-item"><i class="bi bi-person-circle me-2"></i>**Perfiles de Aprendices Asignados:** Revisa la lista de aprendices que han sido colocados en proyectos.</li>
+                        <li class="list-group-item"><i class="bi bi-file-earmark-bar-graph me-2"></i>**Reportes de Avance:** Consulta los informes periódicos sobre el desarrollo del proyecto por parte de la empresa y el desempeño del aprendiz.</li>
+                        <li class="list-group-item"><i class="bi bi-envelope-fill me-2"></i>**Canal de Comunicación:** Accede a la herramienta de mensajería para mediar entre la empresa y el aprendiz si es necesario.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pie de página del manual -->
+            <div class="text-center mt-5 p-3 border-top">
+                <p class="text-muted">¡Gracias por ser parte de OASIS! Si tienes alguna duda adicional, consulta a tu administrador local.</p>
+                <p class="text-muted small">© {% now "Y" %} OASIS - Conectando Talento SENA.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

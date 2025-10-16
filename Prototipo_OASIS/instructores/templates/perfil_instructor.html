@@ -1,0 +1,439 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Perfil de Instructor - {{ request.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Tarjeta Principal del Perfil (Estilo Moderno) -->
+            <div class="card shadow-lg border-0 overflow-hidden profile-card">
+                
+                <!-- Header con Degradado VERDE SENA -->
+                <div class="card-header bg-gradient-sena text-white text-center py-4 position-relative">
+                    <div class="header-decoration"></div>
+                    <h4 class="mb-0 fw-bold">
+                        <i class="fas fa-chalkboard-teacher me-2"></i> <!-- Icono de Instructor -->
+                        Mi Perfil de Instructor en OASIS
+                    </h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Sección de Avatar y Nombre -->
+                    <div class="text-center mb-4 profile-header">
+                        <div class="avatar-wrapper mb-3">
+                            {% comment %} Simulación de lógica de foto de perfil {% endcomment %}
+                            {% if instructor.foto_perfil %}
+                                <img src="{{ instructor.foto_perfil.url }}" 
+                                    alt="Avatar de {{ request.user.username }}" 
+                                    class="profile-avatar rounded-circle border border-4 border-sena-green shadow-sm">
+                            {% else %}
+                                <!-- Placeholder Verde con icono de Instructor -->
+                                <div class="profile-avatar-placeholder d-inline-flex align-items-center justify-content-center 
+                                        bg-gradient-light text-sena-green rounded-circle border border-4 border-sena-green shadow-sm">
+                                    <i class="fas fa-user-graduate" style="font-size: 4rem;"></i>
+                                </div>
+                            {% endif %}
+                            <!-- El indicador de estado se mantiene verde brillante para "online" -->
+                            <div class="status-indicator online"></div> 
+                        </div>
+
+                        <h2 class="mb-1 fw-bold text-dark">
+                            {{ request.user.get_full_name|default:"Instructor Registrado" }}
+                        </h2>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-at"></i>{{ request.user.username }}
+                        </p>
+                        <span class="badge bg-sena-green-solid mt-2 px-3 py-2">
+                            <i class="fas fa-shield-alt me-1"></i>Instructor SENA
+                        </span>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Información de Contacto / Datos de Acceso -->
+                    <div class="info-section mb-4">
+                        <h5 class="section-title text-sena-green mb-3">
+                            <i class="fas fa-lock me-2"></i>
+                            Datos de Acceso
+                        </h5>
+                        <div class="info-grid">
+                            
+                            <!-- Usuario -->
+                            <div class="info-card">
+                                <div class="info-icon bg-sena-light">
+                                    <i class="fas fa-id-badge text-sena-green"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Usuario</small>
+                                    <strong class="text-dark">{{ request.user.username }}</strong>
+                                </div>
+                            </div>
+
+                            <!-- Nombre Completo -->
+                            <div class="info-card">
+                                <div class="info-icon bg-sena-light">
+                                    <i class="fas fa-user text-sena-green"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Nombre Completo</small>
+                                    <strong class="text-dark">{{ request.user.get_full_name|default:"No proporcionado" }}</strong>
+                                </div>
+                            </div>
+
+                            <!-- Correo Electrónico -->
+                            <div class="info-card">
+                                <div class="info-icon bg-sena-light">
+                                    <i class="fas fa-envelope text-sena-green"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Correo Electrónico</small>
+                                    <strong class="text-dark">{{ request.user.email }}</strong>
+                                </div>
+                            </div>
+
+                            <!-- Último Acceso -->
+                            <div class="info-card">
+                                <div class="info-icon bg-sena-light">
+                                    <i class="fas fa-sign-in-alt text-sena-green"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Último Acceso</small>
+                                    <strong class="text-dark">{{ request.user.last_login|date:"d M Y, H:i" }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Rol en la Plataforma (Mantiene la lógica condicional) -->
+                    {% if instructor.ficha_lider %}
+                    <div class="info-section mb-4">
+                        <h5 class="section-title text-sena-green mb-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Rol en la Plataforma
+                        </h5>
+                        <div class="info-grid">
+                            <div class="info-card program-info">
+                                <div class="info-icon bg-sena-light">
+                                    <i class="fas fa-users-cog text-sena-green"></i>
+                                </div>
+                                <div class="info-content">
+                                    <small class="text-muted d-block">Ficha Principal a Cargo</small>
+                                    <strong class="text-dark">{{ instructor.ficha_lider }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <hr class="my-4">
+
+                    <!-- Botones de Acción -->
+                    <div class="action-buttons d-grid gap-3">
+                        <a href="{% url 'instructores:editar_perfil_instructor' %}" class="btn btn-sena-green btn-lg shadow-sm">
+                            <i class="fas fa-user-edit me-2"></i>
+                            Actualizar Mi Información
+                        </a>
+                        
+                        <a href="{% url 'instructores:dashboard_instructor' %}" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Volver al Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos Adicionales Personalizados (Para el diseño moderno con Verde SENA) -->
+<style>
+/* Variables de color para Instructor (SENA Green: #39A900) */
+:root {
+    --sena-green: #39A900; 
+    --sena-green-dark: #2D8600; /* Un poco más oscuro para el gradiente/hover */
+    --sena-green-light-bg: rgba(57, 169, 0, 0.1); /* Fondo ligero para iconos */
+    --sena-green-shadow: rgba(57, 169, 0, 0.3); /* Sombra para hover */
+}
+
+/* Base: Fuente Inter y fondo */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f7f7f7;
+}
+
+/* Estilos de la tarjeta, animaciones, etc. */
+.profile-card {
+    animation: fadeInUp 0.6s ease-out;
+    transition: transform 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+}
+
+/* 1. Header Gradient (VERDE SENA) */
+.bg-gradient-sena {
+    background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 2. Text Color (VERDE SENA) */
+.text-sena-green {
+    color: var(--sena-green) !important;
+}
+
+/* 3. Border Color (VERDE SENA) */
+.border-sena-green {
+    border-color: var(--sena-green) !important;
+}
+
+/* 4. Button Base (VERDE SENA) */
+.btn-sena-green {
+    background-color: var(--sena-green);
+    border-color: var(--sena-green);
+    color: white;
+    transition: all 0.3s ease;
+}
+.btn-sena-green:hover {
+    background-color: var(--sena-green-dark);
+    border-color: var(--sena-green-dark);
+}
+
+/* 5. Solid Badge (VERDE SENA) */
+.bg-sena-green-solid {
+    background-color: var(--sena-green) !important;
+    color: white !important;
+}
+
+/* 6. Info Card Icons Background (VERDE SENA Ligero) */
+.bg-sena-light {
+    background-color: var(--sena-green-light-bg);
+}
+
+/* Sombra en el avatar al hacer hover (VERDE SENA) */
+.profile-avatar:hover,
+.profile-avatar-placeholder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px var(--sena-green-shadow) !important;
+}
+
+.header-decoration {
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-avatar-placeholder {
+    width: 150px;
+    height: 150px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.status-indicator.online {
+    background: #10B981; /* Verde brillante para estado online */
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.bg-gradient-light {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.section-title {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+/* Subrayado de sección (VERDE SENA) */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sena-green), transparent);
+    border-radius: 2px;
+}
+
+.info-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.info-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efecto de 'ripple' al hacer hover (VERDE SENA) */
+.info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(57, 169, 0, 0.05), transparent);
+    transition: left 0.5s ease;
+}
+
+.info-card:hover::before {
+    left: 100%;
+}
+
+/* Borde al hacer hover (VERDE SENA) */
+.info-card:hover {
+    border-color: var(--sena-green);
+    transform: translateX(5px);
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.info-card.program-info {
+    grid-column: 1 / -1;
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-content small {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.info-content strong {
+    font-size: 1rem;
+    word-break: break-word;
+}
+
+.action-buttons .btn {
+    transition: all 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.action-buttons .btn i {
+    transition: transform 0.3s ease;
+}
+
+.action-buttons .btn:hover i {
+    transform: scale(1.2);
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-avatar,
+    .profile-avatar-placeholder {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-avatar-placeholder i {
+        font-size: 3rem !important;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card.program-info {
+        grid-column: 1;
+    }
+}
+</style>
+{% endblock %}

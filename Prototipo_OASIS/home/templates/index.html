@@ -1,0 +1,448 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Inicio - OASIS | Banco de Proyectos SENA{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="py-5 mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h1 class="display-4 fw-bold text-sena mb-3">
+                Bienvenido a <span class="text-gradient">OASIS</span>
+            </h1>
+            <p class="lead mb-4">
+                Sistema de Gestión de Proyectos Empresariales del SENA. 
+                Conectamos el talento de nuestros aprendices con las necesidades del sector productivo.
+            </p>
+            <div class="d-flex flex-wrap gap-3">  
+                {% if user.is_authenticated %}
+                    {% if user.rol == 'APRENDIZ' %}
+                        <a href="{% url 'aprendices:perfil_aprendiz' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-person-circle me-2"></i>Ir a mi Perfil
+                        </a>
+                    {% elif user.rol == 'INSTRUCTOR' %}
+                        <a href="{% url 'instructores:mi_perfil_instructor' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-person-circle me-2"></i>Ir a mi Perfil
+                        </a>
+                    {% elif user.rol == 'EMPRESA' %}
+                        <a href="{% url 'empresas:mi_perfil_empresa' %}" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-person-circle me-2"></i>Ir a mi Perfil
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'auth:login' %}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                    </a>
+                    <a href="{% url 'auth:elegir_registro' %}" class="btn btn-success btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Registrarse
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-lg">
+                <!-- Eliminamos el padding del card-body para que la imagen se ajuste perfectamente -->
+                <div class="card-body p-0 overflow-hidden">
+                    <img class="img-fluid hero-image" src="{% static 'img/logo/Logo_OASISB.png' %}" alt="Ilustración de OASIS"> 
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ESTADÍSTICAS -->
+<section class="py-5 mb-5">
+    <div class="row g-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-icon">📁</div>
+                <h3>250+</h3>
+                <p>Proyectos Activos</p>
+                <small class="stat-change positive">
+                    <i class="bi bi-arrow-up"></i> +15% este mes
+                </small>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-stat">
+                <h3>180+</h3>
+                <p>Empresas Aliadas</p>
+                <small class="stat-change positive">
+                    <i class="bi bi-arrow-up"></i> +8% este mes
+                </small>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-icon">👥</div>
+                <h3>1,200+</h3>
+                <p>Aprendices Registrados</p>
+                <small class="stat-change positive">
+                    <i class="bi bi-arrow-up"></i> +22% este mes
+                </small>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-stat">
+                <div class="dashboard-stat-icon">✅</div>
+                <h3>95%</h3>
+                <p>Tasa de Éxito</p>
+                <small class="stat-change positive">
+                    <i class="bi bi-arrow-up"></i> +3% este mes
+                </small>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CARACTERÍSTICAS PRINCIPALES -->
+<section class="py-5 mb-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold text-sena mb-3">
+            ¿Qué puedes hacer en OASIS?
+        </h2>
+        <p class="lead text-muted">
+            Explora nuestras funcionalidades diseñadas para facilitar la gestión de proyectos
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-folder-plus text-sena" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title mb-3">Gestión de Proyectos</h4>
+                    <p class="card-text text-muted">
+                        Crea, administra y da seguimiento a proyectos empresariales 
+                        con herramientas intuitivas y eficientes.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-building text-sena" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title mb-3">Registro de Empresas</h4>
+                    <p class="card-text text-muted">
+                        Conecta con empresas del sector productivo y encuentra 
+                        oportunidades para desarrollar proyectos reales.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-people text-sena" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title mb-3">Colaboración</h4>
+                    <p class="card-text text-muted">
+                        Trabaja en equipo con otros aprendices, instructores 
+                        y empresas para lograr objetivos comunes.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-graph-up-arrow text-sena" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title mb-3">Seguimiento y Reportes</h4>
+                    <p class="card-text text-muted">
+                        Genera informes detallados y realiza seguimiento 
+                        del progreso de tus proyectos en tiempo real.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check text-sena" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title mb-3">Seguridad y Control</h4>
+                    <p class="card-text text-muted">
+                        Sistema seguro con roles y permisos que garantizan 
+                        la integridad de la información.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-clock-history text-sena" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title mb-3">Historial Completo</h4>
+                    <p class="card-text text-muted">
+                        Accede al historial completo de proyectos y 
+                        actividades para consulta y análisis.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROYECTOS RECIENTES -->
+<section class="py-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="display-6 fw-bold text-sena mb-0">
+            Proyectos Destacados
+        </h2>
+        <a href="#" class="btn btn-outline-primary">
+            Ver todos <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-laptop me-2"></i>Sistema de Inventario Web
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <span class="badge badge-primary me-2">Desarrollo</span>
+                        <span class="badge badge-success">Activo</span>
+                    </div>
+                    <p class="card-text">
+                        Desarrollo de sistema web para gestión de inventarios 
+                        con tecnologías modernas y responsive design.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-building me-1"></i>TechCorp S.A.
+                        </small>
+                        <small class="text-muted">
+                            <i class="bi bi-calendar me-1"></i>Mar 2025
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 65%;" 
+                             aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-phone me-2"></i>App Móvil de Ventas
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <span class="badge badge-info me-2">Móvil</span>
+                        <span class="badge badge-success">Activo</span>
+                    </div>
+                    <p class="card-text">
+                        Aplicación móvil multiplataforma para gestión de 
+                        ventas y atención al cliente en tiempo real.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-building me-1"></i>RetailMax
+                        </small>
+                        <small class="text-muted">
+                            <i class="bi bi-calendar me-1"></i>Feb 2025
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 45%;" 
+                             aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <i class="bi bi-shield-lock me-2"></i>Sistema de Seguridad IoT
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <span class="badge badge-warning me-2">IoT</span>
+                        <span class="badge badge-success">Activo</span>
+                    </div>
+                    <p class="card-text">
+                        Implementación de sistema de seguridad inteligente 
+                        con dispositivos IoT y monitoreo remoto.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-building me-1"></i>SecureHome
+                        </small>
+                        <small class="text-muted">
+                            <i class="bi bi-calendar me-1"></i>Ene 2025
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 80%;" 
+                             aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CALL TO ACTION -->
+{% if not user.is_authenticated %}
+<section class="py-5 mb-5">
+    <div class="card bg-sena text-white border-0">
+        <div class="card-body text-center py-5">
+            <h2 class="display-5 fw-bold mb-3">
+                ¿Listo para comenzar?
+            </h2>
+            <p class="lead mb-4">
+                Únete a la comunidad OASIS y empieza a gestionar proyectos empresariales hoy mismo
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{% url 'auth:elegir_registro' %}" class="btn btn-light btn-lg">
+                    <i class="bi bi-person-plus me-2"></i>Crear Cuenta
+                </a>
+                <a href="{% url 'auth:login' %}" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- TESTIMONIOS -->
+<section class="py-5 mb-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold text-sena mb-3">
+            Lo que dicen nuestros usuarios
+        </h2>
+        <p class="lead text-muted">
+            Experiencias de aprendices y empresas que confían en OASIS
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                    <p class="card-text mb-4">
+                        "OASIS ha transformado la manera en que gestionamos proyectos 
+                        con nuestros aprendices. La plataforma es intuitiva y eficiente."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-sena text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px; font-size: 1.5rem;">
+                            M
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">María González</h6>
+                            <small class="text-muted">Instructora SENA</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                    <p class="card-text mb-4">
+                        "Como empresa, encontramos en OASIS una herramienta ideal para 
+                        conectar con talento joven y desarrollar proyectos innovadores."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-sena text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px; font-size: 1.5rem;">
+                            C
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">Carlos Rodríguez</h6>
+                            <small class="text-muted">CEO TechCorp S.A.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                    </div>
+                    <p class="card-text mb-4">
+                        "La experiencia de trabajar con proyectos reales a través de OASIS 
+                        ha sido invaluable para mi formación profesional."
+                    </p>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-sena text-white rounded-circle d-flex align-items-center justify-content-center" 
+                             style="width: 50px; height: 50px; font-size: 1.5rem;">
+                            A
+                        </div>
+                        <div class="ms-3">
+                            <h6 class="mb-0">Ana Martínez</h6>
+                            <small class="text-muted">Aprendiz SENA</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+</style>
+<script src="https://cdn.equalweb.com/adaptation.js" defer></script>
+<script>
+  window.interdeal = {sitekey: "YOUR_KEY", Position: "left", Menulang: "ES"};
+</script>
+
+{% endblock %}

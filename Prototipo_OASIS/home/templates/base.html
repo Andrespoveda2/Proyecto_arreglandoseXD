@@ -1,0 +1,1354 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="OASIS - Sistema de Gestión de Proyectos Empresariales SENA" />
+    <meta name="author" content="SENA" />
+    <title>{% block title %}OASIS - Banco de Proyectos SENA{% endblock %}</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <style>
+        :root {
+            --sena-verde: #39A900;
+            --sena-verde-oscuro: #2d8400;
+            --sena-naranja: #FF5800;
+            --sena-gris: #4A4A4A;
+            --sena-gris-claro: #F8F9FA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            padding-top: 76px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--sena-gris-claro);
+        }
+
+        /* === NAVBAR === */
+        .navbar {
+            background: linear-gradient(135deg, var(--sena-verde) 0%, var(--sena-verde-oscuro) 100%);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            padding: 0.7rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.4rem 0;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.15);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: translateY(-2px);
+        }
+
+        .navbar-brand:hover .logo_OASIS {
+            transform: rotate(5deg) scale(1.05);
+        }
+
+        .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: var(--sena-naranja);
+            border-radius: 2px;
+        }
+
+        /* Fix crítico para dropdowns en navbar fixed */
+        .navbar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            overflow: visible !important;
+        }
+        
+        .navbar-collapse {
+            overflow: visible !important;
+        }
+        
+        .navbar .dropdown {
+            position: relative;
+        }
+        
+        .navbar .dropdown-menu {
+            position: absolute !important;
+            top: 100% !important;
+            right: 0 !important;
+            left: auto !important;
+            z-index: 1050 !important;
+            margin-top: 0.5rem !important;
+            will-change: transform;
+        }
+        
+        /* Forzar visibilidad del dropdown cuando está activo */
+        .navbar .dropdown-menu.show {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        
+        /* Asegurar que el dropdown tenga el ancho correcto */
+        .navbar .dropdown-menu {
+            min-width: 250px;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            animation: fadeInDown 0.3s ease;
+            background-color: white;
+        }
+
+        .dropdown-item {
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--sena-gris-claro);
+            transform: translateX(5px);
+            color: var(--sena-verde);
+        }
+
+        .dropdown-header {
+            font-weight: 700;
+            color: var(--sena-verde);
+            padding: 0.8rem 1rem;
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            opacity: 0.2;
+        }
+
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .btn-outline-light {
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background-color: white;
+            color: var(--sena-verde);
+            border-color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,255,255,0.3);
+        }
+
+        .btn-warning {
+            background-color: var(--sena-naranja);
+            border-color: var(--sena-naranja);
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-warning:hover {
+            background-color: #e04d00;
+            border-color: #e04d00;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,88,0,0.4);
+        }
+
+        /* === MENSAJES === */
+        .messages-container {
+            margin-top: 1rem;
+            animation: slideInDown 0.5s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert {
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-left-color: var(--sena-verde);
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-left-color: #dc3545;
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-left-color: var(--sena-naranja);
+            color: #856404;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border-left-color: #0dcaf0;
+            color: #0c5460;
+        }
+
+        /* === MAIN CONTENT === */
+        main {
+            flex: 1;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* === FOOTER === */
+        footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--sena-naranja);
+            transform: translateX(3px);
+        }
+
+        footer .social-icon {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        footer .social-icon:hover {
+            background-color: var(--sena-verde);
+            transform: translateY(-5px) rotate(5deg);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 991.98px) {
+            body {
+                padding-top: 70px;
+            }
+
+            .navbar-collapse {
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 1rem;
+                margin-top: 1rem;
+            }
+
+            .navbar .dropdown-menu {
+                position: static;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+                background-color: rgba(255, 255, 255, 0.98);
+                margin-top: 0.5rem;
+                float: none;
+            }
+        }
+
+        /* === UTILIDADES === */
+        .btn {
+            transition: all 0.3s ease;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            transform: translateY(-5px);
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar">
+        <div class="container-fluid px-lg-5">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home:inicio' %}">
+                <img class="logo_OASIS" src="{% static 'img/logo/Logo_OASIS.jpg' %}" alt="Logo OASIS"> 
+                <span>OASIS</span>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home:inicio' %}active{% endif %}" 
+                            href="{% url 'home:inicio' %}">
+                            <i class="bi bi-house-door me-1"></i>Inicio
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav align-items-lg-center gap-2">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" 
+                            id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-5 me-2"></i>
+                            <span>{{ user.username }}</span>
+                            {% if user.get_rol_display %}
+                            <span class="badge bg-warning text-dark ms-2">{{ user.get_rol_display }}</span>
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li>
+                                <h6 class="dropdown-header">
+                                    <i class="bi bi-person-circle me-2"></i>{{ user.username }}
+                                </h6>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            {% if user.is_superuser or user.rol == 'ADMIN' %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'gestion:dashboard_admin' %}">
+                                    <i class="bi bi-speedometer2 me-2"></i>Dashboard Admin
+                                </a>
+                            </li>
+                            {% elif user.rol == 'APRENDIZ' %}
+                            <li>
+                                <a class="dropdown-item" href="{% url 'aprendices:perfil_aprendiz' %}">
+                                    <i class="bi bi-person me-2"></i>Mi Perfil
+                                </a>
+                            </li>
+                            {% elif user.rol == 'INSTRUCTOR' %} 
+                            <li>
+                                <a class="dropdown-item" href="{% url 'instructores:mi_perfil_instructor' %}">
+                                    <i class="bi bi-person me-2"></i>Mi Perfil
+                                </a>
+                            </li>
+                            {% elif user.rol == 'EMPRESA' %} 
+                            <li>
+                                <a class="dropdown-item" href="{% url 'empresas:mi_perfil_empresa' %}">
+                                    <i class="bi bi-person me-2"></i>Mi Perfil
+                                </a>
+                            </li>
+                            {% endif %} 
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="px-3 py-2">
+                                <form method="post" action="{% url 'auth:logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm w-100">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-outline-light" href="{% url 'auth:login' %}">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-warning" href="{% url 'auth:elegir_registro' %}">
+                            <i class="bi bi-person-plus me-1"></i>Registro
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home:acerca_de' %}active{% endif %}" 
+                            href="{% url 'home:acerca_de' %}">
+                            <i class="bi bi-info-circle me-1"></i>Acerca de
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MENSAJES -->
+    {% if messages %}
+    <div class="container messages-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}
+                <i class="bi bi-check-circle-fill me-2"></i>
+            {% elif message.tags == 'error' or message.tags == 'danger' %}
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {% elif message.tags == 'warning' %}
+                <i class="bi bi-exclamation-circle-fill me-2"></i>
+            {% else %}
+                <i class="bi bi-info-circle-fill me-2"></i>
+            {% endif %}
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block breadcrumb %}{% endblock %}
+
+    <!-- CONTENIDO -->
+    <main class="container py-4">
+        {% block content %}{% endblock %}
+    </main>
+    <!-- FOOTER -->
+    <footer class="mt-auto">
+        <div class="container">
+            <div class="row g-4 py-5">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-gem me-2"></i>OASIS SENA
+                    </h5>
+                    <p class="opacity-75 mb-3">
+                        Plataforma de gestión de proyectos empresariales que impulsa 
+                        la innovación y el desarrollo productivo del país.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="social-icon" title="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="Twitter">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="LinkedIn">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-icon" title="Instagram">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-link-45deg me-2"></i>Enlaces Rápidos
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="{% url 'home:inicio' %}" class="opacity-75">
+                                <i class="bi bi-chevron-right me-1"></i>Inicio
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'home:acerca_de' %}" class="opacity-75">
+                                <i class="bi bi-chevron-right me-1"></i>Acerca de
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'auth:contacto' %}" class="opacity-75">
+                                <i class="bi bi-chevron-right me-1"></i>Soporte
+                            </a>
+                        </li>
+                            <a href="{% url 'auth:manual_usuario' %}" class="opacity-75">
+                                <i class="bi bi-chevron-right me-1"></i>Manual de Usuario
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{% url 'home:tyc' %}" class="opacity-75">
+                                <i class="bi bi-chevron-right me-1"></i>Términos y Condiciones
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-5 col-md-12">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-envelope me-2"></i>Contacto
+                    </h5>
+                    <ul class="list-unstyled opacity-75">
+                        <li class="mb-2">
+                            <i class="bi bi-geo-alt-fill me-2"></i>
+                            Centro Industrial y de Desarrollo Empresarial
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-telephone-fill me-2"></i>
+                            Línea Nacional: 01 8000 910 270
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-envelope-at-fill me-2"></i>
+                            <a href="mailto:contacto@sena.edu.co">contacto@sena.edu.co</a>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-clock-fill me-2"></i>
+                            Lun - Vie: 8:00 AM - 5:00 PM
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row border-top border-white border-opacity-25 pt-4 pb-3">
+                <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                    <p class="mb-0 opacity-75">
+                        &copy; 2025 OASIS - SENA. Todos los derechos reservados.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0 opacity-75">
+                        Desarrollado con <i class="bi bi-heart-fill text-danger"></i> por Talento SENA
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('mainNavbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Auto-hide alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                    bsAlert.close();
+                }, 5000);
+            });
+        });
+    </script>
+    
+<!-- 🔵 Burbuja de Accesibilidad -->
+<button id="accesibilidad-btn" aria-label="Menú de accesibilidad" title="Accesibilidad (Alt+A)">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="6" r="2" fill="white"/>
+        <path d="M12 9C10.3431 9 9 10.3431 9 12V14C9 14.5523 9.44772 15 10 15C10.5523 15 11 14.5523 11 14V12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12V14C13 14.5523 13.4477 15 14 15C14.5523 15 15 14.5523 15 14V12C15 10.3431 13.6569 9 12 9Z" fill="white"/>
+        <path d="M10 15V20C10 20.5523 10.4477 21 11 21C11.5523 21 12 20.5523 12 20V15" fill="white"/>
+        <path d="M14 15V20C14 20.5523 13.5523 21 13 21C12.4477 21 12 20.5523 12 20V15" fill="white"/>
+        <path d="M9 12L7 13C6.44772 13 6 12.5523 6 12C6 11.4477 6.44772 11 7 11L9 12Z" fill="white"/>
+        <path d="M15 12L17 13C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11L15 12Z" fill="white"/>
+    </svg>
+</button>
+
+<div id="accesibilidad-panel">
+    <div class="panel-header">
+        <h3>⚡ Accesibilidad</h3>
+        <button class="reset-btn" id="reset-all">Restablecer</button>
+    </div>
+    <div class="panel-body">
+        <!-- Tamaño de texto -->
+        <div class="option-group">
+            <div class="option-title">📏 Tamaño de Texto</div>
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Tamaño</span>
+                    <span id="text-size-value">100%</span>
+                </div>
+                <input type="range" min="80" max="200" value="100" class="slider" id="text-size-slider" step="10">
+            </div>
+        </div>
+
+        <!-- Opciones visuales -->
+        <div class="option-group">
+            <div class="option-title">👁️ Visual</div>
+            
+            <div class="option-item" data-feature="high-contrast">
+                <div class="option-content">
+                    <div class="option-icon">🔆</div>
+                    <div class="option-text">
+                        <div class="option-label">Alto Contraste</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="dark-mode">
+                <div class="option-content">
+                    <div class="option-icon">🌙</div>
+                    <div class="option-text">
+                        <div class="option-label">Modo Oscuro</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="grayscale">
+                <div class="option-content">
+                    <div class="option-icon">⚫</div>
+                    <div class="option-text">
+                        <div class="option-label">Escala de Grises</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="invert-colors">
+                <div class="option-content">
+                    <div class="option-icon">🔄</div>
+                    <div class="option-text">
+                        <div class="option-label">Invertir Colores</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="low-saturation">
+                <div class="option-content">
+                    <div class="option-icon">🎨</div>
+                    <div class="option-text">
+                        <div class="option-label">Baja Saturación</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="hide-images">
+                <div class="option-content">
+                    <div class="option-icon">🖼️</div>
+                    <div class="option-text">
+                        <div class="option-label">Ocultar Imágenes</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+        </div>
+
+        <!-- Opciones de lectura -->
+        <div class="option-group">
+            <div class="option-title">📖 Legibilidad</div>
+            
+            <div class="option-item" data-feature="text-spacing">
+                <div class="option-content">
+                    <div class="option-icon">↔️</div>
+                    <div class="option-text">
+                        <div class="option-label">Espaciado de Texto</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="line-height">
+                <div class="option-content">
+                    <div class="option-icon">📏</div>
+                    <div class="option-text">
+                        <div class="option-label">Altura de Línea</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="highlight-links">
+                <div class="option-content">
+                    <div class="option-icon">🔗</div>
+                    <div class="option-text">
+                        <div class="option-label">Resaltar Enlaces</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="readable-font">
+                <div class="option-content">
+                    <div class="option-icon">🔤</div>
+                    <div class="option-text">
+                        <div class="option-label">Fuente Legible</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="highlight-headings">
+                <div class="option-content">
+                    <div class="option-icon">📰</div>
+                    <div class="option-text">
+                        <div class="option-label">Resaltar Títulos</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="reading-guide">
+                <div class="option-content">
+                    <div class="option-icon">📍</div>
+                    <div class="option-text">
+                        <div class="option-label">Guía de Lectura</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+        </div>
+
+        <!-- Opciones de navegación -->
+        <div class="option-group">
+            <div class="option-title">🎯 Navegación</div>
+            
+            <div class="option-item" data-feature="big-cursor">
+                <div class="option-content">
+                    <div class="option-icon">👆</div>
+                    <div class="option-text">
+                        <div class="option-label">Cursor Grande</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="highlight-hover">
+                <div class="option-content">
+                    <div class="option-icon">✨</div>
+                    <div class="option-text">
+                        <div class="option-label">Resaltar al Pasar</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="highlight-focus">
+                <div class="option-content">
+                    <div class="option-icon">🎯</div>
+                    <div class="option-text">
+                        <div class="option-label">Resaltar Foco</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+
+            <div class="option-item" data-feature="stop-animations">
+                <div class="option-content">
+                    <div class="option-icon">⏸️</div>
+                    <div class="option-text">
+                        <div class="option-label">Detener Animaciones</div>
+                    </div>
+                </div>
+                <div class="toggle-switch"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Línea guía de lectura -->
+<div id="reading-guide-line"></div>
+
+<style>
+/* Botón flotante - PROTEGIDO */
+#accesibilidad-btn {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 56px !important;
+    height: 56px !important;
+    background: linear-gradient(135deg, #39A900 0%, #54e40cff 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50% !important;
+    font-size: 28px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    z-index: 10000 !important;
+    transition: all 0.15s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: scale(1) !important;
+}
+
+#accesibilidad-btn:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4) !important;
+}
+
+#accesibilidad-btn:active {
+    transform: scale(0.95) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+    transition: all 0.1s ease !important;
+}
+
+#accesibilidad-btn.active {
+    background: linear-gradient(135deg, #39A900 0%, #60d625ff 100%) !important;
+    animation: pulse-btn 0.3s ease !important;
+}
+
+@keyframes pulse-btn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+/* Panel - PROTEGIDO */
+#accesibilidad-panel {
+    position: fixed !important;
+    bottom: 90px !important;
+    right: 20px !important;
+    width: 320px !important;
+    background: white !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2) !important;
+    z-index: 9999 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(20px) scale(0.95) !important;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
+    filter: none !important;
+}
+
+#accesibilidad-panel.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+#accesibilidad-panel * {
+    filter: none !important;
+}
+
+.panel-header {
+    background: linear-gradient(135deg, #45cd01ff 0%, #39A900 100%) !important;
+    color: white !important;
+    padding: 20px !important;
+    border-radius: 16px 16px 0 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+.panel-header h3 {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    color: white !important;
+}
+
+.reset-btn {
+    background: rgba(255,255,255,0.2) !important;
+    border: none !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    transition: background 0.3s !important;
+}
+
+.reset-btn:hover {
+    background: rgba(255,255,255,0.3) !important;
+}
+
+.panel-body {
+    padding: 20px !important;
+    max-height: 500px !important;
+    overflow-y: auto !important;
+    background: white !important;
+    color: #333 !important;
+}
+
+.option-group {
+    margin-bottom: 20px !important;
+}
+
+.option-title {
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    color: #666 !important;
+    font-weight: 600 !important;
+    margin-bottom: 12px !important;
+    letter-spacing: 0.5px !important;
+}
+
+.option-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 12px !important;
+    background: #f7f7f7 !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+}
+
+.option-item:hover {
+    background: #efefef !important;
+    transform: translateX(4px) !important;
+}
+
+.option-item.active {
+    background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%) !important;
+    border-left: 3px solid #39A900 !important;
+}
+
+.option-content {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.option-icon {
+    font-size: 20px !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: white !important;
+    border-radius: 8px !important;
+}
+
+.option-text {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.option-label {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #333 !important;
+}
+
+.toggle-switch {
+    width: 44px !important;
+    height: 24px !important;
+    background: #ddd !important;
+    border-radius: 12px !important;
+    position: relative !important;
+    transition: background 0.3s !important;
+    flex-shrink: 0 !important;
+}
+
+.toggle-switch::after {
+    content: '' !important;
+    position: absolute !important;
+    width: 20px !important;
+    height: 20px !important;
+    background: white !important;
+    border-radius: 50% !important;
+    top: 2px !important;
+    left: 2px !important;
+    transition: transform 0.3s !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+}
+
+.option-item.active .toggle-switch {
+    background: #39A900!important;
+}
+
+.option-item.active .toggle-switch::after {
+    transform: translateX(20px) !important;
+}
+
+/* Slider */
+.slider-container {
+    padding: 12px !important;
+    background: #f7f7f7 !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+.slider-label {
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-bottom: 8px !important;
+    font-size: 14px !important;
+    color: #333 !important;
+}
+
+.slider {
+    width: 100% !important;
+    height: 6px !important;
+    border-radius: 3px !important;
+    background: #ddd !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+    background: #39A900 !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+}
+
+.slider::-moz-range-thumb {
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+    background: #39A900 !important;
+    cursor: pointer !important;
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+}
+
+/* Atajos de teclado */
+.keyboard-hint {
+    padding: 12px !important;
+    background: #f0f4ff !important;
+    border-radius: 8px !important;
+    margin-top: 12px !important;
+    border-left: 3px solid #39A900 !important;
+}
+
+.keyboard-hint-title {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #39A900 !important;
+    margin-bottom: 6px !important;
+}
+
+.keyboard-hint-item {
+    font-size: 11px !important;
+    color: #666 !important;
+    margin: 4px 0 !important;
+}
+
+.kbd {
+    background: white !important;
+    padding: 2px 6px !important;
+    border-radius: 3px !important;
+    border: 1px solid #ddd !important;
+    font-family: monospace !important;
+    font-size: 10px !important;
+}
+
+.panel-body::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+.panel-body::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+    border-radius: 3px !important;
+}
+
+.panel-body::-webkit-scrollbar-thumb {
+    background: #39A900 !important;
+    border-radius: 3px !important;
+}
+
+/* Estados de accesibilidad - NO afectan al panel ni al botón */
+body.high-contrast :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    filter: contrast(1.5) !important;
+}
+
+body.dark-mode :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    background-color: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+body.grayscale :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    filter: grayscale(100%) !important;
+}
+
+body.invert-colors :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    filter: invert(100%) hue-rotate(180deg) !important;
+}
+
+body.low-saturation :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    filter: saturate(0.5) !important;
+}
+
+body.text-spacing :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    letter-spacing: 0.12em !important;
+    word-spacing: 0.16em !important;
+}
+
+body.line-height :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    line-height: 2 !important;
+}
+
+body.hide-images img:not(#accesibilidad-panel img) {
+    opacity: 0.1 !important;
+}
+
+body.highlight-links a:not(#accesibilidad-panel a) {
+    background: yellow !important;
+    color: black !important;
+    padding: 2px 4px !important;
+    border-radius: 3px !important;
+    text-decoration: underline !important;
+}
+
+body.readable-font :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+}
+
+body.highlight-headings h1:not(#accesibilidad-panel h1),
+body.highlight-headings h2:not(#accesibilidad-panel h2),
+body.highlight-headings h3:not(#accesibilidad-panel h3),
+body.highlight-headings h4:not(#accesibilidad-panel h4),
+body.highlight-headings h5:not(#accesibilidad-panel h5),
+body.highlight-headings h6:not(#accesibilidad-panel h6) {
+    background: #fff3cd !important;
+    padding: 8px !important;
+    border-left: 4px solid #ffc107 !important;
+    margin: 10px 0 !important;
+}
+
+body.big-cursor,
+body.big-cursor * {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="font-size:32px"><text y="28">👆</text></svg>'), auto !important;
+}
+
+body.highlight-hover *:not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *):hover {
+    outline: 3px solid #39A900 !important;
+    outline-offset: 2px !important;
+}
+
+body.highlight-focus *:not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *):focus {
+    outline: 4px solid #f093fb !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 10px rgba(240, 147, 251, 0.5) !important;
+}
+
+body.stop-animations :not(#accesibilidad-btn):not(#accesibilidad-panel):not(#accesibilidad-panel *) {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Guía de lectura */
+#reading-guide-line {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 3px !important;
+    background: #39A900 !important;
+    pointer-events: none !important;
+    display: none !important;
+    z-index: 9998 !important;
+    box-shadow: 0 0 10px #39A900 !important;
+}
+
+body.reading-guide #reading-guide-line {
+    display: block !important;
+}
+
+body.reading-guide {
+    cursor: none !important;
+}
+</style>
+
+<script>
+(function() {
+    const state = {
+        textSize: 100,
+        features: new Set()
+    };
+
+    const toggleBtn = document.getElementById('accesibilidad-btn');
+    const panel = document.getElementById('accesibilidad-panel');
+    const resetBtn = document.getElementById('reset-all');
+    const textSizeSlider = document.getElementById('text-size-slider');
+    const textSizeValue = document.getElementById('text-size-value');
+    const optionItems = document.querySelectorAll('.option-item');
+    const readingGuideLine = document.getElementById('reading-guide-line');
+
+    // Abrir/cerrar panel
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        panel.classList.toggle('show');
+        toggleBtn.classList.toggle('active');
+    });
+
+    // Cerrar al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (!panel.contains(e.target) && !toggleBtn.contains(e.target)) {
+            panel.classList.remove('show');
+            toggleBtn.classList.remove('active');
+        }
+    });
+
+    // Prevenir cierre al hacer clic dentro del panel
+    panel.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Control de tamaño de texto (solo afecta al contenido, no al panel)
+    textSizeSlider.addEventListener('input', (e) => {
+        const size = e.target.value;
+        state.textSize = size;
+        textSizeValue.textContent = `${size}%`;
+        
+        // Aplicar solo al body, no a los elementos del panel
+        const elements = document.querySelectorAll('body > *:not(#accesibilidad-btn):not(#accesibilidad-panel):not(#reading-guide-line)');
+        elements.forEach(el => {
+            el.style.fontSize = `${size}%`;
+        });
+    });
+
+    // Toggle de funciones
+    optionItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const feature = item.dataset.feature;
+            
+            if (state.features.has(feature)) {
+                state.features.delete(feature);
+                item.classList.remove('active');
+                document.body.classList.remove(feature);
+            } else {
+                state.features.add(feature);
+                item.classList.add('active');
+                document.body.classList.add(feature);
+            }
+        });
+    });
+
+    // Guía de lectura que sigue el mouse
+    document.addEventListener('mousemove', (e) => {
+        if (state.features.has('reading-guide')) {
+            readingGuideLine.style.top = `${e.clientY}px`;
+        }
+    });
+
+    // Restablecer todo
+    resetBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        state.textSize = 100;
+        state.features.clear();
+        
+        // Restablecer tamaño de texto
+        const elements = document.querySelectorAll('body > *:not(#accesibilidad-btn):not(#accesibilidad-panel):not(#reading-guide-line)');
+        elements.forEach(el => {
+            el.style.fontSize = '';
+        });
+        
+        textSizeSlider.value = 100;
+        textSizeValue.textContent = '100%';
+        
+        // Remover todas las clases de características
+        optionItems.forEach(item => {
+            item.classList.remove('active');
+            document.body.classList.remove(item.dataset.feature);
+        });
+    });
+
+    // Atajos de teclado
+    document.addEventListener('keydown', (e) => {
+        if (e.altKey) {
+            switch(e.key.toLowerCase()) {
+                case 'a':
+                    e.preventDefault();
+                    toggleBtn.click();
+                    break;
+                case 'c':
+                    e.preventDefault();
+                    document.querySelector('[data-feature="high-contrast"]')?.click();
+                    break;
+                case 'd':
+                    e.preventDefault();
+                    document.querySelector('[data-feature="dark-mode"]')?.click();
+                    break;
+                case '+':
+                case '=':
+                    e.preventDefault();
+                    if (state.textSize < 200) {
+                        textSizeSlider.value = parseInt(state.textSize) + 10;
+                        textSizeSlider.dispatchEvent(new Event('input'));
+                    }
+                    break;
+                case '-':
+                    e.preventDefault();
+                    if (state.textSize > 80) {
+                        textSizeSlider.value = parseInt(state.textSize) - 10;
+                        textSizeSlider.dispatchEvent(new Event('input'));
+                    }
+                    break;
+            }
+        }
+    });
+})();
+</script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

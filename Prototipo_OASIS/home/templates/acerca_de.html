@@ -1,0 +1,483 @@
+{% extends "base.html" %}
+
+{% block title %}Acerca de Nosotros - OASIS | SENA{% endblock %}
+
+{% block breadcrumb %}
+<div class="container mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home:inicio' %}">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Acerca de</li>
+        </ol>
+    </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- HEADER SECTION -->
+<section class="py-5 mb-5 text-center">
+    <h1 class="display-3 fw-bold text-sena mb-3">
+        Acerca de <span class="text-gradient">OASIS</span>
+    </h1>
+    <p class="lead text-muted mx-auto" style="max-width: 700px;">
+        Sistema de Gestión de Proyectos Empresariales desarrollado para fortalecer 
+        la conexión entre aprendices SENA y el sector productivo.
+    </p>
+</section>
+
+<!-- MISIÓN Y VISIÓN -->
+<section class="py-5 mb-5">
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card h-100 border-0 shadow-lg">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="bg-sena bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-bullseye text-sena" style="font-size: 2.5rem;"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-center mb-4 text-sena fw-bold">Nuestra Misión</h3>
+                    <p class="text-muted text-center">
+                        Facilitar la gestión de proyectos empresariales entre aprendices SENA y 
+                        empresas del sector productivo, promoviendo el desarrollo de competencias 
+                        prácticas y fortaleciendo el vínculo entre la formación académica y las 
+                        necesidades del mercado laboral.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card h-100 border-0 shadow-lg">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="bg-sena bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px;">
+                            <i class="bi bi-eye text-sena" style="font-size: 2.5rem;"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-center mb-4 text-sena fw-bold">Nuestra Visión</h3>
+                    <p class="text-muted text-center">
+                        Ser la plataforma líder en Colombia para la gestión de proyectos de 
+                        formación profesional, reconocida por su innovación, eficiencia y por 
+                        contribuir significativamente al desarrollo del talento humano y el 
+                        crecimiento empresarial del país.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ¿QUÉ ES OASIS? -->
+<section class="py-5 mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="display-5 fw-bold text-sena mb-4">
+                ¿Qué es OASIS?
+            </h2>
+            <p class="text-muted mb-3">
+                <strong>OASIS</strong> (Organización y Administración de Sistemas de Información 
+                para el Sector Productivo) es una plataforma web desarrollada con tecnologías 
+                modernas que permite gestionar de manera integral los proyectos empresariales 
+                en el SENA.
+            </p>
+            <p class="text-muted mb-3">
+                El sistema facilita la comunicación entre aprendices, instructores y empresas, 
+                permitiendo un seguimiento detallado de cada proyecto desde su inicio hasta su 
+                finalización.
+            </p>
+            <div class="d-flex gap-3 flex-wrap mt-4">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill text-success fs-4 me-2"></i>
+                    <span>Gestión de Proyectos</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill text-success fs-4 me-2"></i>
+                    <span>Seguimiento en Tiempo Real</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill text-success fs-4 me-2"></i>
+                    <span>Reportes Automatizados</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-0">
+                    <img src="https://via.placeholder.com/600x400/39A900/FFFFFF?text=Sistema+OASIS" 
+                         alt="Sistema OASIS" 
+                         class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VALORES -->
+<section class="py-5 mb-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold text-sena mb-3">
+            Nuestros Valores
+        </h2>
+        <p class="lead text-muted">
+            Principios que guían nuestro trabajo y compromiso
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 text-center border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-lightbulb text-warning" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Innovación</h5>
+                    <p class="text-muted small">
+                        Buscamos constantemente nuevas formas de mejorar y optimizar 
+                        los procesos educativos y empresariales.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 text-center border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-award text-sena" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Excelencia</h5>
+                    <p class="text-muted small">
+                        Comprometidos con la calidad en cada aspecto de nuestro 
+                        sistema y en el servicio que brindamos.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 text-center border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-people text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Colaboración</h5>
+                    <p class="text-muted small">
+                        Fomentamos el trabajo en equipo y la cooperación entre 
+                        todos los actores del proceso formativo.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card h-100 text-center border-0 shadow">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Transparencia</h5>
+                    <p class="text-muted small">
+                        Mantenemos procesos claros y accesibles, garantizando 
+                        la confianza de todos nuestros usuarios.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TECNOLOGÍAS -->
+<section class="py-5 mb-5 bg-light rounded">
+    <div class="p-5">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-sena mb-3">
+                Tecnologías Utilizadas
+            </h2>
+            <p class="lead text-muted">
+                Desarrollado con las mejores herramientas y frameworks modernos
+            </p>
+        </div>
+
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-code-square text-sena" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3 mb-2">Django</h5>
+                        <p class="text-muted small mb-0">
+                            Framework web de Python de alto nivel para desarrollo rápido y seguro
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-bootstrap text-primary" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3 mb-2">Bootstrap 5</h5>
+                        <p class="text-muted small mb-0">
+                            Framework CSS para diseño responsive y componentes modernos
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-database text-warning" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3 mb-2">PostgreSQL</h5>
+                        <p class="text-muted small mb-0">
+                            Sistema de gestión de bases de datos relacional robusto y confiable
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-filetype-html text-danger" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3 mb-2">HTML5 & CSS3</h5>
+                        <p class="text-muted small mb-0">
+                            Estándares web modernos para interfaces atractivas y funcionales
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-filetype-js text-warning" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3 mb-2">JavaScript</h5>
+                        <p class="text-muted small mb-0">
+                            Lenguaje de programación para interactividad y dinamismo
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-github text-dark" style="font-size: 3rem;"></i>
+                        <h5 class="mt-3 mb-2">Git & GitHub</h5>
+                        <p class="text-muted small mb-0">
+                            Control de versiones y colaboración en el desarrollo
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- EQUIPO DE DESARROLLO -->
+<section class="py-5 mb-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold text-sena mb-3">
+            Equipo de Desarrollo
+        </h2>
+        <p class="lead text-muted">
+            Aprendices comprometidos con la innovación y el aprendizaje
+        </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm text-center h-100">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <div class="bg-sena text-white rounded-circle d-inline-flex align-items-center justify-content-center mx-auto" 
+                             style="width: 100px; height: 100px; font-size: 2.5rem;">
+                            👨‍💻
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-2">Equipo Backend</h5>
+                    <p class="text-muted small mb-3">
+                        Desarrollo del servidor, APIs y lógica de negocio
+                    </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <span class="badge bg-primary">Django</span>
+                        <span class="badge bg-warning">Python</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm text-center h-100">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <div class="bg-sena text-white rounded-circle d-inline-flex align-items-center justify-content-center mx-auto" 
+                             style="width: 100px; height: 100px; font-size: 2.5rem;">
+                            🎨
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-2">Equipo Frontend</h5>
+                    <p class="text-muted small mb-3">
+                        Diseño de interfaces y experiencia de usuario
+                    </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <span class="badge bg-danger">HTML/CSS</span>
+                        <span class="badge bg-warning">JavaScript</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm text-center h-100">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <div class="bg-sena text-white rounded-circle d-inline-flex align-items-center justify-content-center mx-auto" 
+                             style="width: 100px; height: 100px; font-size: 2.5rem;">
+                            📊
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-2">Equipo de Base de Datos</h5>
+                    <p class="text-muted small mb-3">
+                        Diseño y optimización de estructuras de datos
+                    </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <span class="badge bg-info">PostgreSQL</span>
+                        <span class="badge bg-secondary">SQL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="card border-0 shadow-sm text-center h-100">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <div class="bg-sena text-white rounded-circle d-inline-flex align-items-center justify-content-center mx-auto" 
+                             style="width: 100px; height: 100px; font-size: 2.5rem;">
+                            🔒
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-2">Equipo de Seguridad</h5>
+                    <p class="text-muted small mb-3">
+                        Implementación de medidas de seguridad y testing
+                    </p>
+                    <div class="d-flex justify-content-center gap-2">
+                        <span class="badge bg-success">Security</span>
+                        <span class="badge bg-dark">Testing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OBJETIVOS -->
+<section class="py-5 mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+            <h2 class="display-5 fw-bold text-sena mb-4">
+                Nuestros Objetivos
+            </h2>
+            <div class="mb-4">
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Facilitar la Gestión de Proyectos</h5>
+                        <p class="text-muted">
+                            Proporcionar herramientas intuitivas para administrar proyectos 
+                            desde su concepción hasta su finalización.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Conectar Talento con Empresas</h5>
+                        <p class="text-muted">
+                            Crear un puente efectivo entre aprendices SENA y empresas 
+                            del sector productivo.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Promover el Aprendizaje Práctico</h5>
+                        <p class="text-muted">
+                            Fomentar el desarrollo de competencias a través de 
+                            proyectos reales y significativos.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="bi bi-check-circle-fill text-success fs-3"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>Generar Reportes y Estadísticas</h5>
+                        <p class="text-muted">
+                            Ofrecer información valiosa para la toma de decisiones 
+                            basada en datos reales.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 order-lg-1">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-0">
+                    <img src="https://via.placeholder.com/600x400/39A900/FFFFFF?text=Objetivos+OASIS" 
+                         alt="Objetivos OASIS" 
+                         class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACTO CTA -->
+<section class="py-5 mb-5">
+    <div class="card bg-gradient border-0 shadow-lg">
+        <div class="card-body text-center py-5" style="background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);">
+            <h2 class="display-5 fw-bold text-white mb-3">
+                ¿Tienes alguna pregunta?
+            </h2>
+            <p class="lead text-white mb-4">
+                Estamos aquí para ayudarte. Contáctanos y con gusto te atenderemos.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="mailto:oasis@sena.edu.co" class="btn btn-light btn-lg">
+                    <i class="bi bi-envelope me-2"></i>Enviar Email
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .bg-sena.bg-opacity-10 {
+        background-color: rgba(57, 169, 0, 0.1) !important;
+    }
+</style>
+{% endblock %}

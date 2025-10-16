@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{# Si usas widget_tweaks, descomenta la siguiente línea #}
+{% load widget_tweaks %}
+
+{% block title %}Editar Usuario | {{ form.instance.username }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            
+            <div class="card shadow-lg border-primary">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-edit me-2"></i> Editando Usuario: 
+                        <span class="fw-bold">{{ form.instance.username }}</span>
+                    </h4>
+                </div>
+                
+                <div class="card-body p-4">
+                    <p class="text-muted text-center mb-4">
+                        Modifique la información y el rol del usuario.
+                    </p>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Corrija los siguientes errores:</strong>
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-bold">{{ field.label }}</label>
+                                
+                                {# 💡 Opciones para aplicar estilos: #}
+                                {% render_field field class="form-control" %}
+                                
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text }}</div>
+                                {% endif %}
+                                
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <hr class="my-4">
+                        
+                        <div class="d-flex justify-content-end">
+                            <a href="{% url 'gestion:listar_usuarios' %}" class="btn btn-outline-secondary btn-lg me-3">
+                                <i class="fas fa-times-circle me-1"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-1"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

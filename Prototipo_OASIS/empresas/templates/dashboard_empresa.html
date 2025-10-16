@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard Empresa{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <!-- Bloque de Bienvenida Estilizado (Jumbotron) -->
+        <!-- Asumo que tienes un objeto 'empresa' o 'user' con un campo 'nombre_empresa' -->
+        <div class="welcome-jumbotron bg-primary-custom">
+            <h1 class="display-5 fw-bold mb-1">Panel de Control Empresarial</h1>
+            <p class="lead">
+                Gestiona tus proyectos, revisa el progreso de los aprendices y conecta con el SENA.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Tarjetas de Estadísticas Clave (Métricas Empresariales) -->
+<div class="row g-4 mb-5">
+    
+    <!-- Tarjeta 1: Proyectos Publicados -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-briefcase-fill fs-3 text-primary me-3"></i>
+                <div>
+                    <p class="text-uppercase mb-0 text-muted small">Proyectos Publicados</p>
+                    <!-- Aquí deberías contar tus proyectos -->
+                    <h3 class="fw-bold mb-0">{% if proyectos %}{{ proyectos|length }}{% else %}0{% endif %}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta 2: Proyectos Activos/Asignados -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-people-fill fs-3 text-success me-3"></i>
+                <div>
+                    <p class="text-uppercase mb-0 text-muted small">Proyectos Activos</p>
+                    <!-- Asumo una lógica simple, si hay proyectos, hay proyectos activos -->
+                    <h3 class="fw-bold mb-0">{% if proyectos %}{{ proyectos|length }}{% else %}0{% endif %}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta 3: Solicitudes Pendientes (Ejemplo) -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-bell-fill fs-3 text-warning me-3"></i>
+                <div>
+                    <p class="text-uppercase mb-0 text-muted small">Solicitudes Pendientes</p>
+                    <h3 class="fw-bold mb-0">3</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tarjeta 4: Perfil Completo (Ejemplo) -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card stat-card shadow-sm p-3">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-person-badge-fill fs-3 text-info me-3"></i>
+                <div>
+                    <p class="text-uppercase mb-0 text-muted small">Perfil Completo</p>
+                    <h3 class="fw-bold mb-0">{% if empresa.perfil_completo %}{{ empresa.perfil_completo }}%{% else %}60{% endif %}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row g-4">
+    <!-- Columna Principal: Lista de Proyectos -->
+    <div class="col-lg-8">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="bi bi-list-task me-2"></i>Tus Proyectos Publicados</h5>
+            </div>
+            <div class="card-body p-0 table-responsive">
+
+                {% if proyectos %}
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Aprendices Asignados</th>
+                                <th scope="col" class="text-end">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for proyecto in proyectos %}
+                                <tr>
+                                    <td class="align-middle fw-semibold">{{ proyecto.nombre }}</td>
+                                    <td class="align-middle">
+                                        {% if proyecto.estado == "APROBADO" %}
+                                            <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i>Aprobado</span>
+                                        {% elif proyecto.estado == "RECHAZADO" %}
+                                            <span class="badge bg-danger"><i class="bi bi-x-circle-fill me-1"></i>Rechazado</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark"><i class="bi bi-clock-fill me-1"></i>Pendiente</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-middle">
+                                        <!-- Simulación: Cuenta de aprendices asignados -->
+                                        <span class="badge bg-secondary">{% if proyecto.aprendices_asignados %}{{ proyecto.aprendices_asignados }}/{% else %}0/{% endif %}{% if proyecto.cupo_aprendices %}{{ proyecto.cupo_aprendices }}{% else %}4{% endif %}</span>
+                                    </td>
+                                    <td class="align-middle text-end">
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'empresas:postulaciones_proyecto' proyecto.id %}"  class="btn btn-outline-info btn-sm" title="Ver Detalles"> Ver Postulaciones</a>
+                                            <a href="{% url 'empresas:detalle_proyecto_empresa' proyecto.id %}" 
+                                            class="btn btn-outline-secondary btn-sm" title="Ver Detalle del Proyecto">
+                                            <i class="bi bi-info-circle"></i>
+                                            </a>
+                                            <a href="{% url 'empresas:editar_proyecto' proyecto.id %}" class="btn btn-outline-primary btn-sm" title="Editar Proyecto">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-outline-danger btn-sm" title="Eliminar Proyecto">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+
+                    <div class="alert alert-info text-center m-4 p-4 border-0 shadow-sm">
+                        <i class="bi bi-info-circle-fill fs-3 mb-2"></i>
+                        <h4 class="alert-heading">¡Hora de Publicar tu Primer Reto!</h4>
+                        <p class="mb-0">Aún no tienes proyectos registrados. Crea una oportunidad para que los aprendices se postulen.</p>
+                        <hr>
+                        <a href="{% url 'empresas:crear_proyecto' %}" class="btn btn-success btn-lg mt-3">
+                            <i class="bi bi-plus-circle me-2"></i> Crear Nuevo Proyecto Ahora
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna Lateral: Acciones Rápidas -->
+    <div class="col-lg-4">
+        <div class="card shadow-lg border-0 quick-links-card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-lightning-charge me-2"></i>Acciones Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'empresas:crear_proyecto' %}" class="btn btn-success btn-lg shadow-sm">
+                    <i class="bi bi-plus-circle me-2"></i> Crear Nuevo Proyecto
+                </a>
+                <a href="{% url 'empresas:mi_perfil_empresa' %}" class="btn btn-outline-dark btn-lg shadow-sm">
+                    <i class="bi bi-person-fill me-2"></i> Administrar Perfil
+                </a>
+                <a href="{% url 'auth:contacto' %}" class="btn btn-outline-info btn-lg shadow-sm">
+                    <i class="bi bi-chat-dots me-2"></i> Contactar Soporte
+                </a>
+            </div>
+        </div>
+
+        <!-- Notificaciones/Alertas -->
+        <div class="card shadow-sm border-0 mt-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0"><i class="bi bi-info-circle me-2 text-primary"></i>Notificaciones</h6>
+            </div>
+            <div class="list-group list-group-flush">
+                <div class="list-group-item list-group-item-action py-3">
+                    <small class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> ¡Alerta! Proyecto "App Logística" requiere revisión.</small>
+                </div>
+                <div class="list-group-item list-group-item-action py-3">
+                    <small class="text-success"><i class="bi bi-check-circle-fill"></i> Aprendiz Aprobado para "Web Marketing".</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

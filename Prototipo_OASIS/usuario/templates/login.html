@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-5 col-md-8 col-sm-10">
+        <!-- Contenedor principal de la tarjeta de login -->
+        <div class="card shadow-lg border-0 rounded-4 mt-5 p-4 p-md-5">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <!-- Icono o logo de OASIS -->
+                    <i class="bi bi-box-arrow-in-right display-4 text-success mb-2"></i>
+                    <h2 class="fw-bold text-dark">Acceder a OASIS</h2>
+                    <p class="text-muted">Ingresa tus credenciales para continuar.</p>
+                </div>
+
+                <!-- Manejo de Errores Generales -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger mb-4 rounded-3 border-0 shadow-sm">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {{ form.non_field_errors.0 }}
+                    </div>
+                {% endif %}
+
+                <!-- Formulario de Inicio de Sesión -->
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Campo de Usuario/Correo -->
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label fw-semibold">
+                            <i class="bi bi-person-circle me-1"></i> Usuario o Correo Electrónico
+                        </label>
+                        <!-- Aquí asumimos que {{ form.username }} ya tiene las clases de formulario de Bootstrap o se le añaden en el filtro de Django -->
+                        <input type="text" 
+                               name="{{ form.username.name }}" 
+                               id="id_username" 
+                               class="form-control form-control-lg {% if form.username.errors %}is-invalid{% endif %}" 
+                               placeholder="ej: nombre.apellido" 
+                               required>
+                        {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.username.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Campo de Contraseña -->
+                    <div class="mb-4">
+                        <label for="id_password" class="form-label fw-semibold">
+                            <i class="bi bi-key-fill me-1"></i> Contraseña
+                        </label>
+                        <input type="password" 
+                               name="{{ form.password.name }}" 
+                               id="id_password" 
+                               class="form-control form-control-lg {% if form.password.errors %}is-invalid{% endif %}" 
+                               placeholder="••••••••" 
+                               required>
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {{ form.password.errors.0 }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Botón de Ingreso -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg fw-bold shadow-sm py-3">
+                            <i class="bi bi-lock-fill me-2"></i> Ingresar
+                        </button>
+                    </div>
+
+                    <!-- Enlace de contraseña olvidada (Placeholder) -->
+                    <div class="text-center mt-3">
+                        <a href="{% url 'password_reset' %}" class="text-muted small">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Sección de Registro -->
+                <hr class="my-4">
+                <div class="text-center">
+                    <p class="mb-2">¿Aún no tienes una cuenta?</p>
+                    <a href="{% url 'auth:elegir_registro' %}" class="btn btn-outline-primary w-100 py-2 fw-semibold">
+                        <i class="bi bi-person-add me-2"></i> Regístrate aquí
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

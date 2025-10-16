@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Detalle de Usuario: {{ usuario_seleccionado.username }}{% endblock %}
+
+{% block content %}
+
+{% comment %} Lógica para definir estilos y datos según el rol del usuario {% endcomment %}
+{% with rol=usuario_seleccionado.rol %}
+    {% if rol == 'APRENDIZ' %}
+        {% with card_header_class="bg-gradient-sena" card_icon="bi-person-workspace" avatar_border="border-success" %}
+            {% include "detalle_usuario_card.html" %} {# Ahora este archivo existe #}
+        {% endwith %}
+    {% elif rol == 'INSTRUCTOR' %}
+        {% with card_header_class="bg-gradient-sena-dark" card_icon="bi-person-video3" avatar_border="border-warning" %}
+            {% include "detalle_usuario_card.html" %} {# Ahora este archivo existe #}
+        {% endwith %}
+    {% elif rol == 'EMPRESA' %}
+        {% with card_header_class="bg-gradient-corporativo" card_icon="bi-building" avatar_border="border-info" %}
+            {% include "detalle_usuario_card.html" %} {# Ahora este archivo existe #}
+        {% endwith %}
+    {% else %} {# ADMIN o Superuser #}
+        {% with card_header_class="bg-gradient-admin" card_icon="bi-person-gear" avatar_border="border-danger" %}
+            {% include "detalle_usuario_card.html" %} {# Ahora este archivo existe #}
+        {% endwith %}
+    {% endif %}
+{% endwith %}
+
+{% endblock content %}
+
+{% block extra_head %}
+<style>
+    /* Estilos para las tarjetas de perfil */
+    .profile-card {
+        animation: fadeInUp 0.6s ease-out;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .profile-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    }
+
+    /* Gradientes para cada rol */
+    .bg-gradient-sena {
+        background: linear-gradient(135deg, #39A900 0%, #2D7A00 100%);
+    }
+    .bg-gradient-sena-dark {
+        background: linear-gradient(135deg, #2D7A00 0%, #1F5500 100%);
+    }
+    .bg-gradient-corporativo {
+        background: linear-gradient(135deg, #39A900 0%, #2D7A00 100%);
+    }
+    .bg-gradient-admin {
+        background: linear-gradient(135deg, #2D7A00 0%, #1F5500 100%);
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+    }
+
+    .profile-avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        background: #f8f9fa;
+    }
+
+    .section-title {
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .info-grid {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+
+    .info-content small {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 600;
+    }
+
+    .info-content strong {
+        font-size: 1rem;
+        word-break: break-word;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}{% endblock %}

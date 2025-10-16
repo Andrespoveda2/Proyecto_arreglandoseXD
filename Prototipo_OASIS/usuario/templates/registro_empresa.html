@@ -1,0 +1,991 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro de Empresa - OASIS{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9 col-sm-11">
+            <!-- Tarjeta Principal de Registro -->
+            <div class="card shadow-lg border-0 registro-empresa-card">
+                <!-- Header con Diseño Empresarial -->
+                <div class="card-header bg-gradient-empresa text-white text-center py-5 position-relative overflow-hidden">
+                    <div class="header-decoration-1"></div>
+                    <div class="header-decoration-2"></div>
+                    <div class="header-decoration-3"></div>
+                    
+                    <div class="header-content position-relative">
+                        <div class="icon-wrapper mb-3">
+                            <i class="bi bi-building-fill-add display-3"></i>
+                        </div>
+                        <h2 class="fw-bold mb-2">Registro de Empresa</h2>
+                        <p class="mb-0 opacity-90">
+                            <i class="bi bi-briefcase-fill me-1"></i>
+                            Únete como aliado empresarial y conecta con talento SENA
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <!-- Banner de Bienvenida Empresarial -->
+                    <div class="welcome-banner-empresa mb-4">
+                        <div class="d-flex align-items-start">
+                            <div class="welcome-icon-empresa">
+                                <i class="bi bi-rocket-takeoff-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">¡Bienvenido al Ecosistema OASIS!</h6>
+                                <p class="small text-muted mb-0">
+                                    Registra tu empresa y accede a proyectos innovadores desarrollados por aprendices SENA. 
+                                    Fortalece tu equipo con talento calificado.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Beneficios Destacados -->
+                    <div class="benefits-grid mb-4">
+                        <div class="benefit-item">
+                            <i class="bi bi-people-fill"></i>
+                            <span>Acceso a talento</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="bi bi-graph-up-arrow"></i>
+                            <span>Proyectos innovadores</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="bi bi-award-fill"></i>
+                            <span>Respaldo SENA</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="bi bi-lightning-charge-fill"></i>
+                            <span>Resultados rápidos</span>
+                        </div>
+                    </div>
+
+                    <!-- Manejo de Errores Generales -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-modern-empresa d-flex align-items-start mb-4" role="alert">
+                            <div class="alert-icon">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="alert-heading mb-2">Se encontraron algunos errores:</h6>
+                                <ul class="mb-0 ps-3">
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Formulario -->
+                    <form method="post" novalidate class="registro-empresa-form">
+                        {% csrf_token %}
+
+                        <!-- Indicador de Progreso -->
+                        <div class="progress-indicator-empresa mb-4">
+                            <div class="progress" style="height: 6px;">
+                                <div class="progress-bar bg-success-sena" role="progressbar" style="width: 0%" 
+                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted d-block mt-2 text-center">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Completa todos los campos requeridos (*)
+                            </small>
+                        </div>
+
+                        <!-- Campos del Formulario con Diseño Mejorado -->
+                        {% for field in form %}
+                            <div class="mb-4 field-group-empresa">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-semibold d-flex align-items-center">
+                                    <!-- Iconos según el tipo de campo empresarial -->
+                                    {% if 'username' in field.name %}
+                                        <i class="bi bi-person-badge-fill me-2 text-success-sena"></i>
+                                    {% elif 'email' in field.name %}
+                                        <i class="bi bi-envelope-at-fill me-2 text-success-sena"></i>
+                                    {% elif 'password' in field.name %}
+                                        <i class="bi bi-shield-lock-fill me-2 text-warning"></i>
+                                    {% elif 'razon_social' in field.name or 'nombre' in field.name %}
+                                        <i class="bi bi-building-fill me-2 text-success-sena"></i>
+                                    {% elif 'nit' in field.name or 'rut' in field.name %}
+                                        <i class="bi bi-file-earmark-text-fill me-2 text-success-sena"></i>
+                                    {% elif 'sector' in field.name or 'industria' in field.name %}
+                                        <i class="bi bi-diagram-3-fill me-2 text-success-sena"></i>
+                                    {% elif 'telefono' in field.name or 'celular' in field.name %}
+                                        <i class="bi bi-telephone-fill me-2 text-info"></i>
+                                    {% elif 'direccion' in field.name or 'ubicacion' in field.name %}
+                                        <i class="bi bi-geo-alt-fill me-2 text-danger"></i>
+                                    {% elif 'sitio' in field.name or 'web' in field.name %}
+                                        <i class="bi bi-globe me-2 text-success-sena"></i>
+                                    {% elif 'representante' in field.name or 'contacto' in field.name %}
+                                        <i class="bi bi-person-vcard-fill me-2 text-success-sena"></i>
+                                    {% elif 'descripcion' in field.name %}
+                                        <i class="bi bi-card-text me-2 text-secondary"></i>
+                                    {% else %}
+                                        <i class="bi bi-pencil-fill me-2 text-muted"></i>
+                                    {% endif %}
+                                    
+                                    {{ field.label }}
+                                    {% if field.field.required %}
+                                        <span class="badge bg-success-sena ms-2 badge-required-empresa">Requerido</span>
+                                    {% endif %}
+                                </label>
+
+                                <div class="input-wrapper-empresa">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="validation-icon error">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                {% if field.help_text %}
+                                    <div class="form-text text-muted small mt-2">
+                                        <i class="bi bi-info-circle me-1"></i>
+                                        {{ field.help_text|safe }}
+                                    </div>
+                                {% endif %}
+
+                                {% if field.errors %}
+                                    <div class="invalid-feedback d-block mt-2">
+                                        {% for error in field.errors %}
+                                            <div class="error-item-empresa">
+                                                <i class="bi bi-exclamation-circle me-1"></i>{{ error }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        <!-- Términos y Condiciones Empresariales -->
+                        <div class="terms-box-empresa mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="acceptTermsEmpresa" required>
+                                <label class="form-check-label small" for="acceptTermsEmpresa">
+                                    Confirmo que soy representante autorizado de la empresa y acepto los 
+                                    <a href="#" class="text-success-sena fw-semibold">términos de colaboración empresarial</a>, 
+                                    la <a href="#" class="text-success-sena fw-semibold">política de privacidad</a> 
+                                    y el <a href="#" class="text-success-sena fw-semibold">código de ética empresarial</a> de OASIS
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Información de Verificación -->
+                        <div class="verification-notice mb-4">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-patch-check-fill text-success-sena me-2 fs-4"></i>
+                                <div>
+                                    <small class="text-muted">
+                                        <strong>Proceso de verificación:</strong> Tu registro será revisado por nuestro equipo 
+                                        para verificar la información empresarial. Recibirás una confirmación en un plazo de 24-48 horas.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Registro -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-success-sena btn-lg btn-registro-empresa fw-bold py-3">
+                                <span class="btn-content">
+                                    <i class="bi bi-building-fill-check me-2"></i>
+                                    Registrar Mi Empresa
+                                </span>
+                                <span class="btn-loader">
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    Registrando empresa...
+                                </span>
+                            </button>
+                        </div>
+
+                        <!-- Información de Seguridad Empresarial -->
+                        <div class="security-info-empresa mt-4">
+                            <div class="d-flex align-items-center justify-content-center gap-3 flex-wrap">
+                                <small class="text-muted">
+                                    <i class="bi bi-shield-fill-check text-success-sena me-1"></i>
+                                    Datos empresariales protegidos
+                                </small>
+                                <small class="text-muted">
+                                    <i class="bi bi-file-lock2-fill text-success-sena me-1"></i>
+                                    Confidencialidad garantizada
+                                </small>
+                                <small class="text-muted">
+                                    <i class="bi bi-patch-check-fill text-success-sena me-1"></i>
+                                    Verificación oficial SENA
+                                </small>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Separador -->
+                    <div class="divider-custom-empresa my-4">
+                        <span class="divider-text">o</span>
+                    </div>
+
+                    <!-- Enlaces Adicionales -->
+                    <div class="text-center">
+                        <p class="mb-3">
+                            <i class="bi bi-building-check text-success-sena me-2"></i>
+                            ¿Tu empresa ya está registrada? 
+                            <a href="{% url 'auth:login' %}" class="fw-bold text-success-sena text-decoration-none link-hover-empresa">
+                                Inicia sesión aquí
+                                <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </p>
+                        <p class="mb-0 small text-muted">
+                            ¿Necesitas asistencia? 
+                            <a href="#" class="text-muted text-decoration-none">
+                                <i class="bi bi-headset me-1"></i>
+                                Soporte empresarial
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer de la Tarjeta -->
+                <div class="card-footer bg-light text-center py-3 border-0">
+                    <small class="text-muted">
+                        <i class="bi bi-shield-fill-check me-1"></i>
+                        Registro empresarial seguro y verificado por el SENA
+                    </small>
+                </div>
+            </div>
+
+            <!-- Tarjeta de Información Adicional -->
+            <div class="info-extra-card mt-4">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                            <h4 class="mb-0">500+</h4>
+                            <small>Aprendices activos</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="bi bi-folder-fill"></i>
+                            </div>
+                            <h4 class="mb-0">200+</h4>
+                            <small>Proyectos completados</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <h4 class="mb-0">150+</h4>
+                            <small>Empresas aliadas</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos Personalizados para Registro de Empresa -->
+<style>
+/* Variables SENA */
+:root {
+    --sena-green: #39A900;
+    --sena-green-dark: #2D7A00;
+    --sena-green-darker: #1F5500;
+    --sena-green-light: #4BC800;
+}
+
+.text-success-sena {
+    color: var(--sena-green) !important;
+}
+
+.bg-success-sena {
+    background-color: var(--sena-green) !important;
+}
+
+.btn-success-sena {
+    background-color: var(--sena-green);
+    border-color: var(--sena-green);
+    color: white;
+}
+
+.btn-success-sena:hover {
+    background-color: var(--sena-green-dark);
+    border-color: var(--sena-green-dark);
+}
+
+.registro-empresa-card {
+    animation: fadeInUp 0.6s ease-out;
+    overflow: hidden;
+}
+
+.bg-gradient-empresa {
+    background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);
+    position: relative;
+}
+
+.header-decoration-1,
+.header-decoration-2,
+.header-decoration-3 {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.header-decoration-1 {
+    width: 250px;
+    height: 250px;
+    top: -100px;
+    right: -80px;
+    animation: float 10s ease-in-out infinite;
+}
+
+.header-decoration-2 {
+    width: 180px;
+    height: 180px;
+    bottom: -80px;
+    left: -60px;
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.header-decoration-3 {
+    width: 120px;
+    height: 120px;
+    top: 50%;
+    left: 10%;
+    animation: float 12s ease-in-out infinite;
+    opacity: 0.5;
+}
+
+.header-content {
+    z-index: 1;
+}
+
+.icon-wrapper {
+    display: inline-block;
+    animation: bounceIn 1s ease-out;
+}
+
+.icon-wrapper i {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.welcome-banner-empresa {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left: 4px solid var(--sena-green);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    animation: slideInLeft 0.5s ease-out;
+}
+
+.welcome-icon-empresa {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-right: 1rem;
+    animation: rotate 3s ease-in-out infinite;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-radius: 0.75rem;
+    animation: fadeIn 0.8s ease-out;
+    border: 2px solid rgba(57, 169, 0, 0.1);
+}
+
+.benefit-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0.5rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.benefit-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(57, 169, 0, 0.3);
+    border-color: var(--sena-green-light);
+}
+
+.benefit-item i {
+    font-size: 1.75rem;
+    color: var(--sena-green);
+}
+
+.benefit-item span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    color: #374151;
+}
+
+.alert-modern-empresa {
+    border-radius: 0.75rem;
+    border: none;
+    border-left: 4px solid #dc2626;
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    animation: shakeX 0.5s ease-out;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.progress-indicator-empresa .progress {
+    border-radius: 1rem;
+    background: #e5e7eb;
+    overflow: hidden;
+}
+
+.progress-indicator-empresa .progress-bar {
+    animation: progressFill 2s ease-out forwards;
+    background: linear-gradient(90deg, var(--sena-green) 0%, var(--sena-green-light) 100%);
+}
+
+.field-group-empresa {
+    position: relative;
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.field-group-empresa:nth-child(1) { animation-delay: 0.1s; }
+.field-group-empresa:nth-child(2) { animation-delay: 0.15s; }
+.field-group-empresa:nth-child(3) { animation-delay: 0.2s; }
+.field-group-empresa:nth-child(4) { animation-delay: 0.25s; }
+.field-group-empresa:nth-child(5) { animation-delay: 0.3s; }
+.field-group-empresa:nth-child(6) { animation-delay: 0.35s; }
+
+.field-group-empresa label i {
+    font-size: 1.1rem;
+}
+
+.badge-required-empresa {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+    font-weight: 600;
+}
+
+.input-wrapper-empresa {
+    position: relative;
+}
+
+.input-wrapper-empresa input,
+.input-wrapper-empresa select,
+.input-wrapper-empresa textarea {
+    border: 2px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.input-wrapper-empresa input:focus,
+.input-wrapper-empresa select:focus,
+.input-wrapper-empresa textarea:focus {
+    border-color: var(--sena-green);
+    box-shadow: 0 0 0 4px rgba(57, 169, 0, 0.1);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.input-wrapper-empresa .is-invalid {
+    border-color: #dc2626 !important;
+}
+
+.validation-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+}
+
+.validation-icon.error {
+    color: #dc2626;
+    animation: shake 0.5s ease-out;
+}
+
+.invalid-feedback {
+    background: #fef2f2;
+    border-left: 3px solid #dc2626;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.error-item-empresa {
+    display: flex;
+    align-items: center;
+    color: #991b1b;
+    font-weight: 500;
+}
+
+.terms-box-empresa {
+    background: #f0fdf4;
+    border: 2px dashed #86efac;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.terms-box-empresa:hover {
+    background: white;
+    border-color: var(--sena-green);
+}
+
+.verification-notice {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    border-left: 4px solid #F59E0B;
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.btn-registro-empresa {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);
+    border: none;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(57, 169, 0, 0.3);
+}
+
+.btn-registro-empresa::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-registro-empresa:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+.btn-registro-empresa:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(57, 169, 0, 0.4);
+    background: linear-gradient(135deg, var(--sena-green-dark) 0%, var(--sena-green-darker) 100%);
+}
+
+.btn-registro-empresa:active {
+    transform: translateY(-1px);
+}
+
+.btn-content {
+    display: inline-block;
+    transition: opacity 0.3s ease;
+}
+
+.btn-loader {
+    display: none;
+}
+
+.btn-registro-empresa.loading .btn-content {
+    display: none;
+}
+
+.btn-registro-empresa.loading .btn-loader {
+    display: inline-block;
+}
+
+.security-info-empresa {
+    padding: 1rem;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-radius: 0.75rem;
+}
+
+.divider-custom-empresa {
+    position: relative;
+    text-align: center;
+}
+
+.divider-custom-empresa::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #d1d5db, transparent);
+}
+
+.divider-text {
+    position: relative;
+    background: white;
+    padding: 0 1rem;
+    color: #9ca3af;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+}
+
+.link-hover-empresa {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.link-hover-empresa::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--sena-green);
+    transition: width 0.3s ease;
+}
+
+.link-hover-empresa:hover::after {
+    width: 100%;
+}
+
+.link-hover-empresa:hover {
+    color: var(--sena-green-dark) !important;
+    transform: translateX(3px);
+}
+
+.info-extra-card {
+    animation: fadeInUp 0.8s ease-out 0.3s backwards;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(57, 169, 0, 0.3);
+    border-color: var(--sena-green);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+    font-size: 1.5rem;
+    color: var(--sena-green);
+}
+
+.stat-card h4 {
+    color: var(--sena-green-dark);
+    font-weight: 800;
+}
+
+.stat-card small {
+    color: #6B7280;
+    font-weight: 600;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes shakeX {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-50%) rotate(-5deg);
+    }
+    75% {
+        transform: translateY(-50%) rotate(5deg);
+    }
+}
+
+@keyframes rotate {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(5deg);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes progressFill {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem !important;
+    }
+
+    .welcome-banner-empresa {
+        padding: 1rem;
+    }
+
+    .welcome-icon-empresa {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+
+    .benefit-item {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .benefit-item i {
+        font-size: 1.5rem;
+    }
+
+    .benefit-item span {
+        font-size: 0.7rem;
+    }
+
+    .field-group-empresa label i {
+        font-size: 1rem;
+    }
+
+    .btn-registro-empresa {
+        padding: 0.875rem 1rem !important;
+    }
+
+    .security-info-empresa {
+        padding: 0.75rem;
+    }
+
+    .security-info-empresa small {
+        font-size: 0.75rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+
+    .stat-card h4 {
+        font-size: 1.5rem;
+    }
+
+    .stat-card small {
+        font-size: 0.7rem;
+    }
+}
+</style>
+
+<!-- Script para mejorar la interacción -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación del botón de registro
+    const form = document.querySelector('.registro-empresa-form');
+    const submitBtn = document.querySelector('.btn-registro-empresa');
+    
+    if (form && submitBtn) {
+        form.addEventListener('submit', function(e) {
+            const termsCheckbox = document.getElementById('acceptTermsEmpresa');
+            if (termsCheckbox && !termsCheckbox.checked) {
+                e.preventDefault();
+                alert('Por favor, acepta los términos y condiciones para continuar.');
+                return;
+            }
+            submitBtn.classList.add('loading');
+        });
+    }
+
+    // Validación en tiempo real con color SENA
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.value.trim() !== '') {
+                this.style.borderColor = '#39A900';
+            }
+        });
+    });
+
+    // Actualizar barra de progreso
+    const totalFields = inputs.length;
+    let filledFields = 0;
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            filledFields = Array.from(inputs).filter(i => i.value.trim() !== '').length;
+            const progress = (filledFields / totalFields) * 100;
+            const progressBar = document.querySelector('.progress-indicator-empresa .progress-bar');
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+                progressBar.setAttribute('aria-valuenow', progress);
+            }
+        });
+    });
+
+    // Animación de las estadísticas
+    const statCards = document.querySelectorAll('.stat-card');
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+            }
+        });
+    }, observerOptions);
+
+    statCards.forEach(card => {
+        observer.observe(card);
+    });
+
+    // Contador animado para las estadísticas
+    function animateValue(element, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const value = Math.floor(progress * (end - start) + start);
+            element.textContent = value + (end >= 100 ? '+' : '');
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    // Iniciar animación de contadores cuando sean visibles
+    const statsObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                const h4 = entry.target.querySelector('h4');
+                const targetValue = parseInt(h4.textContent);
+                animateValue(h4, 0, targetValue, 2000);
+                entry.target.classList.add('counted');
+            }
+        });
+    }, { threshold: 0.5 });
+
+    statCards.forEach(card => {
+        statsObserver.observe(card);
+    });
+
+    // Efecto de destello en los beneficios
+    const benefits = document.querySelectorAll('.benefit-item');
+    benefits.forEach((benefit, index) => {
+        setTimeout(() => {
+            benefit.style.animation = 'pulse 0.5s ease-out';
+        }, 1000 + (index * 200));
+    });
+});
+</script>
+{% endblock %}

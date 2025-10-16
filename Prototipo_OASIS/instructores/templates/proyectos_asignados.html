@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Proyectos Asignados - OASIS{% endblock %}
+
+{% block breadcrumb %}
+<div class="container mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'instructores:dashboard_instructor' %}">Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Proyectos Asignados</li>
+        </ol>
+    </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4 d-flex align-items-center">
+        <i class="bi bi-person-workspace me-3 text-primary"></i> Proyectos Asignados
+    </h2>
+
+    {% if proyectos %}
+        <p class="text-muted">A continuación, se listan los proyectos que han sido asignados para tu supervisión y seguimiento.</p>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
+            {% for proyecto in proyectos %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-start border-4 
+                    {% if proyecto.estado == 'En Curso' %}border-warning
+                    {% elif proyecto.estado == 'Finalizado' %}border-success
+                    {% elif proyecto.estado == 'Pendiente' %}border-info
+                    {% else %}border-secondary
+                    {% endif %}
+                ">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-truncate mb-2">{{ proyecto.nombre }}</h5>
+                        <p class="card-text text-muted mb-3 flex-grow-1" style="font-size: 0.9rem;">
+                            {{ proyecto.descripcion|truncatewords:25 }}
+                        </p>
+                        
+                        <div class="mb-3">
+                            <p class="mb-1 small">
+                                <i class="bi bi-calendar-check me-2 text-primary"></i>
+                                <strong>Inicio:</strong> {{ proyecto.fecha_inicio|date:"d M Y" }}
+                            </p>
+                            <p class="mb-1 small">
+                                <i class="bi bi-bar-chart-fill me-2 
+                                    {% if proyecto.estado == 'En Curso' %}text-warning
+                                    {% elif proyecto.estado == 'Finalizado' %}text-success
+                                    {% else %}text-info
+                                    {% endif %}
+                                "></i>
+                                <strong>Estado:</strong> 
+                                <span class="fw-bold">
+                                    {{ proyecto.estado }}
+                                </span>
+                            </p>
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <a href="{% url 'seguimiento_avance' proyecto.id %}" class="btn btn-sm btn-outline-primary w-100">
+                                <i class="bi bi-eye me-2"></i> Ver Seguimiento
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info mt-3" role="alert">
+            <h4 class="alert-heading"><i class="bi bi-info-circle me-2"></i>Sin Proyectos</h4>
+            <p>No tienes proyectos asignados para realizar seguimiento en este momento.</p>
+        </div>
+    {% endif %}
+
+    <div class="mt-5 text-center">
+        <a href="{% url 'instructores:dashboard_instructor' %}" class="btn btn-lg btn-secondary shadow-sm">
+            <i class="bi bi-arrow-left me-2"></i> Volver al Panel de Instructor
+        </a>
+    </div>
+</div>
+{% endblock %}

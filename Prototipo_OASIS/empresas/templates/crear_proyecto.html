@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{# Si usas widget_tweaks, descomenta la siguiente línea #}
+{% load widget_tweaks %}
+
+{% block title %}Publicar Nuevo Proyecto{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            
+            <div class="card shadow-lg border-success">
+                <div class="card-header bg-success text-white text-center">
+                    <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Publicar Nuevo Proyecto</h4>
+                </div>
+                
+                <div class="card-body p-4">
+                    <p class="text-muted text-center mb-4">
+                        Define los detalles del proyecto que un aprendiz podrá realizar.
+                    </p>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Corrija los siguientes errores:</strong>
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-bold">{{ field.label }}</label>
+                                
+                                {# 💡 Opciones para aplicar estilos: #}
+                                {# 1. Si usaste widget_tweaks: #}
+                                {% render_field field class="form-control" %}
+                                
+                                {# 2. Si modificaste forms.py para añadir la clase: #}
+                                {# {{ field }} #}
+
+                                {% if field.help_text %}
+                                    <div class="form-text">{{ field.help_text }}</div>
+                                {% endif %}
+                                
+                                {% for error in field.errors %}
+                                    <div class="invalid-feedback d-block">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <hr class="my-4">
+                        
+                        <div class="d-flex justify-content-end">
+                            <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-outline-secondary btn-lg me-3">
+                                <i class="fas fa-times-circle me-1"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-save me-1"></i> Publicar Proyecto
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

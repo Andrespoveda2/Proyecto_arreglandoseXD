@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Proyectos Disponibles - OASIS{% endblock %}
+
+{% block breadcrumb %}
+<div class="container mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'instructores:dashboard_instructor' %}">Panel</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Proyectos Disponibles</li>
+        </ol>
+    </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4 d-flex align-items-center">
+        <i class="bi bi-lightbulb me-3 text-success"></i> Banco de Proyectos para Asignación
+    </h2>
+
+    {% if proyectos %}
+        <p class="text-muted">Estos son los proyectos empresariales en el sistema que están pendientes de un instructor para su orientación y seguimiento.</p>
+        
+        <!-- Controles de Filtro/Búsqueda (Opcional, pero útil) -->
+        <div class="row mb-4">
+            <div class="col-md-8 offset-md-2">
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2 rounded-pill" type="search" placeholder="Buscar por nombre, sector o estado..." aria-label="Search">
+                    <button class="btn btn-outline-secondary rounded-pill" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
+            {% for proyecto in proyectos %}
+            <div class="col">
+                <div class="card h-100 shadow border-start border-4 border-success">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start">
+                             <h5 class="card-title text-truncate mb-2 text-success fw-bold">{{ proyecto.nombre }}</h5>
+                             <span class="badge bg-success-subtle text-success border border-success ms-2 py-1">Disponible</span>
+                        </div>
+                       
+                        <p class="card-text text-muted mb-3 flex-grow-1" style="font-size: 0.9rem;">
+                            {{ proyecto.descripcion|truncatewords:25 }}
+                        </p>
+                        
+                        <div class="mb-3">
+                            <p class="mb-1 small">
+                                <i class="bi bi-calendar-range me-2 text-dark"></i>
+                                <strong>Postulación:</strong> {{ proyecto.fecha_postulacion|date:"d M Y" }}
+                            </p>
+                            <p class="mb-1 small">
+                                <i class="bi bi-tag-fill me-2 text-dark"></i>
+                                <strong>Sector:</strong> 
+                                <span class="fw-semibold">
+                                    {{ proyecto.sector_productivo }}
+                                </span>
+                            </p>
+                            <p class="mb-1 small">
+                                <i class="bi bi-building-fill me-2 text-dark"></i>
+                                <strong>Empresa:</strong> 
+                                <span class="fw-semibold text-truncate" title="{{ proyecto.empresa.nombre }}">
+                                    {{ proyecto.empresa.nombre|default:"N/A" }}
+                                </span>
+                            </p>
+                        </div>
+                        
+                        <div class="mt-auto">
+                            <!-- Botón para asignar (acción principal) -->
+                            <a href="{% url 'asignar_proyecto' proyecto.id %}" class="btn btn-success w-100 mb-2">
+                                <i class="bi bi-person-plus me-2"></i> Asignarme Proyecto
+                            </a>
+                             <!-- Botón para ver más detalles (acción secundaria) -->
+                             <a href="{% url 'ver_detalles_proyecto' proyecto.id %}" class="btn btn-outline-secondary w-100 btn-sm">
+                                <i class="bi bi-info-circle me-2"></i> Ver Detalles
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-success mt-5" role="alert">
+            <h4 class="alert-heading"><i class="bi bi-check-circle me-2"></i>¡Excelente!</h4>
+            <p>No hay proyectos nuevos pendientes de asignación en este momento. El banco está vacío.</p>
+        </div>
+    {% endif %}
+
+    <div class="mt-5 text-center">
+        <a href="{% url 'instructores:dashboard_instructor' %}" class="btn btn-lg btn-secondary shadow-sm">
+            <i class="bi bi-arrow-left me-2"></i> Volver al Panel de Instructor
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Editar Perfil - {{ request.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Tarjeta Principal del Formulario (Estilo Moderno) -->
+            <div class="card shadow-lg border-0 overflow-hidden form-card">
+                
+                <!-- Header con Degradado VERDE SENA -->
+                <div class="card-header bg-gradient-sena text-white text-center py-4 position-relative">
+                    <div class="header-decoration"></div>
+                    <h4 class="mb-0 fw-bold">
+                        <i class="fas fa-user-edit me-2"></i> <!-- Icono de Edición -->
+                        Actualizar Información del Aprendiz
+                    </h4>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    
+                    <div class="text-center mb-4">
+                        <p class="text-muted lead">
+                            Modifica los campos necesarios y guarda los cambios.
+                        </p>
+                    </div>
+
+                    <!-- Formulario de Edición (DEBES REEMPLAZAR ESTE FORM CON TU LÓGICA DE DJANGO) -->
+                    <form method="post" enctype="multipart/form-data" action="{% url 'aprendices:editar_perfil' %}">
+                        {% csrf_token %}
+                        
+                        <!-- Lógica para mostrar mensajes de error/éxito (basada en Django messages) -->
+                        {% if messages %}
+                            <div class="mb-4">
+                                {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <!-- Grupo de Campos: Datos Personales -->
+                        <h5 class="section-title text-sena-green mb-3 mt-4">
+                            <i class="fas fa-id-card me-2"></i>
+                            Datos Personales
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <!-- Campo Nombre Completo -->
+                            <div class="col-md-6">
+                                <label for="id_first_name" class="form-label fw-bold">Nombre(s)</label>
+                                <input type="text" class="form-control form-control-sena" id="id_first_name" name="first_name" 
+                                       value="{{ request.user.first_name|default:'' }}" required>
+                            </div>
+                            
+                            <!-- Campo Apellido(s) -->
+                            <div class="col-md-6">
+                                <label for="id_last_name" class="form-label fw-bold">Apellido(s)</label>
+                                <input type="text" class="form-control form-control-sena" id="id_last_name" name="last_name" 
+                                       value="{{ request.user.last_name|default:'' }}" required>
+                            </div>
+                            
+                            <!-- Campo Correo Electrónico (No Editable por lo general, pero incluido) -->
+                            <div class="col-md-12">
+                                <label for="id_email" class="form-label fw-bold">Correo Electrónico (SENA)</label>
+                                <input type="email" class="form-control form-control-sena" id="id_email" name="email" 
+                                       value="{{ request.user.email }}" readonly disabled>
+                                <div class="form-text">Este campo no es editable. Contacta a soporte si necesitas cambiar tu correo.</div>
+                            </div>
+                        </div>
+
+                        <!-- Grupo de Campos: Información del Programa -->
+                        <h5 class="section-title text-sena-green mb-3 mt-5">
+                            <i class="fas fa-graduation-cap me-2"></i>
+                            Información del Programa
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <!-- Campo Ficha (asumiendo que viene del contexto 'aprendiz' o 'programa') -->
+                            <div class="col-md-6">
+                                <label for="id_ficha" class="form-label fw-bold">Número de Ficha</label>
+                                <input type="text" class="form-control form-control-sena" id="id_ficha" name="ficha" 
+                                       value="{{ aprendiz.ficha|default:'2521501' }}" disabled>
+                                <div class="form-text">La ficha es asignada por el sistema.</div>
+                            </div>
+
+                            <!-- Campo Celular (editable) -->
+                            <div class="col-md-6">
+                                <label for="id_celular" class="form-label fw-bold">Número de Celular</label>
+                                <input type="tel" class="form-control form-control-sena" id="id_celular" name="celular" 
+                                       value="{{ aprendiz.celular|default:'3001234567' }}" placeholder="Ej: 3001234567">
+                            </div>
+                        </div>
+                        
+                        <!-- Sección para Subir Foto de Perfil -->
+                        <h5 class="section-title text-sena-green mb-3 mt-5">
+                            <i class="fas fa-camera me-2"></i>
+                            Foto de Perfil
+                        </h5>
+
+                        <div class="mb-4 p-3 bg-light rounded-3 d-flex align-items-center flex-wrap">
+                            <!-- Foto actual (simulada) -->
+                            <div class="me-4 mb-2 mb-sm-0 position-relative">
+                                {% if aprendiz.foto_perfil %}
+                                    <img src="{{ aprendiz.foto_perfil.url }}" alt="Foto actual" class="rounded-circle border border-3 border-sena-green" style="width: 80px; height: 80px; object-fit: cover;">
+                                {% else %}
+                                    <div class="rounded-circle bg-sena-light text-sena-green d-flex align-items-center justify-content-center border border-3 border-sena-green" style="width: 80px; height: 80px; font-size: 2rem;">
+                                        <i class="fas fa-user-circle"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Input de Archivo -->
+                            <div class="flex-grow-1">
+                                <label for="id_foto_perfil" class="form-label fw-bold">Seleccionar nueva foto</label>
+                                <input type="file" class="form-control" id="id_foto_perfil" name="foto_perfil" accept="image/*">
+                            </div>
+                        </div>
+
+
+                        <hr class="my-5">
+                        
+                        <!-- Botones de Acción -->
+                        <div class="d-grid gap-3 d-md-flex justify-content-md-center">
+                            <button type="submit" class="btn btn-sena-green btn-lg shadow-sm w-100 w-md-auto">
+                                <i class="fas fa-save me-2"></i>
+                                Guardar Cambios
+                            </button>
+                            
+                            <a href="{% url 'aprendices:perfil_aprendiz' %}" class="btn btn-outline-secondary btn-lg w-100 w-md-auto">
+                                <i class="fas fa-times me-2"></i>
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos Adicionales Personalizados (Verde SENA) -->
+<style>
+/* Variables de color para SENA Green: #39A900 */
+:root {
+    --sena-green: #39A900; 
+    --sena-green-dark: #2D8600; 
+    --sena-green-light-bg: rgba(57, 169, 0, 0.1); 
+    --sena-green-shadow: rgba(57, 169, 0, 0.3); 
+}
+
+/* Base: Fuente Inter y fondo */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f7f7f7;
+}
+
+/* Animaciones y estilos de la tarjeta */
+.form-card {
+    animation: fadeInDown 0.6s ease-out;
+    border-radius: 1rem;
+}
+
+.bg-gradient-sena {
+    background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);
+    position: relative;
+    overflow: hidden;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.header-decoration {
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.text-sena-green {
+    color: var(--sena-green) !important;
+}
+
+.bg-sena-light {
+    background-color: var(--sena-green-light-bg);
+}
+
+.border-sena-green {
+    border-color: var(--sena-green) !important;
+}
+
+/* Título de Sección con Subrayado Dinámico (Verde SENA) */
+.section-title {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--sena-green), transparent);
+    border-radius: 2px;
+}
+
+/* Estilo para los inputs y selects del formulario */
+.form-control-sena {
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+}
+
+.form-control-sena:focus {
+    border-color: var(--sena-green);
+    box-shadow: 0 0 0 0.25rem rgba(57, 169, 0, 0.25);
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #e9ecef;
+    opacity: 0.7;
+}
+
+/* Botones de Acción */
+.btn-sena-green {
+    background-color: var(--sena-green);
+    border-color: var(--sena-green);
+    color: white;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-sena-green:hover {
+    background-color: var(--sena-green-dark);
+    border-color: var(--sena-green-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px var(--sena-green-shadow) !important;
+}
+
+.btn-outline-secondary {
+    font-weight: 600;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+/* Responsive button centering for small screens */
+@media (max-width: 768px) {
+    .d-md-flex {
+        flex-direction: column;
+    }
+    .w-md-auto {
+        width: 100% !important;
+    }
+}
+</style>
+{% endblock %}
