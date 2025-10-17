@@ -136,12 +136,12 @@
                         </div>
 
                         <!-- Botones de Acción -->
-                        <div class="action-buttons d-grid gap-3 mt-5">
-                            <button type="submit" class="btn btn-info btn-lg shadow-sm">
+                        <div class="action-buttons d-grid gap-3 mt-5" style="#38a900e3">
+                            <button type="submit" class="btn btn-info btn-lg shadow-sm" style="#38a900e3">
                                 <i class="bi bi-save-fill me-2"></i>
                                 Guardar Cambios
                             </button>
-                            <a href="{% url 'empresas:mi_perfil_empresa' %}" class="btn btn-outline-secondary btn-lg">
+                            <a href="{% url 'empresas:mi_perfil_empresa' %}" class="btn btn-outline-secondary btn-lg" style="#38a900e3">
                                 <i class="bi bi-x-circle me-2"></i>
                                 Cancelar y Volver
                             </a>
@@ -163,7 +163,7 @@
 
     .form-control:focus, .form-select:focus {
         border-color: var(--bs-info);
-        box-shadow: 0 0 0 0.25rem rgba(13, 202, 240, 0.25); /* Sombra basada en info (corporativo) */
+        box-shadow: 0 0 0 0.25rem rgba(27, 181, 0, 0.34); /* Sombra basada en info (corporativo) */
     }
 
     /* Clases de perfil adaptadas para edición */
@@ -189,7 +189,7 @@
     }
 
     .bg-gradient-corporativo {
-        background: linear-gradient(135deg, var(--bs-info) 0%, #0c73a2 100%);
+        background: linear-gradient(135deg, #39a900 0%, #0ca227ff 100%);
         position: relative;
         overflow: hidden;
     }
@@ -220,7 +220,7 @@
         left: 0;
         width: 60px;
         height: 3px;
-        background: linear-gradient(90deg, var(--bs-primary), transparent); 
+        background: linear-gradient(90deg, #39a900, #43c601ff, transparent); 
         border-radius: 2px;
     }
 

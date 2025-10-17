@@ -16,13 +16,31 @@ class AprendizProfile(models.Model):
         primary_key=True
     )
     
-    # Campo para la ficha, simulado como no editable por ahora.
-    ficha = models.CharField(
-        max_length=10, 
-        default='N/A', 
-        verbose_name='Número de Ficha'
-    ) 
+    # Campo para la ficha, simulado como no editable por ahora. 
+    TIPO_DOCUMENTO_CHOICES = [
+        ('CC', 'Cédula de Ciudadanía'),
+        ('CE', 'Cédula de Extranjería'),
+        ('PA', 'Pasaporte'),
+        ('TI', 'Tarjeta de Identidad'),
+        ('DNI', 'DNI'),
+    ]
     
+    tipo_documento = models.CharField(
+        max_length=10,
+        choices=TIPO_DOCUMENTO_CHOICES,
+        default='CC',
+        verbose_name='Tipo de Documento',
+        null=True, 
+        blank=True 
+    )
+    
+    documento = models.CharField(
+        max_length=10, 
+        unique=True, 
+        verbose_name='Número de Documento',
+        null=True, 
+        blank=True 
+    )
     celular = models.CharField(
         max_length=10, 
         blank=True, 

@@ -1,68 +1,98 @@
 {% extends "base.html" %}
-
 {% block title %}Selección de Rol - OASIS{% endblock %}
-
 {% block content %}
+<style>
+    /* * Paleta de Colores (Max 4, predominando el verde SENA):* 1. SENA Green (Principal): #39A900* 2. Corporate Slate (Empresa): #1C3F5E* 3. Instructor Teal (Apoyo): #17A2B8* 4. Neutros: Negro (#212529) y Blanco (#FFFFFF)*/.text-sena-green { color: #39A900 !important; }.btn-outline-sena-green {color: #39A900;border-color: #39A900;}.btn-outline-sena-green:hover {color: #FFFFFF;background-color: #39A900;border-color: #39A900;}.text-sena-corp { color: #1C3F5E !important; }
+.btn-outline-sena-corp { 
+    color: #1C3F5E;
+    border-color: #1C3F5E;
+}
+.btn-outline-sena-corp:hover {
+    color: #FFFFFF;
+    background-color: #1C3F5E;
+    border-color: #1C3F5E;
+}
 
+.text-sena-inst { color: #17A2B8 !important; }
+.btn-outline-sena-inst { 
+    color: #17A2B8;
+    border-color: #17A2B8;
+}
+.btn-outline-sena-inst:hover {
+    color: #FFFFFF;
+    background-color: #17A2B8;
+    border-color: #17A2B8;
+}
+
+/* Mejora sutil en la tarjeta al hacer hover */
+.role-card {
+    transition: all 0.3s ease;
+    border: 2px solid transparent; /* Base border for card */
+}
+.role-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+</style>
 <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8">
-        <div class="text-center mt-5 mb-5">
-            <i class="bi bi-person-rolodex display-4 text-primary mb-2"></i>
-            <h1 class="fw-bold text-dark">¿Cómo deseas unirte a OASIS?</h1>
+        <div class="text-center mt-5 mb-5"><!-- Icono principal ahora en color SENA Green -->
+            <i class="bi bi-person-rolodex display-4 text-sena-green mb-2">
+
+            </i><h1 class="fw-bold text-dark">¿Cómo deseas unirte a OASIS?</h1>
             <p class="lead text-muted">Selecciona el tipo de cuenta que crearás para empezar tu experiencia.</p>
-        </div>
+        </div>    <div class="row g-4 justify-content-center">
 
-        <div class="row g-4 justify-content-center">
-
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 shadow-lg border-0 role-card" onclick="window.location.href='{% url 'auth:registro_aprendiz' %}'" style="cursor: pointer;">
-                    <div class="card-body text-center p-4">
-                        <i class="bi bi-mortarboard-fill display-3 text-success mb-3"></i>
-                        <h5 class="card-title fw-bold text-success">Soy Aprendiz SENA</h5>
-                        <p class="card-text text-muted small">Quiero participar en proyectos reales y desarrollar mis habilidades técnicas y blandas.</p>
-                        <a href="{% url 'auth:registro_aprendiz' %}" class="btn btn-outline-success mt-3 fw-semibold w-75">
-                            <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
-                        </a>
-                    </div>
+        <!-- Tarjeta 1: Aprendiz (SENA Green) -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-lg border-2 role-card border-sena-green" 
+                onclick="window.location.href='{% url 'auth:registro_aprendiz' %}'" style="cursor: pointer;">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-mortarboard-fill display-3 text-sena-green mb-3"></i>
+                    <h5 class="card-title fw-bold text-sena-green">Soy Aprendiz SENA</h5>
+                    <p class="card-text text-muted small">Quiero participar en proyectos reales y desarrollar mis habilidades técnicas y blandas.</p>
+                    <a href="{% url 'auth:registro_aprendiz' %}" class="btn btn-outline-sena-green mt-3 fw-semibold w-75">
+                        <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 shadow-lg border-0 role-card" onclick="window.location.href='{% url 'auth:registro_empresa' %}'" style="cursor: pointer;">
-                    <div class="card-body text-center p-4">
-                        <i class="bi bi-building-fill display-3 text-primary mb-3"></i>
-                        <h5 class="card-title fw-bold text-primary">Somos una Empresa</h5>
-                        <p class="card-text text-muted small">Buscamos talento SENA para resolver retos de negocio y explorar nuevas ideas innovadoras.</p>
-                        <a href="{% url 'auth:registro_empresa' %}" class="btn btn-outline-primary mt-3 fw-semibold w-75">
-                            <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
-                        </a>
-                    </div>
+        <!-- Tarjeta 2: Empresa (Corporate Slate) -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-lg border-2 role-card border-sena-corp" 
+                onclick="window.location.href='{% url 'auth:registro_empresa' %}'" style="cursor: pointer;">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-building-fill display-3 text-sena-corp mb-3"></i>
+                    <h5 class="card-title fw-bold text-sena-corp">Somos una Empresa</h5>
+                    <p class="card-text text-muted small">Buscamos talento SENA para resolver retos de negocio y explorar nuevas ideas innovadoras.</p>
+                    <a href="{% url 'auth:registro_empresa' %}" class="btn btn-outline-sena-corp mt-3 fw-semibold w-75">
+                        <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <div class="col-lg-4 col-md-6">
-                <div class="card h-100 shadow-lg border-0 role-card" onclick="window.location.href='{% url 'auth:registro_instructor' %}'" style="cursor: pointer;">
-                    <div class="card-body text-center p-4">
-                        <i class="bi bi-person-video3 display-3 text-warning mb-3"></i>
-                        <h5 class="card-title fw-bold text-warning">Soy Instructor</h5>
-                        <p class="card-text text-muted small">Quiero supervisar el progreso de los equipos y validar los avances en proyectos empresariales.</p>
-                        <a href="{% url 'auth:registro_instructor' %}" class="btn btn-outline-warning mt-3 fw-semibold w-75">
-                            <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
-                        </a>
-                    </div>
+        <!-- Tarjeta 3: Instructor (Instructor Teal) -->
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 shadow-lg border-2 role-card border-sena-inst" onclick="window.location.href='{% url 'auth:registro_instructor' %}'" style="cursor: pointer;">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-person-video3 display-3 text-sena-inst mb-3"></i>
+                    <h5 class="card-title fw-bold text-sena-inst">Soy Instructor</h5>
+                    <p class="card-text text-muted small">Quiero supervisar el progreso de los equipos y validar los avances en proyectos empresariales.</p>
+                    <a href="{% url 'auth:registro_instructor' %}" class="btn btn-outline-sena-inst mt-3 fw-semibold w-75">
+                        <i class="bi bi-arrow-right-circle me-2"></i> Registrarme
+                    </a>
                 </div>
             </div>
-
         </div>
-        
-        <div class="text-center mt-5 mb-5">
-            ¿Ya tienes cuenta? <a href="{% url 'auth:login' %}" class="fw-semibold">Iniciar Sesión</a>
-        </div>
-        
-
-{# SE ELIMINÓ EL BLOQUE DE CÓDIGO CON EL DISEÑO SIMPLE QUE CAUSABA LA DUPLICIDAD #}
-
 
     </div>
+    
+    <div class="text-center mt-5 mb-5">
+        ¿Ya tienes cuenta? <a href="{% url 'auth:login' %}" class="fw-semibold text-sena-green">Iniciar Sesión</a>
+    </div>
+    
+</div>
 </div>
 {% endblock %}

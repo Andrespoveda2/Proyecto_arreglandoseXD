@@ -9,8 +9,8 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             
-            <div class="card shadow-lg border-primary">
-                <div class="card-header bg-primary text-white text-center">
+            <div class="card shadow-lg border-sena">
+                <div class="card-header bg-sena text-white text-center">
                     <h4 class="mb-0">
                         <i class="fas fa-edit me-2"></i> Actualizar Proyecto: 
                         <span class="fw-bold">{{ proyecto.nombre|default:"Sin nombre" }}</span>
@@ -56,10 +56,10 @@
                         <hr class="my-4">
                         
                         <div class="d-flex justify-content-end">
-                            <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-outline-secondary btn-lg me-3">
+                            <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-outline-sena btn-lg me-3">
                                 <i class="fas fa-times-circle me-1"></i> Cancelar
                             </a>
-                            <button type="submit" class="btn btn-primary btn-lg">
+                            <button type="submit" class="btn btn-sena btn-lg">
                                 <i class="fas fa-sync-alt me-1"></i> Guardar Cambios
                             </button>
                         </div>
@@ -69,4 +69,125 @@
         </div>
     </div>
 </div>
+
+<!-- Estilos Personalizados SENA -->
+<style>
+/* Definición de colores SENA */
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2d8000;
+    --sena-light: #d4edda;
+}
+
+/* Clases de Utilidad SENA */
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.text-sena-dark {
+    color: var(--sena-dark) !important;
+}
+
+.bg-sena {
+    background-color: var(--sena-primary) !important;
+}
+
+.bg-sena-dark {
+    background-color: var(--sena-dark) !important;
+}
+
+.bg-sena-light {
+    background-color: var(--sena-light) !important;
+}
+
+.border-sena {
+    border-color: var(--sena-primary) !important;
+}
+
+/* Botones SENA */
+.btn-sena {
+    background-color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena:hover {
+    background-color: var(--sena-dark);
+    border-color: var(--sena-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 169, 0, 0.3);
+}
+
+.btn-sena:active {
+    background-color: var(--sena-dark);
+    border-color: var(--sena-dark);
+}
+
+.btn-outline-sena {
+    color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-sena:hover {
+    background-color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(57, 169, 0, 0.2);
+}
+
+.btn-outline-sena:active {
+    background-color: var(--sena-dark);
+    border-color: var(--sena-dark);
+}
+
+/* Tarjeta */
+.card {
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 10px 30px rgba(57, 169, 0, 0.15) !important;
+}
+
+.card-header {
+    border-radius: 0.75rem 0.75rem 0 0;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* Focus en inputs */
+.form-control:focus {
+    border-color: var(--sena-primary);
+    box-shadow: 0 0 0 0.2rem rgba(57, 169, 0, 0.25);
+}
+
+/* Etiquetas */
+.form-label {
+    color: #333;
+    font-size: 0.95rem;
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+</style>
 {% endblock %}

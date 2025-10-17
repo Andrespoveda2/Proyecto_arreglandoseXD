@@ -1,29 +1,57 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm # Importar SetPasswordForm
-from django.utils.translation import gettext_lazy as _ # Importar gettext_lazy
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
+from django.utils.translation import gettext_lazy as _
 from .models import Usuario, PerfilEmpresa, PerfilInstructor, PerfilAprendiz, ProgramaFormativo, SectorProductivo, MensajeContacto
 
 # --- Registro Aprendiz ---
 class RegistroAprendizForm(UserCreationForm):
-    documento = forms.CharField(label="Documento de Identidad", max_length=10)
-    ficha = forms.CharField(label="Ficha de Formación", max_length=20)
+    tipo_documento = forms.ChoiceField(
+        choices=PerfilAprendiz.TIPOS_DOCUMENTO,
+        label="Tipo de Documento",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    documento = forms.CharField(
+        label="Número de Documento",
+        max_length=20,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ej: 1095123456'
+        })
+    )
+    ficha = forms.CharField(
+        label="Ficha de Formación",
+        max_length=20,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
     
-    # Asumo que se debe filtrar por 'activo=True' para evitar el OperationalError anterior
     programa = forms.ModelChoiceField(
         queryset=ProgramaFormativo.objects.filter(activo=True),
         label="Programa de Formación",
-        empty_label="No hay programas disponibles",
+        empty_label="Selecciona tu programa de formación",
+        widget=forms.Select(attrs={'class': 'form-control'}),
         help_text="Si no ves tu programa, contacta a un administrador."
     )
 
     class Meta:
         model = Usuario
         fields = ['username', 'email', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
 
     def clean_documento(self):
         documento = self.cleaned_data.get('documento')
+        tipo_documento = self.cleaned_data.get('tipo_documento')
+        
+        # Validar que el documento no contenga caracteres especiales
+        if not documento.isalnum():
+            raise forms.ValidationError("El documento solo puede contener números y letras.")
+        
+        # Validar que el documento no esté registrado
         if PerfilAprendiz.objects.filter(documento=documento).exists():
             raise forms.ValidationError("Este documento ya se encuentra registrado.")
+        
         return documento
 
     def save(self, commit=True):
@@ -33,6 +61,7 @@ class RegistroAprendizForm(UserCreationForm):
             user.save()
             PerfilAprendiz.objects.create(
                 usuario=user,
+                tipo_documento=self.cleaned_data['tipo_documento'],
                 documento=self.cleaned_data['documento'],
                 ficha=self.cleaned_data['ficha'],
                 programa=self.cleaned_data['programa'], 
@@ -42,16 +71,31 @@ class RegistroAprendizForm(UserCreationForm):
 
 # --- Registro Empresa ---
 class RegistroEmpresaForm(forms.ModelForm):
-    username = forms.CharField(label="Nombre de Usuario")
-    email = forms.EmailField(label="Correo Electrónico")
-    password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Confirmar Contraseña", widget=forms.PasswordInput)
+    username = forms.CharField(
+        label="Nombre de Usuario",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    email = forms.EmailField(
+        label="Correo Electrónico",
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    )
+    password1 = forms.CharField(
+        label="Contraseña",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    password2 = forms.CharField(
+        label="Confirmar Contraseña",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
 
     class Meta:
         model = PerfilEmpresa
         fields = ['razon_social', 'nit', 'telefono', 'sector']
         widgets = {
-            'sector': forms.Select(attrs={'class': 'form-select'}),
+            'razon_social': forms.TextInput(attrs={'class': 'form-control'}),
+            'nit': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'sector': forms.Select(attrs={'class': 'form-control'}),
         }
 
     def clean_nit(self):
@@ -73,10 +117,10 @@ class RegistroEmpresaForm(forms.ModelForm):
 
     def save(self, commit=True):
         usuario = Usuario.objects.create_user(
-        username=self.cleaned_data['username'],
-        email=self.cleaned_data['email'],
-        password=self.cleaned_data['password1'],
-        rol=Usuario.EMPRESA
+            username=self.cleaned_data['username'],
+            email=self.cleaned_data['email'],
+            password=self.cleaned_data['password1'],
+            rol=Usuario.EMPRESA
         )
         perfil_empresa = super().save(commit=False)
         perfil_empresa.usuario = usuario
@@ -84,10 +128,30 @@ class RegistroEmpresaForm(forms.ModelForm):
             perfil_empresa.save()
         return usuario
 
+
 # --- Registro Instructor ---
 class RegistroInstructorForm(UserCreationForm):
-    documento = forms.CharField(label="Documento de Identidad", max_length=20)
-    area_conocimiento = forms.CharField(label="Área de Conocimiento", max_length=100)
+    tipo_documento = forms.ChoiceField(
+        choices=PerfilInstructor.TIPOS_DOCUMENTO,
+        label="Tipo de Documento",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    documento = forms.CharField(
+        label="Número de Documento",
+        max_length=20,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ej: 1095123456'
+        })
+    )
+    area_conocimiento = forms.CharField(
+        label="Área de Conocimiento",
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Ej: Programación, Electrónica, etc.'
+        })
+    )
 
     class Meta:
         model = Usuario
@@ -98,11 +162,25 @@ class RegistroInstructorForm(UserCreationForm):
             'password1': 'Contraseña',
             'password2': 'Confirmar contraseña',
         }
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
+        }
 
     def clean_documento(self):
         documento = self.cleaned_data.get('documento')
+        tipo_documento = self.cleaned_data.get('tipo_documento')
+        
+        # Validar que el documento no contenga caracteres especiales
+        if not documento.isalnum():
+            raise forms.ValidationError("El documento solo puede contener números y letras.")
+        
+        # Validar que el documento no esté registrado
         if PerfilInstructor.objects.filter(documento=documento).exists():
             raise forms.ValidationError("Este documento ya se encuentra registrado.")
+        
         return documento
 
     def save(self, commit=True):
@@ -112,6 +190,7 @@ class RegistroInstructorForm(UserCreationForm):
             user.save()
             PerfilInstructor.objects.create(
                 usuario=user,
+                tipo_documento=self.cleaned_data['tipo_documento'],
                 documento=self.cleaned_data['documento'],
                 area_conocimiento=self.cleaned_data['area_conocimiento'],
             )
@@ -140,44 +219,68 @@ class PerfilEmpresaForm(forms.ModelForm):
             'telefono': 'Teléfono',
             'sector': 'Sector empresarial',
         }
+        widgets = {
+            'nit': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'sector': forms.Select(attrs={'class': 'form-control'}),
+        }
 
 
 class PerfilAprendizForm(forms.ModelForm):
     class Meta:
         model = PerfilAprendiz
-        fields = ["documento", "ficha", "programa"]
+        fields = ["tipo_documento", "documento", "ficha", "programa"]
         labels = {
-            'documento': 'Documento',
+            'tipo_documento': 'Tipo de Documento',
+            'documento': 'Número de Documento',
             'ficha': 'Ficha de formación',
             'programa': 'Programa de formación',
+        }
+        widgets = {
+            'tipo_documento': forms.Select(attrs={'class': 'form-control'}),
+            'documento': forms.TextInput(attrs={'class': 'form-control'}),
+            'ficha': forms.TextInput(attrs={'class': 'form-control'}),
+            'programa': forms.Select(attrs={'class': 'form-control'}),
         }
 
 
 class PerfilInstructorForm(forms.ModelForm):
     class Meta:
         model = PerfilInstructor
-        fields = ["documento", "area_conocimiento"]
+        fields = ["tipo_documento", "documento", "area_conocimiento"]
         labels = {
-            'documento': 'Documento',
+            'tipo_documento': 'Tipo de Documento',
+            'documento': 'Número de Documento',
             'area_conocimiento': 'Área de conocimiento',
         }
+        widgets = {
+            'tipo_documento': forms.Select(attrs={'class': 'form-control'}),
+            'documento': forms.TextInput(attrs={'class': 'form-control'}),
+            'area_conocimiento': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
         
 class ProgramaFormativoForm(forms.ModelForm):
     class Meta:
         model = ProgramaFormativo
         fields = ['nombre', 'descripcion', 'tipo', 'codigo']
         widgets = {
-            'descripcion': forms.Textarea(attrs={'rows': 3}),
-            'tipo': forms.Select(attrs={'class': 'form-select'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'tipo': forms.Select(attrs={'class': 'form-control'}),
+            'codigo': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
 
 class SectorProductivoForm(forms.ModelForm):
     class Meta:
         model = SectorProductivo
         fields = ['nombre', 'descripcion']
         widgets = {
-            'descripcion': forms.Textarea(attrs={'rows': 3}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
         }
+
         
 class ContactoForm(forms.ModelForm):
     """
@@ -219,13 +322,15 @@ class ContactoForm(forms.ModelForm):
             'mensaje': 'Mensaje Detallado',
         }
 
+
 # --- FORMULARIO PARA MOSTRAR CONTRASEÑA EN EL RESETEO ---
 class RestablecerContrasenaForm(SetPasswordForm):
-    # ¡IMPORTANTE! Vuelve a usar forms.PasswordInput, o quita el widget para usar el predeterminado
     new_password1 = forms.CharField(
         label=_("Nueva contraseña"),
-        # Revertimos a PasswordInput para que el campo inicie oculto (type="password")
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}), 
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'autocomplete': 'new-password'
+        }), 
         strip=False,
         help_text=("Ingresa una contraseña segura (mínimo 8 caracteres).")
     )
@@ -233,6 +338,8 @@ class RestablecerContrasenaForm(SetPasswordForm):
     new_password2 = forms.CharField(
         label=_("Confirmación de contraseña"),
         strip=False,
-        # Revertimos a PasswordInput
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'autocomplete': 'new-password'
+        }),
     )

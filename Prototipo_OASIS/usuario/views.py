@@ -11,7 +11,13 @@ from .forms import (
     ContactoForm
 )
 from .models import Usuario, ProgramaFormativo
+from django.http import FileResponse, Http404, HttpResponse
+from django.conf import settings
+import os
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 # -------- Login General --------
 def login_view(request):
@@ -180,8 +186,17 @@ def detalle_usuario_admin(request, pk):
     })
     
     
+
 def manual_usuario(request):
-    """
-    Vista para mostrar el manual de usuario.
-    """
     return render(request, 'manual_usuario.html')
+
+def descargar_manual_pdf(request):
+    pdf_path = os.path.join(settings.MEDIA_ROOT, 'docs', 'MANUAL_DE_USUARIO_OASIS.pdf')
+    
+    if not os.path.exists(pdf_path):
+        raise Http404("El archivo PDF no se encuentra disponible")
+    
+    pdf_file = open(pdf_path, 'rb')
+    response = FileResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="Manual_Usuario_OASIS.pdf"'
+    return response

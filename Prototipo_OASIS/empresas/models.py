@@ -8,19 +8,21 @@ from usuario.models import (
     ProgramaFormativo,
     SectorProductivo
 )
+
+from usuario.models import PerfilEmpresa, PerfilAprendiz, PerfilInstructor
  # Importa el modelo Sector si está en el mismo módulo
 
-
 class SolicitudProyecto(models.Model):
+    # --- OPCIONES DE ESTADO ---
     ESTADO_CHOICES = [
+        ("PENDIENTE", "Pendiente/Revisión"),
         ("EN_DESARROLLO", "En desarrollo"),
         ("COMPLETADO", "Completado"),
-        ("PENDIENTE", "Pendiente/Revisión"),
         ("APROBADO", "Aprobado para Asignación"),
         ("RECHAZADO", "Rechazado"),
     ]
 
-    # --- Datos del Proyecto ---
+    # --- DATOS DEL PROYECTO ---
     nombre = models.CharField(max_length=200, verbose_name="Nombre del Proyecto")
     descripcion = models.TextField(verbose_name="Descripción Detallada")
 
@@ -42,11 +44,29 @@ class SolicitudProyecto(models.Model):
         choices=AREA_CHOICES,
         verbose_name="Área de Aplicación"
     )
-    
-    duracion_semanas = models.PositiveIntegerField(verbose_name="Duración Estimada (Semanas)")
-    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default="PENDIENTE", verbose_name="Estado del Proyecto")
-    
-    # --- Relaciones ---
+
+    duracion_semanas = models.PositiveIntegerField(
+        verbose_name="Duración Estimada (Semanas)"
+    )
+
+    estado = models.CharField(
+        max_length=20,
+        choices=ESTADO_CHOICES,
+        default="PENDIENTE",
+        verbose_name="Estado del Proyecto"
+    )
+
+    # --- CAMPOS DE JUSTIFICACIÓN DE ESTADO ---
+    motivo_aprobacion = models.TextField(
+        blank=True, null=True,
+        help_text="Motivo por el que se aprobó el proyecto"
+    )
+    motivo_rechazo = models.TextField(
+        blank=True, null=True,
+        help_text="Motivo por el que se rechazó el proyecto"
+    )
+
+    # --- RELACIONES ---
     empresa = models.ForeignKey(
         PerfilEmpresa,
         on_delete=models.CASCADE,
@@ -57,7 +77,7 @@ class SolicitudProyecto(models.Model):
     aprendices = models.ManyToManyField(
         PerfilAprendiz,
         blank=True,
-        related_name="solicitudes_asignadas",  # 🔹 cambiado para evitar conflicto
+        related_name="solicitudes_asignadas",
         verbose_name="Aprendices Asignados"
     )
 
@@ -77,14 +97,19 @@ class SolicitudProyecto(models.Model):
         verbose_name="Programa Formativo Requerido"
     )
 
-    creado_en = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
+    creado_en = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Fecha de Creación"
+    )
 
     def __str__(self):
-        return f"{self.nombre} ({self.get_estado_display()})" #type: ignore
+        return f"{self.nombre} ({self.get_estado_display()})"
 
     class Meta:
         verbose_name = "Solicitud de Proyecto"
         verbose_name_plural = "Solicitudes de Proyectos"
+        ordering = ['-creado_en']
+
 
 
 class Postulacion(models.Model):
@@ -227,3 +252,4 @@ class Empresa(models.Model):
 
     def __str__(self):
         return self.razon_social
+

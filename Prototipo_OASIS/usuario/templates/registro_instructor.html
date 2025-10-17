@@ -109,12 +109,14 @@
                                         <i class="bi bi-shield-lock-fill me-2 text-danger"></i>
                                     {% elif 'first_name' in field.name or 'last_name' in field.name %}
                                         <i class="bi bi-person-fill me-2 text-sena-green"></i>
-                                    {% elif 'especialidad' in field.name or 'area' in field.name %}
+                                    {% elif 'tipo_documento' in field.name %}
+                                        <i class="bi bi-file-text-fill me-2 text-sena-green"></i>
+                                    {% elif 'documento' in field.name %}
+                                        <i class="bi bi-card-heading me-2 text-sena-green"></i>
+                                    {% elif 'area_conocimiento' in field.name %}
                                         <i class="bi bi-book-fill me-2 text-sena-green"></i>
-                                    {% elif 'cedula' in field.name or 'documento' in field.name %}
-                                        <i class="bi bi-card-heading me-2 text-info"></i>
                                     {% elif 'telefono' in field.name or 'celular' in field.name %}
-                                        <i class="bi bi-telephone-fill me-2 text-info"></i>
+                                        <i class="bi bi-telephone-fill me-2 text-sena-green"></i>
                                     {% elif 'titulo' in field.name or 'formacion' in field.name %}
                                         <i class="bi bi-mortarboard-fill me-2 text-sena-green"></i>
                                     {% elif 'experiencia' in field.name %}
@@ -906,12 +908,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Validación en tiempo real con color naranja/amarillo
+    // Validación en tiempo real
     const inputs = document.querySelectorAll('input, select, textarea');
     inputs.forEach(input => {
         input.addEventListener('blur', function() {
             if (this.value.trim() !== '') {
-                this.style.borderColor = '#F59E0B';
+                this.style.borderColor = '#39A900';
             }
         });
     });

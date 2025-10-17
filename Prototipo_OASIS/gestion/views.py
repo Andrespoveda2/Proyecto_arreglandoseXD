@@ -16,6 +16,8 @@ from .forms import UsuarioForm
 
 # Modelos externos relacionados
 from empresas.models import SolicitudProyecto
+from django.views.decorators.http import require_POST, require_http_methods
+from empresas.models import SolicitudProyecto
 
 # --- Vistas del Dashboard y Métricas ---
 
@@ -312,27 +314,75 @@ def reportes(request):
 
 @role_required("ADMIN")
 def revisar_solicitudes(request):
-    """Muestra todos los proyectos en estado Pendiente."""
+    """Muestra todos los proyectos en estado Pendiente con mejor diseño."""
     pendientes = SolicitudProyecto.objects.filter(estado="PENDIENTE").order_by('-creado_en')
-    return render(request, 'revisar_solicitudes.html', {'pendientes': pendientes})
+    
+    context = {
+        'pendientes': pendientes,
+    }
+    
+    return render(request, 'revisar_solicitudes.html', context)
+
 
 @role_required("ADMIN")
-@require_POST
+@require_http_methods(["POST"])
 def aprobar_proyecto(request, pk):
-    """Aprueba un proyecto y lo deja disponible para los aprendices."""
+    """
+    Aprueba un proyecto y lo deja disponible para los aprendices.
+    Ahora guarda el motivo de aprobación en la BD.
+    """
     proyecto = get_object_or_404(SolicitudProyecto, pk=pk)
+    
+    # Obtener el motivo de aprobación del formulario
+    motivo_aprobacion = request.POST.get('motivo_aprobacion', '').strip()
+    
+    # Validar que el motivo no esté vacío
+    if not motivo_aprobacion:
+        messages.error(request, "⚠️ Debes proporcionar un motivo para la aprobación.")
+        return redirect('gestion:revisar_solicitudes')
+    
+    # Actualizar el proyecto
     proyecto.estado = "APROBADO"
+    proyecto.motivo_aprobacion = motivo_aprobacion
     proyecto.save()
-    messages.success(request, f"✅ Proyecto '{proyecto.nombre}' ha sido aprobado y ahora está disponible para asignación.")
+    
+    # Mensaje de éxito
+    messages.success(
+        request, 
+        f"✅ Proyecto '{proyecto.nombre}' ha sido aprobado. "
+        f"La empresa ha sido notificada."
+    )
+    
     return redirect('gestion:revisar_solicitudes')
 
 
 @role_required("ADMIN")
-@require_POST
+@require_http_methods(["POST"])
 def rechazar_proyecto(request, pk):
-    """Rechaza un proyecto y lo marca como rechazado."""
+    """
+    Rechaza un proyecto y lo marca como rechazado.
+    Ahora guarda el motivo de rechazo en la BD.
+    """
     proyecto = get_object_or_404(SolicitudProyecto, pk=pk)
+    
+    # Obtener el motivo de rechazo del formulario
+    motivo_rechazo = request.POST.get('motivo_rechazo', '').strip()
+    
+    # Validar que el motivo no esté vacío
+    if not motivo_rechazo:
+        messages.error(request, "⚠️ Debes proporcionar un motivo para el rechazo.")
+        return redirect('gestion:revisar_solicitudes')
+    
+    # Actualizar el proyecto
     proyecto.estado = "RECHAZADO"
+    proyecto.motivo_rechazo = motivo_rechazo
     proyecto.save()
-    messages.warning(request, f"❌ Proyecto '{proyecto.nombre}' ha sido rechazado.")
+    
+    # Mensaje de advertencia
+    messages.warning(
+        request, 
+        f"❌ Proyecto '{proyecto.nombre}' ha sido rechazado. "
+        f"La empresa ha sido notificada del motivo."
+    )
+    
     return redirect('gestion:revisar_solicitudes')

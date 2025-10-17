@@ -38,6 +38,7 @@ class ProgramaFormativo(models.Model):
     tipo = models.CharField(max_length=20, choices=TIPOS, verbose_name="Tipo de Programa")
     codigo = models.CharField(max_length=20, unique=True, verbose_name="Código del Programa")
     activo = models.BooleanField(default=True)
+    
     def __str__(self):
         return self.nombre
 
@@ -99,7 +100,22 @@ class PerfilEmpresa(models.Model):
 
 
 class PerfilAprendiz(models.Model):
+    TIPOS_DOCUMENTO = [
+        ('CC', 'Cédula de Ciudadanía'),
+        ('CE', 'Cédula de Extranjería'),
+        ('PA', 'Pasaporte'),
+        ('TI', 'Tarjeta de Identidad'),
+        ('DNI', 'DNI'),
+    ]
+    
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, related_name='perfil_aprendiz')
+    tipo_documento = models.CharField(
+        max_length=10,
+        choices=TIPOS_DOCUMENTO,
+        default='CC',
+        verbose_name="Tipo de Documento",
+        help_text="Selecciona tu tipo de documento"
+    )
     documento = models.CharField(max_length=20, unique=True, verbose_name="Número de Documento")
     ficha = models.CharField(max_length=10, verbose_name="Número de Ficha")
     programa = models.ForeignKey(ProgramaFormativo, on_delete=models.SET_NULL, null=True, verbose_name="Programa de Formación")
@@ -113,7 +129,22 @@ class PerfilAprendiz(models.Model):
 
 
 class PerfilInstructor(models.Model):
+    TIPOS_DOCUMENTO = [
+        ('CC', 'Cédula de Ciudadanía'),
+        ('CE', 'Cédula de Extranjería'),
+        ('PA', 'Pasaporte'),
+        ('TI', 'Tarjeta de Identidad'),
+        ('DNI', 'DNI'),
+    ]
+    
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, related_name='perfil_instructor')
+    tipo_documento = models.CharField(
+        max_length=10,
+        choices=TIPOS_DOCUMENTO,
+        default='CC',
+        verbose_name="Tipo de Documento",
+        help_text="Selecciona tu tipo de documento"
+    )
     documento = models.CharField(max_length=20, unique=True, verbose_name="Número de Documento")
     area_conocimiento = models.CharField(max_length=100, verbose_name="Área de Conocimiento")
     
@@ -123,8 +154,7 @@ class PerfilInstructor(models.Model):
     class Meta:
         verbose_name = "Perfil de Instructor"
         verbose_name_plural = "Perfiles de Instructores"
-        
-        
+
 
 class MensajeContacto(models.Model):
     """
@@ -142,8 +172,8 @@ class MensajeContacto(models.Model):
     
     # Campo para identificar al usuario logueado (si lo hay)
     usuario = models.ForeignKey(
-        settings.AUTH_USER_MODEL, # Referencia a tu modelo de Usuario
-        on_delete=models.SET_NULL, # Si el usuario se elimina, el mensaje se mantiene
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         verbose_name='Usuario Asociado'

@@ -3,79 +3,395 @@
 {% block title %}Postulaciones - {{ proyecto.nombre }}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Postulaciones: {{ proyecto.nombre }}</h2>
-
-    <!-- 🧑‍🎓 Postulaciones de Aprendices -->
-    <h4 class="mb-3">👨‍🎓 Postulaciones de Aprendices</h4>
-    {% if postulaciones %}
-        <div class="list-group mb-4">
-            {% for postulacion in postulaciones %}
-                <div class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>{{ postulacion.aprendiz.usuario.first_name }} {{ postulacion.aprendiz.usuario.last_name }}</strong>
-                        ({{ postulacion.aprendiz.usuario.username }}) -
-                        Estado:
-                        <span class="
-                            {% if postulacion.estado == 'ACEPTADA' %}text-success
-                            {% elif postulacion.estado == 'RECHAZADA' %}text-danger
-                            {% else %}text-warning{% endif %}
-                        ">
-                            {{ postulacion.estado }}
-                        </span>
-                    </div>
-                    <div>
-                        {% if postulacion.estado == "PENDIENTE" %}
-                            <a href="{% url 'empresas:gestionar_postulacion' postulacion.id 'aceptar' %}" class="btn btn-success btn-sm">Aceptar</a>
-                            <a href="{% url 'empresas:gestionar_postulacion' postulacion.id 'rechazar' %}" class="btn btn-danger btn-sm">Rechazar</a>
-                        {% else %}
-                            <span class="text-muted">No disponible</span>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endfor %}
+<div class="container mt-5 mb-5">
+    <!-- Header Principal -->
+    <div class="header-section mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h2 class="fw-bold text-dark mb-2">
+                    <i class="bi bi-file-earmark-check-fill text-sena me-2"></i>
+                    Gestión de Postulaciones
+                </h2>
+                <p class="text-muted mb-0">
+                    <span class="badge bg-sena text-white">{{ proyecto.nombre }}</span>
+                </p>
+            </div>
         </div>
-    {% else %}
-        <p class="text-muted">No hay postulaciones de aprendices para este proyecto.</p>
-    {% endif %}
+    </div>
 
-    <hr class="my-4">
-
-    <!-- 👨‍🏫 Postulaciones de Instructores -->
-    <h4 class="mb-3">👨‍🏫 Postulaciones de Instructores</h4>
-    {% if proyecto.postulaciones_instructores.all %}
-        <div class="list-group">
-            {% for postulacion in proyecto.postulaciones_instructores.all %}
-                <div class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>{{ postulacion.instructor.usuario.first_name }} {{ postulacion.instructor.usuario.last_name }}</strong>
-                        ({{ postulacion.instructor.usuario.username }}) -
-                        Estado:
-                        <span class="
-                            {% if postulacion.estado == 'ACEPTADA' %}text-success
-                            {% elif postulacion.estado == 'RECHAZADA' %}text-danger
-                            {% else %}text-warning{% endif %}
-                        ">
-                            {{ postulacion.estado }}
-                        </span>
-                    </div>
-                    <div>
-                        {% if postulacion.estado == "PENDIENTE" %}
-                            <a href="{% url 'empresas:gestionar_postulacion_instructor' postulacion.id 'aceptar' %}" class="btn btn-success btn-sm">Aceptar</a>
-                            <a href="{% url 'empresas:gestionar_postulacion_instructor' postulacion.id 'rechazar' %}" class="btn btn-danger btn-sm">Rechazar</a>
-                        {% else %}
-                            <span class="text-muted">No disponible</span>
-                        {% endif %}
-                    </div>
+    <div class="row">
+        <!-- 🧑‍🎓 Postulaciones de Aprendices -->
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow-sm border-0 postulaciones-card">
+                <div class="card-header bg-gradient-sena text-white py-3">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="bi bi-person-badge-fill me-2"></i>
+                        Aprendices ({{ postulaciones|length }})
+                    </h5>
                 </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p class="text-muted">No hay postulaciones de instructores para este proyecto.</p>
-    {% endif %}
 
-    <div class="text-center mt-4">
-        <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-secondary">Volver al Dashboard</a>
+                <div class="card-body p-0">
+                    {% if postulaciones %}
+                        <div class="list-group list-group-flush">
+                            {% for postulacion in postulaciones %}
+                                <div class="list-group-item postulacion-item">
+                                    <div class="row align-items-center g-3">
+                                        <!-- Información del Postulante -->
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div class="avatar-small bg-sena bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                                    <i class="bi bi-person-fill text-sena"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 fw-bold text-dark">
+                                                        {{ postulacion.aprendiz.usuario.first_name }} {{ postulacion.aprendiz.usuario.last_name }}
+                                                    </h6>
+                                                    <p class="mb-0 small text-muted">
+                                                        @{{ postulacion.aprendiz.usuario.username }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Estado -->
+                                        <div class="col-md-3">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="small text-muted">Estado:</span>
+                                                <span class="badge
+                                                    {% if postulacion.estado == 'ACEPTADA' %}bg-success
+                                                    {% elif postulacion.estado == 'RECHAZADA' %}bg-danger
+                                                    {% else %}bg-warning text-dark{% endif %}
+                                                ">
+                                                    <i class="bi 
+                                                        {% if postulacion.estado == 'ACEPTADA' %}bi-check-circle-fill
+                                                        {% elif postulacion.estado == 'RECHAZADA' %}bi-x-circle-fill
+                                                        {% else %}bi-clock-fill{% endif %}
+                                                        me-1"></i>
+                                                    {{ postulacion.estado }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Acciones -->
+                                        <div class="col-md-3 text-end">
+                                            {% if postulacion.estado == "PENDIENTE" %}
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{% url 'empresas:gestionar_postulacion' postulacion.id 'aceptar' %}" 
+                                                       class="btn btn-success-sena" 
+                                                       title="Aceptar postulación">
+                                                        <i class="bi bi-check-lg me-1"></i>Aceptar
+                                                    </a>
+                                                    <a href="{% url 'empresas:gestionar_postulacion' postulacion.id 'rechazar' %}" 
+                                                       class="btn btn-danger-outline" 
+                                                       title="Rechazar postulación">
+                                                        <i class="bi bi-x-lg me-1"></i>Rechazar
+                                                    </a>
+                                                </div>
+                                            {% else %}
+                                                <span class="badge bg-light text-muted">
+                                                    <i class="bi bi-lock-fill me-1"></i>Gestionado
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state p-5 text-center">
+                            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted mt-3 mb-0">No hay postulaciones de aprendices para este proyecto.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 👨‍🏫 Postulaciones de Instructores -->
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow-sm border-0 postulaciones-card">
+                <div class="card-header bg-gradient-sena-dark text-white py-3">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="bi bi-mortarboard-fill me-2"></i>
+                        Instructores ({{ proyecto.postulaciones_instructores.all|length }})
+                    </h5>
+                </div>
+
+                <div class="card-body p-0">
+                    {% if proyecto.postulaciones_instructores.all %}
+                        <div class="list-group list-group-flush">
+                            {% for postulacion in proyecto.postulaciones_instructores.all %}
+                                <div class="list-group-item postulacion-item">
+                                    <div class="row align-items-center g-3">
+                                        <!-- Información del Postulante -->
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center gap-3">
+                                                <div class="avatar-small bg-sena-dark bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                                    <i class="bi bi-person-fill text-sena-dark"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 fw-bold text-dark">
+                                                        {{ postulacion.instructor.usuario.first_name }} {{ postulacion.instructor.usuario.last_name }}
+                                                    </h6>
+                                                    <p class="mb-0 small text-muted">
+                                                        @{{ postulacion.instructor.usuario.username }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Estado -->
+                                        <div class="col-md-3">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="small text-muted">Estado:</span>
+                                                <span class="badge
+                                                    {% if postulacion.estado == 'ACEPTADA' %}bg-success
+                                                    {% elif postulacion.estado == 'RECHAZADA' %}bg-danger
+                                                    {% else %}bg-warning text-dark{% endif %}
+                                                ">
+                                                    <i class="bi 
+                                                        {% if postulacion.estado == 'ACEPTADA' %}bi-check-circle-fill
+                                                        {% elif postulacion.estado == 'RECHAZADA' %}bi-x-circle-fill
+                                                        {% else %}bi-clock-fill{% endif %}
+                                                        me-1"></i>
+                                                    {{ postulacion.estado }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Acciones -->
+                                        <div class="col-md-3 text-end">
+                                            {% if postulacion.estado == "PENDIENTE" %}
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="{% url 'empresas:gestionar_postulacion_instructor' postulacion.id 'aceptar' %}" 
+                                                       class="btn btn-success-sena" 
+                                                       title="Aceptar postulación">
+                                                        <i class="bi bi-check-lg me-1"></i>Aceptar
+                                                    </a>
+                                                    <a href="{% url 'empresas:gestionar_postulacion_instructor' postulacion.id 'rechazar' %}" 
+                                                       class="btn btn-danger-outline" 
+                                                       title="Rechazar postulación">
+                                                        <i class="bi bi-x-lg me-1"></i>Rechazar
+                                                    </a>
+                                                </div>
+                                            {% else %}
+                                                <span class="badge bg-light text-muted">
+                                                    <i class="bi bi-lock-fill me-1"></i>Gestionado
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state p-5 text-center">
+                            <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted mt-3 mb-0">No hay postulaciones de instructores para este proyecto.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón de Retorno -->
+    <div class="text-center mt-5">
+        <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-outline-sena btn-lg">
+            <i class="bi bi-arrow-left-circle me-2"></i>Volver al Dashboard
+        </a>
     </div>
 </div>
+
+<!-- Estilos Personalizados SENA -->
+<style>
+/* Definición de colores SENA */
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2d8000;
+    --sena-light: #d4edda;
+}
+
+/* Clases de Utilidad SENA */
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.text-sena-dark {
+    color: var(--sena-dark) !important;
+}
+
+.bg-sena {
+    background-color: var(--sena-primary) !important;
+}
+
+.bg-sena-dark {
+    background-color: var(--sena-dark) !important;
+}
+
+.bg-sena-light {
+    background-color: var(--sena-light) !important;
+}
+
+.border-sena {
+    border-color: var(--sena-primary) !important;
+}
+
+/* Gradientes */
+.bg-gradient-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, rgba(57, 169, 0, 0.8) 100%);
+}
+
+.bg-gradient-sena-dark {
+    background: linear-gradient(135deg, var(--sena-dark) 0%, var(--sena-primary) 100%);
+}
+
+/* Botones SENA */
+.btn-success-sena {
+    background-color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-success-sena:hover {
+    background-color: var(--sena-dark);
+    border-color: var(--sena-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(57, 169, 0, 0.3);
+}
+
+.btn-danger-outline {
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-danger-outline:hover {
+    background-color: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-outline-sena {
+    color: var(--sena-primary);
+    border: 2px solid var(--sena-primary);
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-sena:hover {
+    background-color: var(--sena-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 169, 0, 0.3);
+}
+
+/* Header Section */
+.header-section {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(57, 169, 0, 0.05) 0%, rgba(45, 128, 0, 0.05) 100%);
+    border-radius: 1rem;
+    border-left: 5px solid var(--sena-primary);
+}
+
+.header-section h2 {
+    font-size: 2rem;
+}
+
+/* Tarjetas de Postulaciones */
+.postulaciones-card {
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.postulaciones-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+.postulacion-item {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 1.25rem !important;
+    transition: all 0.3s ease;
+}
+
+.postulacion-item:last-child {
+    border-bottom: none;
+}
+
+.postulacion-item:hover {
+    background-color: rgba(57, 169, 0, 0.02);
+}
+
+/* Avatar Pequeño */
+.avatar-small {
+    flex-shrink: 0;
+    font-size: 1.25rem;
+}
+
+/* Estado Empty */
+.empty-state {
+    background-color: #f8f9fa;
+    border-radius: 0.75rem;
+}
+
+/* Badge Personalizado */
+.badge {
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-section {
+        padding: 1rem;
+    }
+
+    .header-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .postulacion-item {
+        padding: 1rem !important;
+    }
+
+    .col-md-6,
+    .col-md-3 {
+        margin-bottom: 0.75rem;
+    }
+
+    .text-end {
+        text-align: left !important;
+    }
+
+    .btn-group {
+        width: 100%;
+    }
+
+    .btn-group .btn {
+        flex: 1;
+        font-size: 0.875rem;
+    }
+}
+
+/* Animación */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.postulacion-item {
+    animation: slideIn 0.3s ease-out;
+}
+</style>
 {% endblock %}

@@ -28,10 +28,10 @@
                             {% if empresa.logo %}
                                 <img src="{{ empresa.logo.url }}" 
                                     alt="Logo de {{ empresa.razon_social }}" 
-                                    class="profile-avatar rounded-circle border border-4 border-info shadow-sm">
+                                    class="profile-avatar rounded-circle border border-4 border-sena shadow-sm">
                             {% else %}
                                 <div class="profile-avatar-placeholder d-inline-flex align-items-center justify-content-center 
-                                            bg-gradient-light text-info rounded-circle border border-4 border-info shadow-sm">
+                                            bg-gradient-light text-sena rounded-circle border border-4 border-sena shadow-sm">
                                     <!-- Icono de edificio por defecto si no hay logo -->
                                     <i class="bi bi-briefcase-fill" style="font-size: 4rem;"></i>
                                 </div>
@@ -45,7 +45,7 @@
                         <p class="text-muted mb-0">
                             <i class="bi bi-person-badge"></i> NIT: {{ empresa.nit }}
                         </p>
-                        <span class="badge bg-info mt-2 px-3 py-2">
+                        <span class="badge bg-sena mt-2 px-3 py-2">
                             <i class="bi bi-patch-check-fill me-1"></i>Aliado Registrado
                         </span>
                     </div>
@@ -55,7 +55,7 @@
                     <!-- NUEVA SECCIÓN: DESCRIPCIÓN Y MISIÓN -->
                     {% if empresa.mision or empresa.descripcion %}
                     <div class="info-section mb-4">
-                        <h5 class="section-title text-success mb-3">
+                        <h5 class="section-title text-sena-dark mb-3">
                             <i class="bi bi-chat-left-text-fill me-2"></i>
                             Descripción Corporativa
                         </h5>
@@ -75,15 +75,15 @@
 
                     <!-- Información de Contacto (Mejora: se hace más compacto) -->
                     <div class="info-section mb-4">
-                        <h5 class="section-title text-primary mb-3">
+                        <h5 class="section-title text-sena mb-3">
                             <i class="bi bi-geo-alt-fill me-2"></i>
                             Datos de Contacto y Ubicación
                         </h5>
                         <div class="info-grid">
                             <!-- Email -->
                             <div class="info-card">
-                                <div class="info-icon bg-primary bg-opacity-10">
-                                    <i class="bi bi-envelope-fill text-primary"></i>
+                                <div class="info-icon bg-sena bg-opacity-10">
+                                    <i class="bi bi-envelope-fill text-sena"></i>
                                 </div>
                                 <div class="info-content">
                                     <small class="text-muted d-block">Correo de Contacto</small>
@@ -94,8 +94,8 @@
                             <!-- Teléfono -->
                             {% if empresa.telefono %}
                             <div class="info-card">
-                                <div class="info-icon bg-success bg-opacity-10">
-                                    <i class="bi bi-telephone-fill text-success"></i>
+                                <div class="info-icon bg-sena-light bg-opacity-10">
+                                    <i class="bi bi-telephone-fill text-sena-light"></i>
                                 </div>
                                 <div class="info-content">
                                     <small class="text-muted d-block">Teléfono</small>
@@ -107,8 +107,8 @@
                             <!-- Dirección (Ocupa todo el ancho si existe para mejor visibilidad) -->
                             {% if empresa.direccion %}
                             <div class="info-card program-info">
-                                <div class="info-icon bg-secondary bg-opacity-10">
-                                    <i class="bi bi-house-door-fill text-secondary"></i>
+                                <div class="info-icon bg-sena-accent bg-opacity-10">
+                                    <i class="bi bi-house-door-fill text-sena-accent"></i>
                                 </div>
                                 <div class="info-content">
                                     <small class="text-muted d-block">Dirección Principal</small>
@@ -124,7 +124,7 @@
                     <!-- NUEVA SECCIÓN: PROYECTOS PUBLICADOS (Asume que tienes 'proyectos_publicados' en el contexto) -->
                     {% if proyectos_publicados %}
                     <div class="info-section mb-4">
-                        <h5 class="section-title text-danger mb-3">
+                        <h5 class="section-title text-sena-dark mb-3">
                             <i class="bi bi-briefcase-fill me-2"></i>
                             Proyectos Activos de la Empresa ({{ proyectos_publicados.count }})
                         </h5>
@@ -134,10 +134,10 @@
                             <!-- Muestra solo los primeros 3 para no saturar -->
                             <a href="{% url 'proyectos:detalle' proyecto.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="mb-1 text-info fw-bold">{{ proyecto.titulo }}</h6>
+                                    <h6 class="mb-1 text-sena fw-bold">{{ proyecto.titulo }}</h6>
                                     <p class="mb-1 text-muted small">{{ proyecto.descripcion|truncatechars:80 }}</p>
                                 </div>
-                                <span class="badge bg-primary rounded-pill">{{ proyecto.num_solicitudes }} Solicitudes</span>
+                                <span class="badge bg-sena rounded-pill">{{ proyecto.num_solicitudes }} Solicitudes</span>
                             </a>
                             {% empty %}
                             <p class="text-center text-muted p-3 border rounded">Esta empresa aún no tiene proyectos activos publicados en OASIS.</p>
@@ -156,14 +156,14 @@
                     
                     <!-- Clasificación Empresarial (Mantenida) -->
                     <div class="info-section mb-4">
-                        <h5 class="section-title text-warning mb-3">
+                        <h5 class="section-title text-sena-light mb-3">
                             <i class="bi bi-bar-chart-fill me-2"></i>
                             Información Empresarial
                         </h5>
                         <div class="info-grid">
                             <div class="info-card">
-                                <div class="info-icon bg-warning bg-opacity-10">
-                                    <i class="bi bi-people-fill text-warning"></i>
+                                <div class="info-icon bg-sena-light bg-opacity-10">
+                                    <i class="bi bi-people-fill text-sena-light"></i>
                                 </div>
                                 <div class="info-content">
                                     <small class="text-muted d-block">Tamaño (Empleados)</small>
@@ -172,8 +172,8 @@
                             </div>
                             
                             <div class="info-card">
-                                <div class="info-icon bg-danger bg-opacity-10">
-                                    <i class="bi bi-person-fill text-danger"></i>
+                                <div class="info-icon bg-sena-accent bg-opacity-10">
+                                    <i class="bi bi-person-fill text-sena-accent"></i>
                                 </div>
                                 <div class="info-content">
                                     <small class="text-muted d-block">Usuario de Contacto</small>
@@ -187,18 +187,18 @@
                     <!-- Botones de Acción -->
                     <div class="action-buttons d-grid gap-3 mt-5">
                         {% if es_propietario %}
-                        <a href="{% url 'empresas:editar_perfil_empresa' %}" class="btn btn-info btn-lg shadow-sm">
+                        <a href="{% url 'empresas:editar_perfil_empresa' %}" class="btn btn-sena btn-lg shadow-sm">
                             <i class="bi bi-pencil-square me-2"></i>
                             Editar Perfil Corporativo
                         </a>
                         <!-- Botón para crear un nuevo proyecto, si es el dueño -->
-                        <a href="{% url 'empresas:crear_proyecto' %}" class="btn btn-primary btn-lg shadow-sm">
+                        <a href="{% url 'empresas:crear_proyecto' %}" class="btn btn-sena-dark btn-lg shadow-sm">
                             <i class="bi bi-plus-circle-fill me-2"></i>
                             Crear Nuevo Proyecto
                         </a>
                         {% endif %}
                         
-                        <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-outline-secondary btn-lg">
+                        <a href="{% url 'empresas:dashboard_empresa' %}" class="btn btn-outline-sena btn-lg">
                             <i class="bi bi-arrow-left-circle me-2"></i>
                             Volver al Dashboard
                         </a>
@@ -209,8 +209,84 @@
     </div>
 </div>
 
-<!-- Estilos Adicionales Personalizados (Sin cambios, se mantienen tus estilos) -->
+<!-- Estilos Adicionales Personalizados con Paleta SENA -->
 <style>
+/* Definición de colores SENA */
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2d8000;
+    --sena-light: #5cb85c;
+    --sena-accent: #6c757d;
+}
+
+/* Clases de utilidad para colores SENA */
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.text-sena-dark {
+    color: var(--sena-dark) !important;
+}
+
+.text-sena-light {
+    color: var(--sena-light) !important;
+}
+
+.bg-sena {
+    background-color: var(--sena-primary) !important;
+}
+
+.bg-sena-dark {
+    background-color: var(--sena-dark) !important;
+}
+
+.bg-sena-light {
+    background-color: var(--sena-light) !important;
+}
+
+.bg-sena-accent {
+    background-color: var(--sena-accent) !important;
+}
+
+.border-sena {
+    border-color: var(--sena-primary) !important;
+}
+
+.btn-sena {
+    background-color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+}
+
+.btn-sena:hover {
+    background-color: var(--sena-dark);
+    border-color: var(--sena-dark);
+    color: white;
+}
+
+.btn-sena-dark {
+    background-color: var(--sena-dark);
+    border-color: var(--sena-dark);
+    color: white;
+}
+
+.btn-sena-dark:hover {
+    background-color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+}
+
+.btn-outline-sena {
+    color: var(--sena-primary);
+    border-color: var(--sena-primary);
+}
+
+.btn-outline-sena:hover {
+    background-color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+}
+
 /* Estilos específicos para el perfil corporativo */
 .profile-card {
     animation: fadeInUp 0.6s ease-out;
@@ -221,9 +297,9 @@
     transform: translateY(-5px);
 }
 
-/* Color corporativo (Basado en Bootstrap Info) */
+/* Color corporativo con paleta SENA */
 .bg-gradient-corporativo {
-    background: linear-gradient(135deg, var(--bs-info) 0%, #0c73a2 100%); /* Azul/Cyan a un azul más oscuro */
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
     position: relative;
     overflow: hidden;
 }
@@ -253,8 +329,7 @@
 
 .profile-avatar:hover {
     transform: scale(1.05);
-    /* Sombra basada en el color corporativo */
-    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.3) !important;
+    box-shadow: 0 8px 25px rgba(57, 169, 0, 0.3) !important;
 }
 
 .profile-avatar-placeholder {
@@ -265,7 +340,7 @@
 
 .profile-avatar-placeholder:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.3) !important;
+    box-shadow: 0 8px 25px rgba(57, 169, 0, 0.3) !important;
 }
 
 .status-indicator {
@@ -280,7 +355,7 @@
 }
 
 .status-indicator.active {
-    background: var(--bs-info); /* Estado activo/registrado */
+    background: var(--sena-primary);
     animation: pulse 2s ease-in-out infinite;
 }
 
@@ -303,8 +378,7 @@
     left: 0;
     width: 60px;
     height: 3px;
-    /* Línea de énfasis basada en el color corporativo */
-    background: linear-gradient(90deg, var(--bs-info), transparent); 
+    background: linear-gradient(90deg, var(--sena-primary), transparent);
     border-radius: 2px;
 }
 
@@ -334,8 +408,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    /* Efecto hover basado en color corporativo */
-    background: linear-gradient(90deg, transparent, rgba(13, 110, 253, 0.05), transparent); 
+    background: linear-gradient(90deg, transparent, rgba(57, 169, 0, 0.05), transparent);
     transition: left 0.5s ease;
 }
 
@@ -344,14 +417,14 @@
 }
 
 .info-card:hover {
-    border-color: var(--bs-info);
+    border-color: var(--sena-primary);
     transform: translateX(5px);
     background: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .info-card.program-info {
-    grid-column: 1 / -1; /* Ocupa todo el ancho cuando se requiere */
+    grid-column: 1 / -1;
 }
 
 .info-icon {

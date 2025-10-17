@@ -140,3 +140,6 @@ EMAIL_HOST_PASSWORD = 'cylaposyqdnnrecp'
 
 # Para producción, deberías usar un servicio real como Gmail, SendGrid, etc.
 # EMAIL_HOST = 'smtp.gmail.com', EMAIL_PORT = 587, EMAIL_USE_TLS = True, etc.
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

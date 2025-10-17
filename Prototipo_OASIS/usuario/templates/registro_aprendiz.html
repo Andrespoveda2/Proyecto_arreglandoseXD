@@ -87,6 +87,10 @@
                                         <i class="bi bi-shield-lock me-2 text-warning"></i>
                                     {% elif 'first_name' in field.name or 'last_name' in field.name %}
                                         <i class="bi bi-person-fill me-2 text-success"></i>
+                                    {% elif 'tipo_documento' in field.name %}
+                                        <i class="bi bi-file-text-fill me-2 text-success"></i>
+                                    {% elif 'documento' in field.name %}
+                                        <i class="bi bi-card-heading me-2 text-success"></i>
                                     {% elif 'programa' in field.name %}
                                         <i class="bi bi-book me-2 text-danger"></i>
                                     {% elif 'ficha' in field.name %}
@@ -323,6 +327,8 @@
 .field-group:nth-child(4) { animation-delay: 0.25s; }
 .field-group:nth-child(5) { animation-delay: 0.3s; }
 .field-group:nth-child(6) { animation-delay: 0.35s; }
+.field-group:nth-child(7) { animation-delay: 0.4s; }
+.field-group:nth-child(8) { animation-delay: 0.45s; }
 
 .field-group label i {
     font-size: 1.1rem;
