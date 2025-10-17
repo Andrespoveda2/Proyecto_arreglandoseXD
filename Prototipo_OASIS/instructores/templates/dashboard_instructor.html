@@ -5,67 +5,81 @@
 {% block content %}
 <div class="row mb-4">
     <div class="col-12">
-        <!-- Bloque de Bienvenida Estilizado (Jumbotron) -->
+        <!-- Bloque de Bienvenida Estilizado -->
         <div class="welcome-jumbotron">
-            <h1 class="display-5 fw-bold mb-1">Centro de Supervisión de Proyectos</h1>
-            <p class="lead">
-                Bienvenido, **{{ request.user.username }}**. Revisa el avance de tus equipos y las tareas pendientes.
-            </p>
+            <div class="d-flex align-items-center">
+                <div class="welcome-icon">
+                    <i class="bi bi-person-video3"></i>
+                </div>
+                <div class="ms-3">
+                    <h1 class="display-5 fw-bold mb-1">Centro de Supervisión de Proyectos</h1>
+                    <p class="lead mb-0">
+                        Bienvenido, <strong>{{ request.user.username }}</strong>. Revisa el avance de tus equipos y las tareas pendientes.
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Tarjetas de Estadísticas Clave (Métricas de Supervisión) -->
+<!-- Tarjetas de Estadísticas Clave -->
 <div class="row g-4 mb-5">
     
     <!-- Tarjeta 1: Proyectos Asignados -->
     <div class="col-md-6 col-lg-3">
-        <div class="card stat-card shadow-sm p-3">
+        <div class="card stat-card stat-sena shadow-sm">
             <div class="d-flex align-items-center">
-                <i class="bi bi-person-workspace fs-3 text-primary me-3"></i>
-                <div>
-                    <p class="text-uppercase mb-0 text-muted small">Proyectos Asignados</p>
-                    <!-- Asumo que 'proyectos' es la lista de asignaciones -->
-                    <h3 class="fw-bold mb-0">{% if proyectos %}{{ proyectos|length }}{% else %}0{% endif %}</h3>
+                <div class="stat-icon stat-icon-sena">
+                    <i class="bi bi-person-workspace"></i>
+                </div>
+                <div class="ms-3">
+                    <p class="text-uppercase mb-0 text-muted small fw-bold">Proyectos Asignados</p>
+                    <h3 class="fw-bold mb-0 text-sena">{% if proyectos %}{{ proyectos|length }}{% else %}0{% endif %}</h3>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Tarjeta 2: Tareas Pendientes de Revisión (Placeholder) -->
+    <!-- Tarjeta 2: Revisiones Pendientes -->
     <div class="col-md-6 col-lg-3">
-        <div class="card stat-card shadow-sm p-3">
+        <div class="card stat-card stat-warning shadow-sm">
             <div class="d-flex align-items-center">
-                <i class="bi bi-clipboard-check fs-3 text-warning me-3"></i>
-                <div>
-                    <p class="text-uppercase mb-0 text-muted small">Revisiones Pendientes</p>
-                    <h3 class="fw-bold mb-0">4</h3>
+                <div class="stat-icon stat-icon-warning">
+                    <i class="bi bi-clipboard-check"></i>
+                </div>
+                <div class="ms-3">
+                    <p class="text-uppercase mb-0 text-muted small fw-bold">Revisiones Pendientes</p>
+                    <h3 class="fw-bold mb-0 text-warning">4</h3>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Tarjeta 3: Aprendices Supervisados (Placeholder) -->
+    <!-- Tarjeta 3: Aprendices Supervisados -->
     <div class="col-md-6 col-lg-3">
-        <div class="card stat-card shadow-sm p-3">
+        <div class="card stat-card stat-success shadow-sm">
             <div class="d-flex align-items-center">
-                <i class="bi bi-mortarboard-fill fs-3 text-success me-3"></i>
-                <div>
-                    <p class="text-uppercase mb-0 text-muted small">Total Aprendices</p>
-                    <h3 class="fw-bold mb-0">12</h3>
+                <div class="stat-icon stat-icon-success">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div class="ms-3">
+                    <p class="text-uppercase mb-0 text-muted small fw-bold">Total Aprendices</p>
+                    <h3 class="fw-bold mb-0 text-success">12</h3>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Tarjeta 4: Promedio de Avance (Placeholder) -->
+    <!-- Tarjeta 4: Avance Promedio -->
     <div class="col-md-6 col-lg-3">
-        <div class="card stat-card shadow-sm p-3">
+        <div class="card stat-card stat-info shadow-sm">
             <div class="d-flex align-items-center">
-                <i class="bi bi-bar-chart-line-fill fs-3 text-info me-3"></i>
-                <div>
-                    <p class="text-uppercase mb-0 text-muted small">Avance Promedio</p>
-                    <h3 class="fw-bold mb-0">65%</h3>
+                <div class="stat-icon stat-icon-info">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                </div>
+                <div class="ms-3">
+                    <p class="text-uppercase mb-0 text-muted small fw-bold">Avance Promedio</p>
+                    <h3 class="fw-bold mb-0 text-info">65%</h3>
                 </div>
             </div>
         </div>
@@ -73,10 +87,10 @@
 </div>
 
 <div class="row g-4">
-    <!-- Columna Principal: Lista de Proyectos y Seguimiento -->
+    <!-- Columna Principal: Proyectos -->
     <div class="col-lg-8">
-        <div class="card shadow-lg border-0">
-            <div class="card-header bg-dark text-white">
+        <div class="card shadow-lg border-0 proyecto-card">
+            <div class="card-header bg-gradient-sena text-white">
                 <h5 class="mb-0"><i class="bi bi-list-task me-2"></i>Seguimiento de Proyectos Asignados</h5>
             </div>
             <div class="card-body p-0">
@@ -84,76 +98,292 @@
                     <ul class="list-group list-group-flush">
                         {% for asignacion in proyectos %}
                             {% if asignacion.proyecto %}
-                                <li class="list-group-item d-flex justify-content-between align-items-center py-3 list-group-item-action">
-                                    
-                                    <!-- Información del Proyecto -->
-                                    <div class="flex-grow-1 me-3">
-                                        <h6 class="mb-1 fw-semibold text-primary">{{ asignacion.proyecto.nombre }}</h6>
-                                        <small class="text-muted">Empresa: [Nombre de la Empresa]</small>
-                                        <!-- Simulación de barra de progreso -->
-                                        <div class="progress mt-2" style="height: 6px;">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                <li class="list-group-item proyecto-item py-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <!-- Información del Proyecto -->
+                                        <div class="flex-grow-1 me-3">
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <h6 class="mb-0 fw-semibold text-sena">{{ asignacion.proyecto.nombre }}</h6>
+                                                <span class="badge bg-sena-light text-sena-dark small">Activo</span>
+                                            </div>
+                                            <small class="text-muted d-block mb-2">Empresa: [Nombre de la Empresa]</small>
+                                            
+                                            <!-- Barra de Progreso -->
+                                            <div class="progress progress-custom" style="height: 8px;">
+                                                <div class="progress-bar bg-gradient-sena" role="progressbar" style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <small class="d-block mt-2">
+                                                <i class="bi bi-check-circle-fill text-sena me-1"></i>
+                                                <strong>75% de Avance</strong>
+                                            </small>
                                         </div>
-                                        <small class="d-block mt-1 text-success fw-bold">75% de Avance</small>
+                                        
+                                        <!-- Botón de Acción -->
+                                        <a href="{% url 'instructores:seguimiento_avance' asignacion.proyecto.id %}" class="btn btn-sena btn-sm shadow-sm">
+                                            <i class="bi bi-graph-up me-1"></i> Ver Seguimiento
+                                        </a>
                                     </div>
-                                    
-                                    <!-- Botón de Acción -->
-                                    <a href="{% url 'instructores:seguimiento_avance' asignacion.proyecto.id %}" class="btn btn-sm btn-info text-white shadow-sm">
-                                        <i class="bi bi-graph-up me-1"></i> Ver Seguimiento
-                                    </a>
                                 </li>
                             {% else %}
                                 <li class="list-group-item text-muted py-3">
-                                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Asignación sin proyecto vinculado.
+                                    <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Asignación sin proyecto vinculado.
                                 </li>
                             {% endif %}
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <div class="p-4 text-center">
-                        <i class="bi bi-check-circle-fill text-success fs-3"></i>
-                        <p class="text-muted mt-3 mb-0">No tienes proyectos asignados para supervisar actualmente.</p>
-                        <a href="{% url 'instructores:proyectos_disponibles' %}" class="btn btn-primary btn-sm mt-3">Ver Oportunidades de Supervisión</a>
+                    <div class="p-5 text-center">
+                        <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-3 mb-3">No tienes proyectos asignados para supervisar actualmente.</p>
+                        <a href="{% url 'instructores:proyectos_disponibles' %}" class="btn btn-sena btn-sm">
+                            <i class="bi bi-search me-1"></i>Ver Oportunidades de Supervisión
+                        </a>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Columna Lateral: Acciones Rápidas y Perfil -->
+    <!-- Columna Lateral: Herramientas y Perfil -->
     <div class="col-lg-4">
-        <div class="card shadow-lg border-0 quick-links-card">
-            <div class="card-header bg-secondary text-dark">
-                <h5 class="mb-0"><i class="bi bi-tools me-2"></i>Herramientas y Perfil</h5>
+        <!-- Card de Herramientas -->
+        <div class="card shadow-lg border-0 mb-4">
+            <div class="card-header bg-sena text-white">
+                <h5 class="mb-0"><i class="bi bi-tools me-2"></i>Herramientas Rápidas</h5>
             </div>
-            
-                <a href="{% url 'instructores:mi_perfil_instructor' %}" class="btn btn-outline-dark btn-lg shadow-sm">
-                    <i class="bi bi-person-fill me-2"></i> Mi Perfil
+            <div class="card-body p-3 d-grid gap-2">
+                <a href="{% url 'instructores:mi_perfil_instructor' %}" class="btn btn-outline-sena btn-sm">
+                    <i class="bi bi-person-fill me-2"></i>Mi Perfil
                 </a>
-                <a href="{% url 'instructores:proyectos_asignados' %}" class="btn btn-outline-primary btn-lg shadow-sm">
-                    <i class="bi bi-list-columns me-2"></i> Ver Todos los Proyectos
+                <a href="{% url 'instructores:proyectos_asignados' %}" class="btn btn-outline-sena btn-sm">
+                    <i class="bi bi-list-columns me-2"></i>Ver Todos los Proyectos
                 </a>
-              <a href="{% url 'auth:contacto' %}" class="btn btn-outline-info btn-lg shadow-sm">
-                    <i class="bi bi-chat-dots me-2"></i> Contactar Soporte
+                <a href="{% url 'auth:contacto' %}" class="btn btn-outline-sena btn-sm">
+                    <i class="bi bi-chat-dots me-2"></i>Contactar Soporte
                 </a>
             </div>
         </div>
         
-        <!-- Alertas y Noticias -->
-        <div class="card shadow-sm border-0 mt-4">
-            <div class="card-header bg-light">
-                <h6 class="mb-0"><i class="bi bi-newspaper me-2 text-primary"></i>Novedades</h6>
+        <!-- Card de Novedades -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-light border-bottom">
+                <h6 class="mb-0"><i class="bi bi-bell-fill me-2 text-sena"></i><strong>Novedades</strong></h6>
             </div>
             <div class="list-group list-group-flush">
-                <div class="list-group-item list-group-item-action py-3">
-                    <small class="text-dark">Nuevo módulo de evaluación disponible.</small>
+                <div class="list-group-item list-group-item-action py-3 small">
+                    <i class="bi bi-star-fill text-warning me-2"></i>
+                    <span>Nuevo módulo de evaluación disponible.</span>
                 </div>
-                <div class="list-group-item list-group-item-action py-3">
-                    <small class="text-dark">Recordatorio: Cierre de fase 1 el 10/11.</small>
+                <div class="list-group-item list-group-item-action py-3 small">
+                    <i class="bi bi-calendar-event-fill text-sena me-2"></i>
+                    <span>Recordatorio: Cierre de fase 1 el 10/11.</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Estilos Personalizados -->
+<style>
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2D7A00;
+    --sena-light: #d4edda;
+    --warning-color: #F59E0B;
+    --info-color: #0EA5E9;
+}
+
+/* Clases de Utilidad */
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.text-sena-dark {
+    color: var(--sena-dark) !important;
+}
+
+.bg-sena {
+    background-color: var(--sena-primary) !important;
+}
+
+.bg-sena-light {
+    background-color: var(--sena-light) !important;
+}
+
+.border-sena {
+    border-color: var(--sena-primary) !important;
+}
+
+/* Gradientes */
+.bg-gradient-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+}
+
+/* Welcome Section */
+.welcome-jumbotron {
+    background: linear-gradient(135deg, rgba(57, 169, 0, 0.08) 0%, rgba(45, 128, 0, 0.08) 100%);
+    border-left: 5px solid var(--sena-primary);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.welcome-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+/* Tarjetas de Estadísticas */
+.stat-card {
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.15s; }
+.stat-card:nth-child(3) { animation-delay: 0.2s; }
+.stat-card:nth-child(4) { animation-delay: 0.25s; }
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.stat-icon-sena {
+    background: linear-gradient(135deg, var(--sena-light) 0%, #bbf7d0 100%);
+    color: var(--sena-dark);
+}
+
+.stat-icon-warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+.stat-icon-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+}
+
+.stat-icon-info {
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--info-color);
+}
+
+/* Proyecto Card */
+.proyecto-card {
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.proyecto-item {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.proyecto-item:hover {
+    background-color: rgba(57, 169, 0, 0.03);
+    border-left-color: var(--sena-primary);
+}
+
+/* Progress Bar */
+.progress-custom {
+    background-color: #e5e7eb;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--sena-primary) 0%, var(--sena-light) 100%) !important;
+}
+
+/* Botones */
+.btn-sena {
+    background-color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena:hover {
+    background-color: var(--sena-dark);
+    border-color: var(--sena-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 169, 0, 0.3) !important;
+}
+
+.btn-outline-sena {
+    color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    font-weight: 600;
+}
+
+.btn-outline-sena:hover {
+    background-color: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+}
+
+/* Badge */
+.badge {
+    font-weight: 600;
+    padding: 0.4rem 0.7rem;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-jumbotron {
+        padding: 1.5rem;
+    }
+
+    .welcome-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .welcome-jumbotron h1 {
+        font-size: 1.5rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+}
+</style>
 {% endblock %}
