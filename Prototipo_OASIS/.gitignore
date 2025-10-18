@@ -6,7 +6,11 @@ __pycache__/
 *.log
 env/
 venv/
+__pycache__/
+*.pyc
+db.sqlite3
 .env
+*.log
 
 # IDE / OS
 .vscode/
