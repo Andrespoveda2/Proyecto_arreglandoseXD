@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle de Solicitud - {{ solicitud.nombre }}{% endblock %}
+
+{% block content %}
+<style>
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2D7A00;
+    --sena-light: #d4edda;
+}
+
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.badge-aprobado {
+    background: #d4edda;
+    color: #155724;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-rechazado {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-pendiente {
+    background: #fff3cd;
+    color: #856404;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.card-solicitud {
+    border-left: 5px solid var(--sena-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-decision {
+    background: #f9fafb;
+    border-left: 4px solid var(--sena-primary);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.card-decision.rechazado {
+    border-left-color: #dc3545;
+    background: #fff5f5;
+}
+
+.info-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.info-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border-left: 3px solid var(--sena-light);
+}
+
+.info-item label {
+    font-weight: 600;
+    color: var(--sena-dark);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.info-item p {
+    margin: 0;
+    color: #333;
+}
+
+.btn-volver {
+    background: var(--sena-primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-volver:hover {
+    background: var(--sena-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(57, 169, 0, 0.2);
+    color: white;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .info-row {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<div class="container py-4">
+    <!-- Header -->
+    <div class="mb-4">
+        <h2 class="mb-3">{{ solicitud.nombre }}</h2>
+        <a href="{% url 'empresas:dashboard_empresa' %}" class="btn-volver">
+            <i class="bi bi-arrow-left me-2"></i>Volver al Dashboard
+        </a>
+    </div>
+
+    <!-- Estado de la Solicitud -->
+    <div class="mb-4">
+        {% if solicitud.estado == 'APROBADO' %}
+            <span class="badge-aprobado">
+                <i class="bi bi-check-circle-fill me-2"></i>APROBADO
+            </span>
+        {% elif solicitud.estado == 'RECHAZADO' %}
+            <span class="badge-rechazado">
+                <i class="bi bi-x-circle-fill me-2"></i>RECHAZADO
+            </span>
+        {% else %}
+            <span class="badge-pendiente">
+                <i class="bi bi-clock-fill me-2"></i>PENDIENTE
+            </span>
+        {% endif %}
+    </div>
+
+    <!-- Información Principal del Proyecto -->
+    <div class="card card-solicitud mb-4">
+        <div class="card-body">
+            <h5 class="card-title text-sena mb-3">
+                <i class="bi bi-file-earmark me-2"></i>Información del Proyecto
+            </h5>
+            
+            <div class="info-row">
+                <div class="info-item">
+                    <label>Área / Sector</label>
+                    <p>{{ solicitud.area|default:"No especificado" }}</p>
+                </div>
+                <div class="info-item">
+                    <label>Fecha de Solicitud</label>
+                    <p>{{ solicitud.creado_en|date:"d/m/Y H:i" }}</p>
+                </div>
+                <div class="info-item">
+                    <label>Empresa Solicitante</label>
+                    <p>{{ solicitud.empresa.usuario.username }}</p>
+                </div>
+                <div class="info-item">
+                    <label>Email de Contacto</label>
+                    <p>{{ solicitud.empresa.usuario.email }}</p>
+                </div>
+            </div>
+
+            <!-- Descripción Completa -->
+            <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; border-left: 3px solid var(--sena-light);">
+                <small class="d-block text-muted fw-bold mb-2">
+                    <i class="bi bi-file-text me-1"></i>DESCRIPCIÓN DEL PROYECTO
+                </small>
+                <p class="mb-0 text-dark">{{ solicitud.descripcion }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decisión del Administrador (si aplica) -->
+    {% if solicitud.estado != 'PENDIENTE' %}
+        <div class="card {% if solicitud.estado == 'RECHAZADO' %}card-decision rechazado{% else %}card-decision{% endif %}">
+            <div class="mb-3">
+                {% if solicitud.estado == 'APROBADO' %}
+                    <h5 class="text-sena mb-2">
+                        <i class="bi bi-check-circle-fill me-2"></i>Proyecto Aprobado
+                    </h5>
+                {% else %}
+                    <h5 class="text-danger mb-2">
+                        <i class="bi bi-x-circle-fill me-2"></i>Proyecto Rechazado
+                    </h5>
+                {% endif %}
+            </div>
+
+            <!-- Fecha de Decisión -->
+            {% if solicitud.fecha_decision %}
+                <div class="mb-3">
+                    <small class="text-muted">
+                        <i class="bi bi-calendar-event me-1"></i>
+                        Fecha de decisión: {{ solicitud.fecha_decision|date:"d/m/Y H:i" }}
+                    </small>
+                </div>
+            {% endif %}
+
+            <!-- Motivo de la Decisión -->
+            {% if solicitud.estado == 'APROBADO' and solicitud.motivo_aprobacion %}
+                <div class="mt-3">
+                    <label class="fw-bold text-sena mb-2 d-block">
+                        <i class="bi bi-chat-left-text me-2"></i>Motivo de Aprobación
+                    </label>
+                    <div style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid var(--sena-primary);">
+                        <p class="mb-0" style="white-space: pre-wrap; color: #333;">{{ solicitud.motivo_aprobacion }}</p>
+                    </div>
+                </div>
+            {% elif solicitud.estado == 'RECHAZADO' and solicitud.motivo_rechazo %}
+                <div class="mt-3">
+                    <label class="fw-bold text-danger mb-2 d-block">
+                        <i class="bi bi-chat-left-text me-2"></i>Motivo del Rechazo
+                    </label>
+                    <div style="background: white; padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #dc3545;">
+                        <p class="mb-0" style="white-space: pre-wrap; color: #333;">{{ solicitud.motivo_rechazo }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Tu solicitud está en revisión.</strong> El administrador te notificará cuando se tome una decisión.
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

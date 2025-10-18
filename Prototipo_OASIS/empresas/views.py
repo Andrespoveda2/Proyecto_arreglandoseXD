@@ -9,8 +9,11 @@ from usuario.utils import role_required
 from usuario.models import PerfilEmpresa
 
 # Modelos y formularios de la app empresas
-from .models import SolicitudProyecto, Postulacion, PostulacionInstructor
+from .models import SolicitudProyecto, Postulacion, PostulacionInstructor, SolicitudProyecto, Empresa
 from .forms import SolicitudProyectoForm, EmpresaProfileForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import DetailView
+
 
 
 
@@ -229,3 +232,29 @@ def detalle_proyecto_empresa(request, pk):
         'aprendices': aprendices,
     }
     return render(request, 'detalle_proyecto_empresa.html', context)
+
+class DetalleSolicitudProyectoView(LoginRequiredMixin, DetailView):
+    model = SolicitudProyecto
+    template_name = 'detalle_solicitud.html'
+    context_object_name = 'solicitud'
+    pk_url_kwarg = 'pk'
+
+    def get_queryset(self):
+        user = self.request.user
+        try:
+            perfil_empresa = user.perfil_empresa
+            return SolicitudProyecto.objects.filter(empresa=perfil_empresa)
+        except:
+            return SolicitudProyecto.objects.none()
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Los campos motivo_aprobacion y motivo_rechazo ya están 
+        # directamente en el objeto solicitud
+        solicitud = self.get_object()
+        context['motivo_aprobacion'] = solicitud.motivo_aprobacion
+        context['motivo_rechazo'] = solicitud.motivo_rechazo
+        context['estado'] = solicitud.estado
+        context['fecha_decision'] = solicitud.fecha_decision
+        return context

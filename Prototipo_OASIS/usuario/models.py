@@ -32,7 +32,7 @@ class ProgramaFormativo(models.Model):
         (UNIVERSITARIO, "Universitario"),
     ]
 
-    nombre = models.CharField(max_length=150, unique=True, verbose_name="Programa de Formación")
+    nombre = models.CharField(max_length=50, unique=True, verbose_name="Programa de Formación")
     descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
     tipo = models.CharField(max_length=20, choices=TIPOS, verbose_name="Tipo de Programa")
     codigo = models.CharField(max_length=20, unique=True, verbose_name="Código del Programa")
@@ -99,9 +99,9 @@ class Usuario(AbstractUser):
 
 class PerfilEmpresa(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, related_name='perfil_empresa')
-    razon_social = models.CharField(max_length=255, verbose_name="Razón Social")
-    nit = models.CharField(max_length=20, unique=True, verbose_name="NIT")
-    telefono = models.CharField(max_length=15, verbose_name="Teléfono")
+    razon_social = models.CharField(max_length=100, verbose_name="Razón Social")
+    nit = models.CharField(max_length=15, unique=True, verbose_name="NIT")
+    telefono = models.CharField(max_length=10, verbose_name="Teléfono")
     sector = models.ForeignKey(SectorProductivo, on_delete=models.SET_NULL, null=True, verbose_name="Sector Productivo")
 
     def __str__(self):
@@ -123,7 +123,7 @@ class PerfilAprendiz(models.Model):
     
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, related_name='perfil_aprendiz')
     tipo_documento = models.CharField(max_length=10, choices=TIPOS_DOCUMENTO, default='CC', verbose_name="Tipo de Documento")
-    documento = models.CharField(max_length=20, unique=True, verbose_name="Número de Documento")
+    documento = models.CharField(max_length=10, unique=True, verbose_name="Número de Documento")
     ficha = models.CharField(max_length=10, verbose_name="Número de Ficha")
     programa = models.ForeignKey(ProgramaFormativo, on_delete=models.SET_NULL, null=True, verbose_name="Programa de Formación")
     
@@ -146,8 +146,8 @@ class PerfilInstructor(models.Model):
     
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, related_name='perfil_instructor')
     tipo_documento = models.CharField(max_length=10, choices=TIPOS_DOCUMENTO, default='CC', verbose_name="Tipo de Documento")
-    documento = models.CharField(max_length=20, unique=True, verbose_name="Número de Documento")
-    area_conocimiento = models.CharField(max_length=100, verbose_name="Área de Conocimiento")
+    documento = models.CharField(max_length=10, unique=True, verbose_name="Número de Documento")
+    area_conocimiento = models.CharField(max_length=50, verbose_name="Área de Conocimiento")
     
     def __str__(self):
         return f"Instructor: {self.usuario.username}"
@@ -174,8 +174,8 @@ class MensajeContacto(models.Model):
         verbose_name='Usuario Asociado'
     )
     
-    nombre = models.CharField(max_length=100, verbose_name='Nombre de Contacto')
-    email = models.EmailField(max_length=150, verbose_name='Correo Electrónico')
+    nombre = models.CharField(max_length=50, verbose_name='Nombre de Contacto')
+    email = models.EmailField(max_length=50, verbose_name='Correo Electrónico')
     asunto = models.CharField(max_length=50, choices=ASUNTO_CHOICES, verbose_name='Asunto de la Consulta')
     mensaje = models.TextField(verbose_name='Mensaje Detallado')
     

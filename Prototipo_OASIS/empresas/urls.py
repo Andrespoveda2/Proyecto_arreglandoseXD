@@ -24,4 +24,6 @@ urlpatterns = [
         views.gestionar_postulacion_instructor,
         name='gestionar_postulacion_instructor'
     ),
+    
+    path('solicitud/<int:pk>/', views.DetalleSolicitudProyectoView.as_view(), name='detalle_solicitud'),
 ]

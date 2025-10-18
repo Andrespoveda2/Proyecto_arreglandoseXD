@@ -101,9 +101,10 @@ class SolicitudProyecto(models.Model):
         auto_now_add=True,
         verbose_name="Fecha de Creación"
     )
+    fecha_decision = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.nombre} ({self.get_estado_display()})"
+        return f"{self.nombre} ({self.get_estado_display()})" #type: ignore
 
     class Meta:
         verbose_name = "Solicitud de Proyecto"

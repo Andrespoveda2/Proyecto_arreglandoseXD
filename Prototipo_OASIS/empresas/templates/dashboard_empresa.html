@@ -5,235 +5,398 @@
 
 {% block content %}
 <style>
-    /* 🎨 PALETA DE COLORES */
-    :root {
-        --sena-green: #39A900;
-        --sena-green-dark: #2B8000;
-        --neutral-dark: #2E2E2E;
-        --neutral-light: #F4F4F4;
-        --white: #FFFFFF;
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2D7A00;
+    --sena-light: #d4edda;
+}
+
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.welcome-header {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    color: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 20px rgba(57, 169, 0, 0.2);
+}
+
+.welcome-header h1 {
+    font-weight: 700;
+    margin: 0;
+}
+
+.welcome-header p {
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+}
+
+.stat-card {
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    background: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.15s; }
+.stat-card:nth-child(3) { animation-delay: 0.2s; }
+.stat-card:nth-child(4) { animation-delay: 0.25s; }
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(57, 169, 0, 0.15);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--sena-light);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: var(--sena-dark);
+    margin-right: 1rem;
+}
+
+.table-header {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    color: white;
+}
+
+.table-header th {
+    border: none;
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(57, 169, 0, 0.03);
+}
+
+.btn-sena {
+    background: var(--sena-primary);
+    border-color: var(--sena-primary);
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena:hover {
+    background: var(--sena-dark);
+    border-color: var(--sena-dark);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-sena-outline {
+    border: 2px solid var(--sena-primary);
+    color: var(--sena-primary);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena-outline:hover {
+    background: var(--sena-primary);
+    color: white;
+}
+
+.card-header-sena {
+    background: var(--sena-primary);
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.empty-state {
+    background: var(--sena-light);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--sena-primary);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.badge-aprobado {
+    background: var(--sena-light);
+    color: var(--sena-dark);
+}
+
+.badge-pendiente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-rechazado {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.quick-links-card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.quick-links-card .btn {
+    border-radius: 0;
+    border: none;
+    padding: 0.75rem;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+    justify-content: flex-start;
+    transition: all 0.3s ease;
+}
+
+.quick-links-card .btn:hover {
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .welcome-header {
+        padding: 1.5rem;
     }
 
-    /* Jumbotron / Bienvenida */
-    .welcome-jumbotron {
-        background-color: var(--sena-green);
-        color: var(--white);
-        border-radius: 12px;
-        padding: 2rem 3rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    .welcome-header h1 {
+        font-size: 1.5rem;
     }
 
-    /* Tarjetas estadísticas */
     .stat-card {
-        border: none;
-        border-left: 6px solid var(--sena-green);
-        background-color: var(--white);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin-bottom: 1rem;
     }
-
-    .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(57, 169, 0, 0.25);
-    }
-
-    /* Tablas */
-    .table thead {
-        background-color: var(--sena-green);
-        color: var(--white);
-    }
-
-    .table-hover tbody tr:hover {
-        background-color: var(--neutral-light);
-    }
-
-    /* Botones */
-    .btn-success {
-        background-color: var(--sena-green);
-        border-color: var(--sena-green);
-    }
-
-    .btn-success:hover {
-        background-color: var(--sena-green-dark);
-        border-color: var(--sena-green-dark);
-    }
-
-    .btn-outline-dark {
-        border-color: var(--neutral-dark);
-        color: var(--neutral-dark);
-    }
-
-    .btn-outline-dark:hover {
-        background-color: var(--neutral-dark);
-        color: var(--white);
-    }
-
-    /* Tarjeta lateral */
-    .quick-links-card .card-header {
-        background-color: var(--sena-green);
-        color: var(--white);
-    }
-
-    /* Notificaciones */
-    .card-header.bg-light {
-        background-color: var(--neutral-light) !important;
-    }
+}
 </style>
 
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="welcome-jumbotron">
-            <h1 class="display-5 fw-bold mb-1">Panel de Control Empresarial</h1>
-            <p class="lead mb-0">
-                Gestiona tus proyectos, revisa el progreso de los aprendices y conecta con el SENA.
-            </p>
-        </div>
-    </div>
-</div>
-
-<!-- Tarjetas de Estadísticas -->
-<div class="row g-4 mb-5">
-    <div class="col-md-6 col-lg-3">
-        <div class="card stat-card p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-briefcase-fill fs-3 text-success me-3"></i>
-                <div>
-                    <p class="text-uppercase mb-0 text-muted small">Proyectos Publicados</p>
-                    <h3 class="fw-bold mb-0">{% if proyectos %}{{ proyectos|length }}{% else %}0{% endif %}</h3>
-                </div>
-            </div>
-        </div>
+<div class="container-fluid py-4">
+    
+    <!-- Header de Bienvenida -->
+    <div class="welcome-header">
+        <h1>
+            <i class="bi bi-building me-2"></i>Panel de Control Empresarial
+        </h1>
+        <p>Gestiona tus proyectos, revisa solicitudes y colabora con el SENA</p>
     </div>
 
-    <div class="col-md-6 col-lg-3">
-        <div class="card stat-card p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-people-fill fs-3 text-success me-3"></i>
-                <div>
-                    <p class="text-uppercase mb-0 text-muted small">Proyectos Activos</p>
-                    <h3 class="fw-bold mb-0">{% if proyectos %}{{ proyectos|length }}{% else %}0{% endif %}</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-        <div class="card stat-card p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-bell-fill fs-3 text-warning me-3"></i>
-                <div>
-                    <p class="text-uppercase mb-0 text-muted small">Solicitudes Pendientes</p>
-                    <h3 class="fw-bold mb-0">3</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-        <div class="card stat-card p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-person-badge-fill fs-3 text-info me-3"></i>
-                <div>
-                    <p class="text-uppercase mb-0 text-muted small">Perfil Completo</p>
-                    <h3 class="fw-bold mb-0">{% if empresa.perfil_completo %}{{ empresa.perfil_completo }}%{% else %}60{% endif %}</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row g-4">
-    <!-- Lista de Proyectos -->
-    <div class="col-lg-8">
-        <div class="card shadow-lg border-0">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0"><i class="bi bi-list-task me-2"></i>Tus Proyectos Publicados</h5>
-            </div>
-            <div class="card-body p-0 table-responsive">
-                {% if proyectos %}
-                    <table class="table table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Estado</th>
-                                <th>Aprendices</th>
-                                <th class="text-end">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for proyecto in proyectos %}
-                            <tr>
-                                <td class="fw-semibold">{{ proyecto.nombre }}</td>
-                                <td>
-                                    {% if proyecto.estado == "APROBADO" %}
-                                        <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i>Aprobado</span>
-                                    {% elif proyecto.estado == "RECHAZADO" %}
-                                        <span class="badge bg-danger"><i class="bi bi-x-circle-fill me-1"></i>Rechazado</span>
-                                    {% else %}
-                                        <span class="badge bg-warning text-dark"><i class="bi bi-clock-fill me-1"></i>Pendiente</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <span class="badge bg-secondary">{% if proyecto.aprendices_asignados %}{{ proyecto.aprendices_asignados }}/{% else %}0/{% endif %}{% if proyecto.cupo_aprendices %}{{ proyecto.cupo_aprendices }}{% else %}4{% endif %}</span>
-                                </td>
-                                <td class="text-end">
-                                    <div class="btn-group" role="group">
-                                        <a href="{% url 'empresas:postulaciones_proyecto' proyecto.id %}" class="btn btn-outline-success btn-sm">Ver Postulaciones</a>
-                                        <a href="{% url 'empresas:detalle_proyecto_empresa' proyecto.id %}" class="btn btn-outline-dark btn-sm"><i class="bi bi-info-circle"></i></a>
-                                        <a href="{% url 'empresas:editar_proyecto' proyecto.id %}" class="btn btn-outline-success btn-sm"><i class="bi bi-pencil"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                {% else %}
-                    <div class="alert alert-light text-center m-4 p-4 border shadow-sm">
-                        <i class="bi bi-info-circle-fill fs-3 mb-2 text-success"></i>
-                        <h4 class="alert-heading">¡Hora de Publicar tu Primer Reto!</h4>
-                        <p class="mb-0">Aún no tienes proyectos registrados. Crea una oportunidad para que los aprendices se postulen.</p>
-                        <hr>
-                        <a href="{% url 'empresas:crear_proyecto' %}" class="btn btn-success btn-lg mt-3">
-                            <i class="bi bi-plus-circle me-2"></i> Crear Nuevo Proyecto
-                        </a>
+    <!-- Tarjetas de Estadísticas -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6 col-lg-3">
+            <div class="card stat-card">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon">
+                        <i class="bi bi-briefcase-fill"></i>
                     </div>
-                {% endif %}
+                    <div>
+                        <p class="text-uppercase mb-0 text-muted small fw-bold">Proyectos Publicados</p>
+                        <h3 class="fw-bold mb-0 text-sena">{% if proyectos %}{{ proyectos|length }}{% else %}0{% endif %}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card stat-card">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div>
+                        <p class="text-uppercase mb-0 text-muted small fw-bold">Aprendices Asignados</p>
+                        <h3 class="fw-bold mb-0 text-sena">8</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card stat-card">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon">
+                        <i class="bi bi-clock-fill"></i>
+                    </div>
+                    <div>
+                        <p class="text-uppercase mb-0 text-muted small fw-bold">Solicitudes Pendientes</p>
+                        <h3 class="fw-bold mb-0 text-sena">2</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card stat-card">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <div>
+                        <p class="text-uppercase mb-0 text-muted small fw-bold">Proyectos Aprobados</p>
+                        <h3 class="fw-bold mb-0 text-sena">3</h3>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Columna lateral -->
-    <div class="col-lg-4">
-        <div class="card shadow-lg border-0 quick-links-card">
-            <div class="card-header">
-                <h5 class="mb-0"><i class="bi bi-lightning-charge me-2"></i>Acciones Rápidas</h5>
-            </div>
-            <div class="card-body">
-                <a href="{% url 'empresas:crear_proyecto' %}" class="btn btn-success btn-lg shadow-sm mb-2 w-100">
-                    <i class="bi bi-plus-circle me-2"></i> Crear Proyecto
-                </a>
-                <a href="{% url 'empresas:mi_perfil_empresa' %}" class="btn btn-outline-dark btn-lg shadow-sm mb-2 w-100">
-                    <i class="bi bi-person-fill me-2"></i> Administrar Perfil
-                </a>
-                <a href="{% url 'auth:contacto' %}" class="btn btn-outline-success btn-lg shadow-sm w-100">
-                    <i class="bi bi-chat-dots me-2"></i> Contactar Soporte
-                </a>
+    <div class="row g-4">
+        <!-- Lista de Proyectos -->
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header card-header-sena">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-task me-2"></i>Tus Proyectos Publicados
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if proyectos %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-header">
+                                    <tr>
+                                        <th>Nombre del Proyecto</th>
+                                        <th>Estado</th>
+                                        <th>Aprendices</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for proyecto in proyectos %}
+                                    <tr>
+                                        <td class="fw-semibold">{{ proyecto.nombre }}</td>
+                                        <td>
+                                            {% if proyecto.estado == "APROBADO" %}
+                                                <span class="badge badge-aprobado">
+                                                    <i class="bi bi-check-circle-fill me-1"></i>Aprobado
+                                                </span>
+                                            {% elif proyecto.estado == "RECHAZADO" %}
+                                                <span class="badge badge-rechazado">
+                                                    <i class="bi bi-x-circle-fill me-1"></i>Rechazado
+                                                </span>
+                                            {% else %}
+                                                <span class="badge badge-pendiente">
+                                                    <i class="bi bi-clock-fill me-1"></i>Pendiente
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary">
+                                                {% if proyecto.aprendices_asignados %}{{ proyecto.aprendices_asignados }}/{% else %}0/{% endif %}
+                                                {% if proyecto.cupo_aprendices %}{{ proyecto.cupo_aprendices }}{% else %}4{% endif %}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm" role="group">
+                                                <a href="{% url 'empresas:detalle_solicitud' proyecto.id %}" 
+                                                   class="btn btn-sena-outline" 
+                                                   title="Ver Solicitud">
+                                                    <i class="bi bi-file-earmark-text"></i>
+                                                </a>
+                                                <a href="{% url 'empresas:postulaciones_proyecto' proyecto.id %}" 
+                                                   class="btn btn-sena-outline" 
+                                                   title="Postulaciones">
+                                                    <i class="bi bi-people-fill"></i>
+                                                </a>
+                                                <a href="{% url 'empresas:editar_proyecto' proyecto.id %}" 
+                                                   class="btn btn-sena-outline" 
+                                                   title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="bi bi-inbox"></i>
+                            <h5 class="text-sena fw-bold">¡Hora de Publicar tu Primer Proyecto!</h5>
+                            <p class="text-muted mb-3">Aún no tienes proyectos registrados. Crea una oportunidad para que los aprendices se postulen.</p>
+                            <a href="{% url 'empresas:crear_proyecto' %}" class="btn btn-sena">
+                                <i class="bi bi-plus-circle me-2"></i>Crear Nuevo Proyecto
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
-        <div class="card shadow-sm border-0 mt-4">
-            <div class="card-header bg-light">
-                <h6 class="mb-0"><i class="bi bi-info-circle me-2 text-success"></i>Notificaciones</h6>
-            </div>
-            <div class="list-group list-group-flush">
-                <div class="list-group-item py-3">
-                    <small class="text-danger"><i class="bi bi-exclamation-triangle-fill"></i> ¡Alerta! Proyecto "App Logística" requiere revisión.</small>
+        <!-- Columna Lateral -->
+        <div class="col-lg-4">
+            <!-- Acciones Rápidas -->
+            <div class="card quick-links-card shadow-lg">
+                <div class="card-header card-header-sena">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning-charge me-2"></i>Acciones Rápidas
+                    </h5>
                 </div>
-                <div class="list-group-item py-3">
-                    <small class="text-success"><i class="bi bi-check-circle-fill"></i> Aprendiz Aprobado para "Web Marketing".</small>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'empresas:crear_proyecto' %}" class="btn btn-sena">
+                        <i class="bi bi-plus-circle me-2"></i>Crear Proyecto
+                    </a>
+                    <a href="{% url 'empresas:mi_perfil_empresa' %}" class="btn btn-sena-outline">
+                        <i class="bi bi-person-fill me-2"></i>Mi Perfil
+                    </a>
+                    <a href="{% url 'auth:contacto' %}" class="btn btn-sena-outline">
+                        <i class="bi bi-chat-dots me-2"></i>Contactar Soporte
+                    </a>
+                </div>
+            </div>
+
+            <!-- Notificaciones -->
+            <div class="card shadow-lg mt-4 border-0">
+                <div class="card-header card-header-sena">
+                    <h6 class="mb-0">
+                        <i class="bi bi-bell-fill me-2"></i>Notificaciones
+                    </h6>
+                </div>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item py-3">
+                        <small class="text-success fw-bold">
+                            <i class="bi bi-check-circle-fill me-1"></i>Proyecto aprobado
+                        </small>
+                        <p class="mb-0 small text-muted mt-1">"Sistema de Inventario" fue aprobado.</p>
+                    </div>
+                    <div class="list-group-item py-3">
+                        <small class="text-warning fw-bold">
+                            <i class="bi bi-hourglass-split me-1"></i>En revisión
+                        </small>
+                        <p class="mb-0 small text-muted mt-1">"App Logística" está siendo evaluada.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
-
 {% endblock %}

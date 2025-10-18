@@ -18,7 +18,7 @@ from django.contrib.auth import get_user_model
 Usuario = get_user_model()
 import os
 import logging
-
+from usuario.models import PerfilEmpresa
 
 logger = logging.getLogger(__name__)
 
@@ -86,16 +86,18 @@ def registro_aprendiz(request):
     return render(request, 'registro_aprendiz.html', {'form': form})
 
 
+
+
 def registro_empresa(request):
     if request.method == 'POST':
         form = RegistroEmpresaForm(request.POST)
-        username = request.POST.get('username')
-
-        if Usuario.objects.filter(username=username).exists():
-            messages.error(request, "⚠️ El nombre de usuario ya está en uso. Elige otro.")
-        elif form.is_valid():
+        if form.is_valid():
+            nit = form.cleaned_data['nit']
+            if PerfilEmpresa.objects.filter(nit=nit).exists():
+                messages.error(request, 'El NIT ya está registrado. Usa otro.')
+                return redirect('registro_empresa')
             form.save()
-            messages.success(request, "✅ La empresa se registró correctamente. Ahora puedes iniciar sesión.")
+            messages.success(request, 'Empresa registrada correctamente.')
             return redirect('auth:login')
     else:
         form = RegistroEmpresaForm()
