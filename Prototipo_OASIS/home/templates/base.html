@@ -760,6 +760,25 @@
         </div>
     </nav>
 
+<!-- BREADCRUMB AUTOMÁTICO -->
+{% if request.resolver_match.url_name != 'home:inicio' %}
+<nav aria-label="breadcrumb" class="container mt-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{% url 'home:inicio' %}">Inicio</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {% if request.resolver_match.url_name %}
+                {{ request.resolver_match.url_name|capfirst|cut:"_" }}
+            {% else %}
+                Página
+            {% endif %}
+        </li>
+    </ol>
+</nav>
+{% endif %}
+
+
     <!-- MENSAJES -->
     {% if messages %}
     <div class="container messages-container">
