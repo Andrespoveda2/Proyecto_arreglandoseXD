@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from usuario.utils import role_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import (
     LoginForm,
     RegistroAprendizForm,
@@ -13,6 +13,9 @@ from .forms import (
 from .models import Usuario, ProgramaFormativo
 from django.http import FileResponse, Http404, HttpResponse
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+Usuario = get_user_model()
 import os
 import logging
 
@@ -70,9 +73,13 @@ def elegir_registro(request):
 def registro_aprendiz(request):
     if request.method == 'POST':
         form = RegistroAprendizForm(request.POST)
-        if form.is_valid():
+        username = request.POST.get('username')
+
+        if Usuario.objects.filter(username=username).exists():
+            messages.error(request, "⚠️ El nombre de usuario ya está en uso. Elige otro.")
+        elif form.is_valid():
             form.save()
-            messages.success(request, "Aprendiz registrado correctamente. Ahora puedes iniciar sesión.")
+            messages.success(request, "✅ Aprendiz registrado correctamente. Ahora puedes iniciar sesión.")
             return redirect('auth:login')
     else:
         form = RegistroAprendizForm()
@@ -82,9 +89,13 @@ def registro_aprendiz(request):
 def registro_empresa(request):
     if request.method == 'POST':
         form = RegistroEmpresaForm(request.POST)
-        if form.is_valid():
+        username = request.POST.get('username')
+
+        if Usuario.objects.filter(username=username).exists():
+            messages.error(request, "⚠️ El nombre de usuario ya está en uso. Elige otro.")
+        elif form.is_valid():
             form.save()
-            messages.success(request, "La empresa se registró correctamente. Ahora puedes iniciar sesión.")
+            messages.success(request, "✅ La empresa se registró correctamente. Ahora puedes iniciar sesión.")
             return redirect('auth:login')
     else:
         form = RegistroEmpresaForm()
@@ -94,9 +105,13 @@ def registro_empresa(request):
 def registro_instructor(request):
     if request.method == 'POST':
         form = RegistroInstructorForm(request.POST)
-        if form.is_valid():
+        username = request.POST.get('username')
+
+        if Usuario.objects.filter(username=username).exists():
+            messages.error(request, "⚠️ El nombre de usuario ya está en uso. Elige otro.")
+        elif form.is_valid():
             form.save()
-            messages.success(request, "Instructor registrado correctamente. Ahora puedes iniciar sesión.")
+            messages.success(request, "✅ Instructor registrado correctamente. Ahora puedes iniciar sesión.")
             return redirect('auth:login')
     else:
         form = RegistroInstructorForm()

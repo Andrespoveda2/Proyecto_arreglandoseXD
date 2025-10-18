@@ -19,6 +19,15 @@ from empresas.models import SolicitudProyecto
 from django.views.decorators.http import require_POST, require_http_methods
 from empresas.models import SolicitudProyecto
 
+# Modelos de reportes de la app gestión
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from datetime import datetime
+from usuario.models import Usuario, PerfilEmpresa, PerfilAprendiz, PerfilInstructor, ProgramaFormativo, SectorProductivo
+
+
 # --- Vistas del Dashboard y Métricas ---
 
 class DetalleUsuarioView(UserPassesTestMixin, DetailView):
@@ -327,33 +336,22 @@ def revisar_solicitudes(request):
 @role_required("ADMIN")
 @require_http_methods(["POST"])
 def aprobar_proyecto(request, pk):
-    """
-    Aprueba un proyecto y lo deja disponible para los aprendices.
-    Ahora guarda el motivo de aprobación en la BD.
-    """
     proyecto = get_object_or_404(SolicitudProyecto, pk=pk)
     
-    # Obtener el motivo de aprobación del formulario
     motivo_aprobacion = request.POST.get('motivo_aprobacion', '').strip()
     
-    # Validar que el motivo no esté vacío
     if not motivo_aprobacion:
         messages.error(request, "⚠️ Debes proporcionar un motivo para la aprobación.")
         return redirect('gestion:revisar_solicitudes')
     
-    # Actualizar el proyecto
     proyecto.estado = "APROBADO"
     proyecto.motivo_aprobacion = motivo_aprobacion
+    proyecto.fecha_decision = datetime.now()
     proyecto.save()
     
-    # Mensaje de éxito
-    messages.success(
-        request, 
-        f"✅ Proyecto '{proyecto.nombre}' ha sido aprobado. "
-        f"La empresa ha sido notificada."
-    )
-    
+    messages.success(request, f"✅ Proyecto '{proyecto.nombre}' aprobado.")
     return redirect('gestion:revisar_solicitudes')
+
 
 
 @role_required("ADMIN")
@@ -386,3 +384,116 @@ def rechazar_proyecto(request, pk):
     )
     
     return redirect('gestion:revisar_solicitudes')
+
+# --- Reportes y Analíticas ---
+@role_required("ADMIN")
+def generar_reporte_completo(request):
+    # Crear la respuesta HTTP con tipo PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="reporte_completo_{datetime.now().strftime("%Y%m%d_%H%M%S")}.pdf"'
+
+    # Crear el lienzo del PDF
+    pdf = canvas.Canvas(response, pagesize=letter)
+    width, height = letter
+    y = height - inch
+
+    # Encabezado
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(inch, y, "Reporte General del Sistema OASIS")
+    pdf.setFont("Helvetica", 10)
+    pdf.drawString(inch, y - 15, f"Generado el {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+    y -= 40
+
+    # Sección 1: Usuarios
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(inch, y, "Usuarios del Sistema")
+    y -= 20
+    pdf.setFont("Helvetica", 10)
+
+    for u in Usuario.objects.all():
+        line = f"{u.username} | Rol: {u.rol} | Email: {u.email or 'N/A'} | Activo: {'Sí' if u.esta_activo else 'No'}"
+        pdf.drawString(inch, y, line)
+        y -= 15
+        if y < inch:
+            pdf.showPage()
+            y = height - inch
+
+    # Sección 2: Perfiles de Empresa
+    y -= 20
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(inch, y, "Perfiles de Empresa")
+    y -= 20
+    pdf.setFont("Helvetica", 10)
+
+    for e in PerfilEmpresa.objects.select_related('usuario', 'sector').all():
+        line = f"{e.razon_social} | NIT: {e.nit} | Sector: {e.sector or 'N/A'} | Usuario: {e.usuario.username}"
+        pdf.drawString(inch, y, line)
+        y -= 15
+        if y < inch:
+            pdf.showPage()
+            y = height - inch
+
+    # Sección 3: Perfiles de Aprendices
+    y -= 20
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(inch, y, "Perfiles de Aprendices")
+    y -= 20
+    pdf.setFont("Helvetica", 10)
+
+    for a in PerfilAprendiz.objects.select_related('usuario', 'programa').all():
+        line = f"{a.usuario.username} | Doc: {a.documento} | Programa: {a.programa or 'N/A'} | Ficha: {a.ficha}"
+        pdf.drawString(inch, y, line)
+        y -= 15
+        if y < inch:
+            pdf.showPage()
+            y = height - inch
+
+    # Sección 4: Perfiles de Instructores
+    y -= 20
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(inch, y, "Perfiles de Instructores")
+    y -= 20
+    pdf.setFont("Helvetica", 10)
+
+    for i in PerfilInstructor.objects.select_related('usuario').all():
+        line = f"{i.usuario.username} | Doc: {i.documento} | Área: {i.area_conocimiento}"
+        pdf.drawString(inch, y, line)
+        y -= 15
+        if y < inch:
+            pdf.showPage()
+            y = height - inch
+
+    # Sección 5: Programas Formativos
+    y -= 20
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(inch, y, "Programas Formativos")
+    y -= 20
+    pdf.setFont("Helvetica", 10)
+
+    for p in ProgramaFormativo.objects.all():
+        line = f"{p.nombre} | Tipo: {p.tipo} | Código: {p.codigo}"
+        pdf.drawString(inch, y, line)
+        y -= 15
+        if y < inch:
+            pdf.showPage()
+            y = height - inch
+
+    # Sección 6: Sectores Productivos
+    y -= 20
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(inch, y, "Sectores Productivos")
+    y -= 20
+    pdf.setFont("Helvetica", 10)
+
+    for s in SectorProductivo.objects.all():
+        line = f"{s.nombre} | {s.descripcion or 'Sin descripción'}"
+        pdf.drawString(inch, y, line)
+        y -= 15
+        if y < inch:
+            pdf.showPage()
+            y = height - inch
+
+    # Finalizar PDF
+    pdf.showPage()
+    pdf.save()
+    return response

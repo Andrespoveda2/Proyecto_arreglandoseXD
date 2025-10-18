@@ -5,167 +5,363 @@
 
 {% block content %}
 <style>
-    /* Estilo para el Jumbotron mejorado, aprovechando las variables CSS del usuario */
-    .sena-jumbotron {
-        background: linear-gradient(135deg, var(--sena-green-dark) 0%, var(--sena-green-darker) 100%);
-        border: 4px solid var(--sena-orange); /* Toque naranja para el contraste */
-        border-radius: 1.25rem !important;
-        position: relative;
-        overflow: hidden;
-        animation: fadeInUp 0.8s ease-out;
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2D7A00;
+    --sena-light: #d4edda;
+    --gray-light: #f3f4f6;
+    --gray-dark: #1f2937;
+}
+
+/* Jumbotron SENA */
+.admin-jumbotron {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    border-radius: 1rem;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
+    box-shadow: 0 10px 30px rgba(57, 169, 0, 0.2);
+}
+
+.admin-jumbotron::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.admin-jumbotron h1 {
+    color: white;
+    font-weight: 700;
+}
+
+.admin-jumbotron p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.admin-icon {
+    color: #FFD700;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Tarjetas de Estadísticas */
+.stat-card {
+    background: white;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1.75rem;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease-out backwards;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.15s; }
+.stat-card:nth-child(3) { animation-delay: 0.2s; }
+.stat-card:nth-child(4) { animation-delay: 0.25s; }
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(57, 169, 0, 0.15);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-icon-sena {
+    color: var(--sena-primary);
+    background: var(--sena-light);
+    width: 60px;
+    height: 60px;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--sena-dark);
+    margin: 0.5rem 0;
+}
+
+/* Card de Acciones */
+.actions-card {
+    background: white;
+    border: 2px solid var(--sena-light);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.actions-card h3 {
+    color: var(--sena-dark);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* Botones SENA */
+.btn-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-sena:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 169, 0, 0.3);
+    color: white;
+}
+
+.btn-sena-outline {
+    border: 2px solid var(--sena-primary);
+    color: var(--sena-primary);
+    background: transparent;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena-outline:hover {
+    background: var(--sena-primary);
+    color: white;
+}
+
+/* Tabla */
+.table-header {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    color: white;
+}
+
+.table th {
+    border: none;
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid var(--sena-light);
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(57, 169, 0, 0.03);
+}
+
+/* Badge SENA */
+.badge-sena {
+    background: var(--sena-primary);
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+}
+
+.badge-active {
+    background: #10B981;
+}
+
+.badge-inactive {
+    background: #EF4444;
+}
+
+/* Container */
+.table-container {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+/* Modal */
+.modal-header {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    color: white;
+    border: none;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-    .sena-jumbotron::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 100px;
-        height: 100px;
-        background: var(--sena-green-light);
-        opacity: 0.1;
-        border-radius: 50%;
-        transform: translate(50%, -50%);
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    .sena-jumbotron h1, .sena-jumbotron p {
-        color: var(--white);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
     }
-    .sena-jumbotron .text-muted-sena {
-        color: rgba(255, 255, 255, 0.7) !important;
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-jumbotron {
+        padding: 1.5rem;
     }
 
-    /* Estilos específicos para la tabla, forzando la estética del CSS personalizado */
-    .table-sena-header th {
-        background: linear-gradient(135deg, var(--sena-green) 0%, var(--sena-green-dark) 100%);
-        color: var(--white) !important;
+    .admin-jumbotron h1 {
+        font-size: 1.75rem;
     }
+
+    .stat-card {
+        padding: 1.25rem;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+    }
+}
 </style>
 
-<div class="container mt-5">
-    <!-- Jumbotron de Bienvenida del Administrador (Optimizado con SENA-Theme) -->
-    <div class="sena-jumbotron p-5 mb-5 shadow-xl">
-        <div class="d-flex align-items-center">
-            <!-- Icono con animación sutil -->
-            <i class="bi bi-shield-lock-fill me-4 fs-1" style="color: var(--sena-orange); animation: pulse 2s ease-in-out infinite;"></i>
+<div class="container-fluid py-4">
+    <!-- Jumbotron de Bienvenida -->
+    <div class="admin-jumbotron mb-5">
+        <div class="d-flex align-items-center position-relative" style="z-index: 1;">
+            <i class="bi bi-shield-check admin-icon me-4 fs-2"></i>
             <div>
-                <h1 class="display-5 fw-bold mb-1">Centro de Control OASIS</h1>
-                <p class="fs-6 mb-0 text-muted-sena">Gestión de plataforma y administración de usuarios y contenidos.</p>
+                <h1 class="mb-1">Centro de Control OASIS</h1>
+                <p class="mb-2">Gestión de plataforma, usuarios y contenidos</p>
+                <small style="color: rgba(255, 255, 255, 0.8);">
+                    <i class="bi bi-clock me-1"></i>Último acceso: {{ user.last_login|date:"d/m/Y H:i" }}
+                </small>
             </div>
-        </div>
-        <div class="mt-3 small text-end text-white-50">
-            Último acceso: {{ user.last_login|date:"d/m/Y H:i" }}
         </div>
     </div>
 
-    <!-- Estadísticas generales (Usando la clase dashboard-stat de tu CSS) -->
-    <h3 class="mb-4 text-center text-sena fw-light">📊 Métricas Clave de la Plataforma</h3>
-    <div class="row text-center g-4 mb-5">
+    <!-- Métricas Clave -->
+    <h3 class="mb-4 fw-bold text-sena">
+        <i class="bi bi-bar-chart me-2"></i>Métricas Clave
+    </h3>
+    <div class="row g-4 mb-5">
         
-        <!-- Tarjeta 1: Total de Usuarios -->
-        <div class="col-md-3">
-            <div class="dashboard-stat">
-                <i class="bi bi-people-fill text-sena dashboard-stat-icon"></i>
-                <p class="mb-0 small">Total de Usuarios</p>
-                <h3 class="fw-bold">{{ total_usuarios }}</h3>
+        <div class="col-md-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon-sena">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <p class="text-muted small mb-2">TOTAL DE USUARIOS</p>
+                <h3 class="stat-value">{{ total_usuarios }}</h3>
             </div>
         </div>
 
-        <!-- Tarjeta 2: Instructores -->
-        <div class="col-md-3">
-            <div class="dashboard-stat">
-                <i class="bi bi-person-video3 text-success dashboard-stat-icon" style="color: #10B981;"></i>
-                <p class="mb-0 small">Instructores Activos</p>
-                <h3 class="fw-bold" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">{{ usuarios_por_rol.instructores }}</h3>
-            </div>
-        </div>
-        
-        <!-- Tarjeta 3: Empresas -->
-        <div class="col-md-3">
-            <div class="dashboard-stat">
-                <i class="bi bi-building-fill text-info dashboard-stat-icon" style="color: #3B82F6;"></i>
-                <p class="mb-0 small">Empresas Registradas</p>
-                <h3 class="fw-bold" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">{{ usuarios_por_rol.empresas }}</h3>
+        <div class="col-md-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon-sena">
+                    <i class="bi bi-person-video3"></i>
+                </div>
+                <p class="text-muted small mb-2">INSTRUCTORES ACTIVOS</p>
+                <h3 class="stat-value">{{ usuarios_por_rol.instructores }}</h3>
             </div>
         </div>
 
-        <!-- Tarjeta 4: Proyectos Pendientes -->
-        <div class="col-md-3">
-            <div class="dashboard-stat">
-                <i class="bi bi-file-earmark-bar-graph text-warning dashboard-stat-icon" style="color: #F59E0B;"></i>
-                <p class="mb-0 small">Proyectos Pendientes</p>
-                <h3 class="fw-bold" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">{{ proyectos_pendientes_count|default:0 }}</h3>
+        <div class="col-md-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon-sena">
+                    <i class="bi bi-building-fill"></i>
+                </div>
+                <p class="text-muted small mb-2">EMPRESAS REGISTRADAS</p>
+                <h3 class="stat-value">{{ usuarios_por_rol.empresas }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="stat-card">
+                <div class="stat-icon-sena">
+                    <i class="bi bi-file-earmark-check"></i>
+                </div>
+                <p class="text-muted small mb-2">PROYECTOS PENDIENTES</p>
+                <h3 class="stat-value">{{ proyectos_pendientes_count|default:0 }}</h3>
                 {% if proyectos_pendientes_count > 0 %}
-                    <span class="stat-change negative small">¡Revisión urgente!</span>
+                    <small class="text-warning fw-bold"><i class="bi bi-exclamation-circle me-1"></i>Requiere revisión</small>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Acciones principales -->
-    <h3 class="mb-4 text-center text-sena fw-light">🚀 Accesos de Gestión Rápida</h3>
-    <div class="card shadow-lg p-4 mb-5 border-sena">
-        <div class="row g-3 text-center">
-            
-            <!-- Listar Usuarios (btn-primary, tu gradiente verde) -->
+    <!-- Acciones Rápidas -->
+    <h3 class="mb-4 fw-bold text-sena">
+        <i class="bi bi-lightning-charge me-2"></i>Accesos de Gestión Rápida
+    </h3>
+    <div class="actions-card">
+        <div class="row g-3">
             <div class="col-md-4">
-                <a href="{% url 'gestion:listar_usuarios' %}" class="btn btn-primary w-100 py-3 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-person-lines-fill me-2 fs-5"></i> Listar Usuarios
-                </a>
-            </div>
-            <!-- Crear Usuario (btn-success, tu gradiente verde más claro) -->
-            <div class="col-md-4">
-                <a href="{% url 'gestion:crear_usuario' %}" class="btn btn-success w-100 py-3 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-person-plus-fill me-2 fs-5"></i> Crear Usuario
-                </a>
-            </div>
-            <!-- Gestionar Programas (btn-info) -->
-            <div class="col-md-4">
-                <a href="{% url 'gestion:gestion_programas' %}" class="btn btn-info w-100 py-3 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-book-fill me-2 fs-5"></i> Gestionar Programas
-                </a>
-            </div>
-            <!-- Gestionar Sectores (btn-warning) -->
-            <div class="col-md-4">
-                <a href="{% url 'gestion:gestion_sectores' %}" class="btn btn-warning w-100 py-3 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-house-door-fill me-2 fs-5"></i> Gestionar Sectores
-                </a>
-            </div>
-            <!-- Aprobar Proyectos (btn-danger, color de alerta) -->
-            <div class="col-md-4">
-                <a href="{% url 'gestion:revisar_solicitudes' %}" class="btn btn-danger w-100 py-3 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-check-square-fill me-2 fs-5"></i> Aprobar Proyectos
-                </a>
-            </div>
-            <!-- Ver Reportes (btn-secondary) -->
-            <div class="col-md-4">
-                <a href="{% url 'gestion:reportes' %}" class="btn btn-secondary w-100 py-3 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-bar-chart-line-fill me-2 fs-5"></i> Ver Reportes
+                <a href="{% url 'gestion:listar_usuarios' %}" class="btn btn-sena w-100 py-2">
+                    <i class="bi bi-person-lines-fill me-2"></i>Listar Usuarios
                 </a>
             </div>
             <div class="col-md-4">
-                <a href="{% url 'lista_backups' %}" class="btn btn-secondary w-100 py-3 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-bar-chart-line-fill me-2 fs-5"></i>Copias de Seguridad
+                <a href="{% url 'gestion:crear_usuario' %}" class="btn btn-sena w-100 py-2">
+                    <i class="bi bi-person-plus-fill me-2"></i>Crear Usuario
                 </a>
-             </div>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'gestion:gestion_programas' %}" class="btn btn-sena w-100 py-2">
+                    <i class="bi bi-book-fill me-2"></i>Gestionar Programas
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'gestion:gestion_sectores' %}" class="btn btn-sena w-100 py-2">
+                    <i class="bi bi-industry me-2"></i>Gestionar Sectores
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'gestion:revisar_solicitudes' %}" class="btn btn-sena w-100 py-2">
+                    <i class="bi bi-check-square-fill me-2"></i>Aprobar Proyectos
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'gestion:reportes' %}" class="btn btn-sena w-100 py-2">
+                    <i class="bi bi-bar-chart-line-fill me-2"></i>Ver Reportes
+                </a>
+            </div>
         </div>
     </div>
 
-    <!-- Usuarios recientes (Usando la clase table-container de tu CSS) -->
-    <h3 class="mt-5 mb-3 text-sena fw-light">⭐ Últimos Usuarios Registrados</h3>
+    <!-- Últimos Usuarios -->
+    <h3 class="mt-5 mb-4 fw-bold text-sena">
+        <i class="bi bi-star me-2"></i>Últimos Usuarios Registrados
+    </h3>
     
     <div class="table-container">
         {% if usuarios_recientes %}
             <div class="table-responsive">
-                <!-- Usamos la clase table y table-striped para mantener la base de Bootstrap, pero con el estilo de tu CSS -->
-                <table class="table table-striped table-hover align-middle">
-                    <thead>
-                        <!-- La clase thead ya tiene el estilo de gradiente SENA en tu CSS -->
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-header">
                         <tr>
-                            <th><i class="bi bi-person-vcard-fill me-1"></i> Usuario</th>
-                            <th><i class="bi bi-envelope-fill me-1"></i> Email</th>
-                            <th><i class="bi bi-tag-fill me-1"></i> Rol</th>
-                            <th><i class="bi bi-calendar-check-fill me-1"></i> Registro</th>
-                            <th class="text-center"><i class="bi bi-lightning-fill me-1"></i> Estado</th>
-                            <th class="text-center"><i class="bi bi-tools me-1"></i> Acciones</th>
+                            <th><i class="bi bi-person-vcard-fill me-1"></i>Usuario</th>
+                            <th><i class="bi bi-envelope-fill me-1"></i>Email</th>
+                            <th><i class="bi bi-tag-fill me-1"></i>Rol</th>
+                            <th><i class="bi bi-calendar-check-fill me-1"></i>Registro</th>
+                            <th class="text-center"><i class="bi bi-toggle-on me-1"></i>Estado</th>
+                            <th class="text-center"><i class="bi bi-tools me-1"></i>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -173,18 +369,19 @@
                         <tr>
                             <td class="fw-bold">{{ usuario.username }}</td>
                             <td class="text-muted small">{{ usuario.email }}</td>
-                            <td><span class="badge badge-primary">{{ usuario.get_rol_display }}</span></td>
-                            <td><span class="small text-muted">{{ usuario.date_joined|date:"d/m/Y H:i" }}</span></td>
+                            <td><span class="badge badge-sena">{{ usuario.get_rol_display }}</span></td>
+                            <td><small class="text-muted">{{ usuario.date_joined|date:"d/m/Y H:i" }}</small></td>
                             <td class="text-center">
                                 {% if usuario.is_active %}
-                                    <span class="badge badge-success"><i class="bi bi-toggle-on"></i> Activo</span>
+                                    <span class="badge badge-active"><i class="bi bi-check-circle me-1"></i>Activo</span>
                                 {% else %}
-                                    <span class="badge badge-danger"><i class="bi bi-toggle-off"></i> Inactivo</span>
+                                    <span class="badge badge-inactive"><i class="bi bi-x-circle me-1"></i>Inactivo</span>
                                 {% endif %}
                             </td>
                             <td class="text-center">
-                                <a href="{% url 'gestion:editar_usuario' usuario.id %}" class="btn btn-sm btn-outline-primary me-2" title="Editar"><i class="bi bi-pencil-fill"></i></a>
-                                <!-- Se usa data-bs-toggle para lanzar el modal de confirmación -->
+                                <a href="{% url 'gestion:editar_usuario' usuario.id %}" class="btn btn-sm btn-sena-outline me-2" title="Editar">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
                                 <button type="button" class="btn btn-sm btn-outline-danger" title="Eliminar" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal{{ usuario.id }}">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
@@ -195,30 +392,31 @@
                 </table>
             </div>
         {% else %}
-            <!-- Usando la clase alert-info de tu CSS personalizado -->
-            <div class="alert alert-info text-center shadow-sm">
-                No hay usuarios recientes registrados.
+            <div class="alert alert-info text-center mb-0 py-4">
+                <i class="bi bi-info-circle me-2"></i>No hay usuarios recientes registrados.
             </div>
         {% endif %}
     </div>
-    
-    <!-- MODALES DE CONFIRMACIÓN (Uno por cada usuario, o uno dinámico con JS) -->
-    <!-- Para simplicidad, generaremos el HTML del modal dentro del loop (aunque en producción se preferiría uno dinámico con JS) -->
+
+    <!-- Modales de Confirmación -->
     {% for usuario in usuarios_recientes %}
-    <div class="modal fade" id="confirmDeleteModal{{ usuario.id }}" tabindex="-1" aria-labelledby="confirmDeleteModalLabel{{ usuario.id }}" aria-hidden="true">
+    <div class="modal fade" id="confirmDeleteModal{{ usuario.id }}" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content border-0">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel{{ usuario.id }}"><i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Eliminación
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    ¿Estás seguro de que deseas eliminar al usuario **{{ usuario.username }}** ({{ usuario.email }})? Esta acción es irreversible.
+                    <p class="mb-0">¿Estás seguro de que deseas eliminar al usuario <strong>{{ usuario.username }}</strong> ({{ usuario.email }})? Esta acción es irreversible.</p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <!-- El botón que ejecuta la acción real -->
-                    <a href="{% url 'gestion:eliminar_usuario' usuario.id %}" class="btn btn-danger">Eliminar Definitivamente</a>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{% url 'gestion:eliminar_usuario' usuario.id %}" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i>Eliminar
+                    </a>
                 </div>
             </div>
         </div>
@@ -226,8 +424,5 @@
     {% endfor %}
 
 </div>
-{% endblock %}
 
-{% block extra_js %}
-<!-- Asegúrate de tener cargado Bootstrap JS/jQuery en tu base.html para que los modales funcionen -->
 {% endblock %}

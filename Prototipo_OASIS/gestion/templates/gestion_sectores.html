@@ -1,29 +1,160 @@
 {% extends "base.html" %}
 {% load static %}
-{# Si usas widget_tweaks, descomenta la siguiente línea #}
 {% load widget_tweaks %}
 
 {% block title %}Gestión de Sectores Productivos{% endblock %}
 
 {% block content %}
+<style>
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2D7A00;
+    --sena-light: #d4edda;
+}
+
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.bg-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+}
+
+.border-sena {
+    border-color: var(--sena-primary) !important;
+}
+
+.btn-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 169, 0, 0.3);
+    color: white;
+}
+
+.btn-sena-outline {
+    border: 2px solid var(--sena-primary);
+    color: var(--sena-primary);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena-outline:hover {
+    background: var(--sena-primary);
+    color: white;
+}
+
+.header-section {
+    background: linear-gradient(135deg, rgba(57, 169, 0, 0.08) 0%, rgba(45, 128, 0, 0.08) 100%);
+    border-left: 5px solid var(--sena-primary);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.header-section h1 {
+    color: var(--sena-dark);
+    font-weight: 700;
+    margin: 0;
+}
+
+.card-sena {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.card-header-sena {
+    background: var(--sena-primary);
+    color: white;
+    font-weight: 600;
+    border: none;
+}
+
+.table-sena thead {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    color: white;
+}
+
+.table-sena tbody tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--sena-light);
+}
+
+.table-sena tbody tr:hover {
+    background-color: rgba(57, 169, 0, 0.03);
+}
+
+.form-control:focus {
+    border-color: var(--sena-primary);
+    box-shadow: 0 0 0 0.2rem rgba(57, 169, 0, 0.25);
+}
+
+.alert-sena {
+    background-color: var(--sena-light);
+    border-left: 4px solid var(--sena-primary);
+    color: var(--sena-dark);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-sena {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@media (max-width: 768px) {
+    .header-section {
+        padding: 1rem;
+    }
+
+    .header-section h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
 <div class="container my-5">
     
-    <h1 class="text-info mb-4 border-bottom pb-2">
-        <i class="fas fa-industry me-2"></i> Gestión de Sectores Productivos
-    </h1>
+    <!-- Header Section -->
+    <div class="header-section">
+        <h1>
+            <i class="bi bi-industry me-2 text-sena"></i>Gestión de Sectores Productivos
+        </h1>
+    </div>
     
-    <div class="card shadow-lg mb-5 border-info">
-        <div class="card-header bg-info text-white">
-            <h5 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Registrar Nuevo Sector</h5>
+    <!-- Formulario de Nuevo Sector -->
+    <div class="card card-sena shadow-lg mb-5 border-sena">
+        <div class="card-header card-header-sena">
+            <h5 class="mb-0">
+                <i class="bi bi-plus-circle me-2"></i>Registrar Nuevo Sector
+            </h5>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
             <form method="POST" novalidate class="row g-3">
                 {% csrf_token %}
 
                 {% if form.non_field_errors %}
                     <div class="alert alert-danger col-12" role="alert">
-                        <strong>Errores Generales:</strong>
-                        <ul>
+                        <strong>
+                            <i class="bi bi-exclamation-circle me-2"></i>Errores Generales:
+                        </strong>
+                        <ul class="mb-0 mt-2">
                             {% for error in form.non_field_errors %}
                                 <li>{{ error }}</li>
                             {% endfor %}
@@ -32,7 +163,9 @@
                 {% endif %}
 
                 <div class="col-md-6">
-                    <label for="{{ form.nombre.id_for_label }}" class="form-label fw-bold">Nombre del Sector</label>
+                    <label for="{{ form.nombre.id_for_label }}" class="form-label fw-bold text-sena">
+                        <i class="bi bi-tag-fill me-1"></i>Nombre del Sector
+                    </label>
                     {% render_field form.nombre class="form-control" placeholder="Ej: Tecnología, Energía, Alimentos" %}
                     {% for error in form.nombre.errors %}
                         <div class="invalid-feedback d-block">{{ error }}</div>
@@ -40,47 +173,52 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="{{ form.descripcion.id_for_label }}" class="form-label fw-bold">Descripción (Opcional)</label>
+                    <label for="{{ form.descripcion.id_for_label }}" class="form-label fw-bold text-sena">
+                        <i class="bi bi-file-text-fill me-1"></i>Descripción (Opcional)
+                    </label>
                     {% render_field form.descripcion class="form-control" placeholder="Detalles clave del sector" %}
                     {% for error in form.descripcion.errors %}
                         <div class="invalid-feedback d-block">{{ error }}</div>
                     {% endfor %}
                 </div>
 
-                <div class="col-12 mt-4 text-end">
-                    <button type="submit" class="btn btn-info text-white btn-lg">
-                        <i class="fas fa-save me-1"></i> Agregar Sector
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-sena btn-lg">
+                        <i class="bi bi-save me-2"></i>Agregar Sector
                     </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <h2 class="mb-3"><i class="fas fa-list-alt me-2"></i> Lista de Sectores Existentes</h2>
+    <!-- Lista de Sectores -->
+    <h2 class="text-sena fw-bold mb-4">
+        <i class="bi bi-list-ul me-2"></i>Sectores Existentes
+    </h2>
     
     {% if sectores %}
         <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered shadow-sm">
-                <thead class="table-dark">
+            <table class="table table-hover table-sena">
+                <thead>
                     <tr>
-                        <th scope="col" style="width: 30%;">Nombre</th>
-                        <th scope="col" style="width: 50%;">Descripción Breve</th>
-                        <th scope="col" class="text-center" style="width: 20%; min-width: 120px;">Acciones</th>
+                        <th><i class="bi bi-briefcase-fill me-2"></i>Nombre</th>
+                        <th><i class="bi bi-chat-left-text me-2"></i>Descripción</th>
+                        <th class="text-center"><i class="bi bi-tools me-2"></i>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for sector in sectores %}
                     <tr>
                         <td class="fw-bold">{{ sector.nombre }}</td>
-                        <td>{{ sector.descripcion|truncatechars:100|default:"Sin descripción." }}</td>
+                        <td class="text-muted">{{ sector.descripcion|truncatechars:80|default:"Sin descripción" }}</td>
                         <td class="text-center">
                             <a href="{% url 'gestion:editar_sector' sector.id %}" 
-                               class="btn btn-sm btn-warning text-dark me-1" 
+                               class="btn btn-sena-outline btn-sm me-2" 
                                title="Editar">
                                 <i class="bi bi-pencil-square"></i>
                             </a> 
                             <a href="{% url 'gestion:eliminar_sector' sector.id %}" 
-                               class="btn btn-sm btn-danger" 
+                               class="btn btn-outline-danger btn-sm" 
                                title="Eliminar"
                                onclick="return confirm('¿Eliminar el sector: {{ sector.nombre }}?');">
                                 <i class="bi bi-trash"></i>
@@ -93,8 +231,9 @@
         </div>
         
     {% else %}
-        <div class="alert alert-info text-center" role="alert">
-            <i class="fas fa-info-circle me-2"></i> No hay sectores productivos registrados aún.
+        <div class="alert alert-sena text-center p-4" role="alert">
+            <i class="bi bi-inbox text-sena fs-4 d-block mb-2"></i>
+            <strong>No hay sectores productivos registrados aún.</strong>
         </div>
     {% endif %}
 

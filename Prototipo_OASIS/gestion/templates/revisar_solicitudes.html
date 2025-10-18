@@ -1,36 +1,395 @@
 {% extends "base.html" %}
+
+{% block title %}Revisión de Solicitudes de Proyectos{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h2 class="mb-4">Solicitudes de Proyectos Pendientes</h2>
+<style>
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2D7A00;
+    --sena-light: #d4edda;
+}
+
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.bg-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+}
+
+.border-sena {
+    border-color: var(--sena-primary) !important;
+}
+
+.btn-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 169, 0, 0.3);
+    color: white;
+}
+
+.header-section {
+    background: linear-gradient(135deg, rgba(57, 169, 0, 0.08) 0%, rgba(45, 128, 0, 0.08) 100%);
+    border-left: 5px solid var(--sena-primary);
+    border-radius: 0.75rem;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.header-section h2 {
+    color: var(--sena-dark);
+    font-weight: 700;
+    margin: 0;
+}
+
+.solicitud-card {
+    background: white;
+    border: 2px solid #f0f0f0;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.solicitud-card:hover {
+    border-color: var(--sena-light);
+    box-shadow: 0 8px 20px rgba(57, 169, 0, 0.12);
+}
+
+.solicitud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.solicitud-titulo {
+    flex: 1;
+}
+
+.solicitud-titulo h5 {
+    color: var(--sena-dark);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.badge-estado {
+    background: var(--sena-primary);
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    white-space: nowrap;
+}
+
+.solicitud-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.info-item {
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    border-left: 3px solid var(--sena-light);
+}
+
+.info-item small {
+    color: #6b7280;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.info-item strong {
+    color: var(--sena-dark);
+    display: block;
+}
+
+.solicitud-acciones {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.modal-header {
+    background: var(--sena-primary);
+    color: white;
+    border: none;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--sena-dark);
+}
+
+.form-control:focus {
+    border-color: var(--sena-primary);
+    box-shadow: 0 0 0 0.2rem rgba(57, 169, 0, 0.25);
+}
+
+.empty-state {
+    background: var(--sena-light);
+    border-left: 4px solid var(--sena-primary);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--sena-primary);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.btn-outline-sena {
+    border: 2px solid var(--sena-primary);
+    color: var(--sena-primary);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-sena:hover {
+    background: var(--sena-primary);
+    color: white;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.solicitud-card {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.solicitud-card:nth-child(1) { animation-delay: 0.1s; }
+.solicitud-card:nth-child(2) { animation-delay: 0.15s; }
+.solicitud-card:nth-child(3) { animation-delay: 0.2s; }
+
+@media (max-width: 768px) {
+    .solicitud-header {
+        flex-direction: column;
+    }
+
+    .solicitud-info {
+        grid-template-columns: 1fr;
+    }
+
+    .solicitud-acciones {
+        flex-direction: column;
+    }
+
+    .solicitud-acciones .btn {
+        width: 100%;
+    }
+}
+</style>
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="header-section">
+        <h2>
+            <i class="bi bi-file-earmark-check me-2"></i>Revisión de Solicitudes de Proyectos
+        </h2>
+    </div>
 
     {% if pendientes %}
-        <ul class="list-group">
+        <div class="row">
             {% for proyecto in pendientes %}
-            <li class="list-group-item mb-2 shadow-sm rounded">
-                <h5 class="mb-1">{{ proyecto.nombre }}</h5>
-                <p class="mb-2">{{ proyecto.descripcion|truncatewords:25 }}</p>
-                <p class="mb-1"><strong>Área:</strong> {{ proyecto.area }}</p>
-                <p class="mb-1"><strong>Empresa:</strong> {{ proyecto.empresa.usuario.username }}</p>
-                <p class="text-muted"><small>Creado el {{ proyecto.creado_en|date:"d/m/Y H:i" }}</small></p>
+                <div class="col-12">
+                    <div class="solicitud-card">
+                        <!-- Encabezado con Título y Badge -->
+                        <div class="solicitud-header">
+                            <div class="solicitud-titulo">
+                                <h5>{{ proyecto.nombre }}</h5>
+                                <p class="text-muted small mb-0">
+                                    {{ proyecto.descripcion|truncatewords:30 }}
+                                </p>
+                            </div>
+                            <span class="badge-estado">
+                                <i class="bi bi-clock-fill me-1"></i>Pendiente
+                            </span>
+                        </div>
 
-                <div class="mt-3">
-                    <form method="post" action="{% url 'gestion:aprobar_proyecto' proyecto.id %}" class="d-inline">
-                        {% csrf_token %}
-                        <button class="btn btn-success btn-sm">Aprobar</button>
-                    </form>
+                        <!-- Información Detallada -->
+                        <div class="solicitud-info">
+                            <div class="info-item">
+                                <small>Empresa Solicitante</small>
+                                <strong>{{ proyecto.empresa.usuario.username }}</strong>
+                            </div>
+                            <div class="info-item">
+                                <small>Área / Sector</small>
+                                <strong>{{ proyecto.area|default:"No especificado" }}</strong>
+                            </div>
+                            <div class="info-item">
+                                <small>Fecha de Solicitud</small>
+                                <strong>{{ proyecto.creado_en|date:"d/m/Y H:i" }}</strong>
+                            </div>
+                            <div class="info-item">
+                                <small>Email Empresa</small>
+                                <strong>{{ proyecto.empresa.usuario.email }}</strong>
+                            </div>
+                        </div>
 
-                    <form method="post" action="{% url 'gestion:rechazar_proyecto' proyecto.id %}" class="d-inline">
-                        {% csrf_token %}
-                        <button class="btn btn-danger btn-sm">Rechazar</button>
-                    </form>
+                        <!-- Descripción Completa -->
+                        <div style="background: #f9fafb; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; border-left: 3px solid var(--sena-light);">
+                            <small class="d-block text-muted fw-bold mb-2">
+                                <i class="bi bi-file-text me-1"></i>Descripción del Proyecto
+                            </small>
+                            <p class="mb-0 text-dark">{{ proyecto.descripcion }}</p>
+                        </div>
+
+                        <!-- Acciones -->
+                        <div class="solicitud-acciones">
+                            <button type="button" class="btn btn-sena" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#modalAprobar{{ proyecto.id }}">
+                                <i class="bi bi-check-circle-fill me-2"></i>Aprobar
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#modalRechazar{{ proyecto.id }}">
+                                <i class="bi bi-x-circle-fill me-2"></i>Rechazar
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </li>
+
+                <!-- Modal Aprobar -->
+                <div class="modal fade" id="modalAprobar{{ proyecto.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0">
+                            <div class="modal-header">
+                                <h5 class="modal-title fw-bold">
+                                    <i class="bi bi-check-circle-fill me-2"></i>Aprobar Proyecto
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <form method="post" action="{% url 'gestion:aprobar_proyecto' proyecto.id %}">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <p class="mb-3">
+                                        <strong>{{ proyecto.nombre }}</strong><br>
+                                        <small class="text-muted">Empresa: {{ proyecto.empresa.usuario.username }}</small>
+                                    </p>
+                                    <div class="mb-0">
+                                        <label for="motivo_aprobacion_{{ proyecto.id }}" class="form-label">
+                                            <i class="bi bi-chat-left-text me-2 text-sena"></i>Motivo de Aprobación
+                                        </label>
+                                        <textarea 
+                                            class="form-control" 
+                                            id="motivo_aprobacion_{{ proyecto.id }}" 
+                                            name="motivo_aprobacion" 
+                                            rows="4" 
+                                            placeholder="Explica por qué apruebas este proyecto..."
+                                            required>
+                                        </textarea>
+                                        <small class="form-text text-muted d-block mt-2">
+                                            <i class="bi bi-info-circle me-1"></i>Este comentario será enviado a la empresa
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-0">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" class="btn btn-sena">
+                                        <i class="bi bi-check-lg me-1"></i>Confirmar Aprobación
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Rechazar -->
+                <div class="modal fade" id="modalRechazar{{ proyecto.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0">
+                            <div class="modal-header bg-danger">
+                                <h5 class="modal-title fw-bold">
+                                    <i class="bi bi-x-circle-fill me-2"></i>Rechazar Proyecto
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <form method="post" action="{% url 'gestion:rechazar_proyecto' proyecto.id %}">
+                                {% csrf_token %}
+                                <div class="modal-body">
+                                    <p class="mb-3">
+                                        <strong>{{ proyecto.nombre }}</strong><br>
+                                        <small class="text-muted">Empresa: {{ proyecto.empresa.usuario.username }}</small>
+                                    </p>
+                                    <div class="alert alert-warning mb-3" role="alert">
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        Esta acción no se puede deshacer
+                                    </div>
+                                    <div class="mb-0">
+                                        <label for="motivo_rechazo_{{ proyecto.id }}" class="form-label">
+                                            <i class="bi bi-chat-left-text me-2 text-danger"></i>Motivo del Rechazo
+                                        </label>
+                                        <textarea 
+                                            class="form-control" 
+                                            id="motivo_rechazo_{{ proyecto.id }}" 
+                                            name="motivo_rechazo" 
+                                            rows="4" 
+                                            placeholder="Explica por qué rechazas este proyecto. Sé constructivo..."
+                                            required>
+                                        </textarea>
+                                        <small class="form-text text-muted d-block mt-2">
+                                            <i class="bi bi-info-circle me-1"></i>Este comentario será enviado a la empresa
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-0">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Cancelar
+                                    </button>
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="bi bi-x-lg me-1"></i>Confirmar Rechazo
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <div class="alert alert-info mt-4">
-            No hay solicitudes pendientes por revisar.
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <h5 class="text-sena fw-bold">No hay solicitudes pendientes</h5>
+            <p class="text-muted mb-0">
+                Todas las solicitudes de proyectos han sido revisadas.
+            </p>
         </div>
     {% endif %}
 </div>
+
 {% endblock %}

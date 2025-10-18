@@ -31,4 +31,6 @@ urlpatterns = [
 
     # Reportes
     path('reportes/', views.reportes, name='reportes'),
+    path('reporte-completo/', views.generar_reporte_completo, name='reporte_completo'),
+
 ]

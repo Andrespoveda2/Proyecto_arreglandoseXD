@@ -73,29 +73,15 @@
     </div>
 
     <h2 class="mb-4 mt-5 border-bottom pb-2"><i class="fas fa-download me-2 text-secondary"></i> Generación de Reportes</h2>
-
-    <div class="row g-4">
-        <div class="col-md-6">
+        <div class="col-12">
             <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-success"><i class="fas fa-book me-2"></i> Reporte Detallado de Programas</h5>
-                    <p class="card-text text-muted">Genera un listado completo con códigos, descripciones y tipos de programas de formación.</p>
-                    {# CORRECCIÓN: Se cambia el namespace 'reportes' por 'gestion'. La URL se comenta hasta que la vista sea creada. #}
-                    <a href="#" class="btn btn-outline-success disabled">
-                        Descargar CSV <i class="fas fa-file-csv ms-1"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-primary"><i class="fas fa-clipboard-list me-2"></i> Reporte de Usuarios Activos</h5>
-                    <p class="card-text text-muted">Exporta la lista de usuarios activos filtrada por rol y fecha de registro.</p>
-                    {# CORRECCIÓN: Se cambia el namespace 'reportes' por 'gestion'. La URL se comenta hasta que la vista sea creada. #}
-                    <a href="#" class="btn btn-outline-primary disabled">
-                        Generar PDF <i class="fas fa-file-pdf ms-1"></i>
+                <div class="card-body text-center">
+                    <h5 class="card-title text-dark">
+                        <i class="fas fa-file-alt me-2"></i> Reporte Completo del Sistema
+                    </h5>
+                    <p class="card-text text-muted">Descarga un informe completo de todos los registros del sistema OASIS.</p>
+                    <a href="{% url 'gestion:reporte_completo' %}" class="btn btn-dark">
+                        Descargar Reporte Completo <i class="fas fa-download ms-2"></i>
                     </a>
                 </div>
             </div>

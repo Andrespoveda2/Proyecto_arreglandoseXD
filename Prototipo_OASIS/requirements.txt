@@ -1,0 +1,33 @@
+# --- Django Core ---
+Django==5.2.4
+django-filter==25.1
+django-widget-tweaks==1.5.0
+djangorestframework==3.16.1
+sqlparse==0.5.3
+tzdata==2025.2
+asgiref==3.9.1
+
+# --- Bases de datos ---
+mysqlclient==2.2.7
+psycopg2-binary==2.9.10  # Por si decides usar PostgreSQL en el futuro
+
+# --- Herramientas útiles ---
+pillow==11.3.0           # Imágenes (logos, fotos de perfil, etc.)
+reportlab==4.4.4         # Generar PDFs (reportes o comprobantes)
+requests==2.32.5         # Consumir APIs externas
+
+# --- Despliegue ---
+gunicorn==23.0.0         # Servidor para producción (Linux)
+whitenoise==6.11.0       # Servir archivos estáticos en producción
+
+# --- Tipado y soporte ---
+typing_extensions==4.15.0
+django-stubs==5.2.5
+django-stubs-ext==5.2.5
+types-PyYAML==6.0.12.20250915
+
+# --- Desarrollo (opcional) ---
+black==25.1.0            # Formateador automático
+flake8==7.2.0            # Linter de código
+pytest==8.3.5            # Pruebas unitarias
+pipreqs==0.4.13          # Generar requirements limpios

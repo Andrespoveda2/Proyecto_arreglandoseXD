@@ -4,57 +4,188 @@
 {% block title %}Editar Sector - {{ sector.nombre }}{% endblock %}
 
 {% block content %}
+<style>
+:root {
+    --sena-primary: #39A900;
+    --sena-dark: #2D7A00;
+    --sena-light: #d4edda;
+}
+
+.text-sena {
+    color: var(--sena-primary) !important;
+}
+
+.bg-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+}
+
+.btn-sena {
+    background: linear-gradient(135deg, var(--sena-primary) 0%, var(--sena-dark) 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 169, 0, 0.3);
+    color: white;
+}
+
+.btn-sena-outline {
+    border: 2px solid var(--sena-primary);
+    color: var(--sena-primary);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sena-outline:hover {
+    background: var(--sena-primary);
+    color: white;
+}
+
+.header-edit {
+    background: linear-gradient(135deg, rgba(57, 169, 0, 0.08) 0%, rgba(45, 128, 0, 0.08) 100%);
+    border-left: 5px solid var(--sena-primary);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-edit h1 {
+    color: var(--sena-dark);
+    font-weight: 700;
+    margin: 0;
+}
+
+.card-edit {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.card-header-edit {
+    background: var(--sena-primary);
+    color: white;
+    font-weight: 600;
+    border: none;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--sena-dark);
+}
+
+.form-control:focus {
+    border-color: var(--sena-primary);
+    box-shadow: 0 0 0 0.2rem rgba(57, 169, 0, 0.25);
+}
+
+.alert-danger {
+    background-color: #fee;
+    border-left: 4px solid #dc3545;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-edit {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@media (max-width: 768px) {
+    .header-edit {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .header-edit h1 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
 <div class="container my-5">
     
-    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-        <h1 class="text-info mb-0">
-            <i class="fas fa-industry me-2"></i> Editar Sector Productivo
+    <!-- Header con navegación -->
+    <div class="header-edit">
+        <h1>
+            <i class="bi bi-industry me-2 text-sena"></i>Editar Sector Productivo
         </h1>
-        <a href="{% url 'gestion:gestion_sectores' %}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-1"></i> Volver al Listado
+        <a href="{% url 'gestion:gestion_sectores' %}" class="btn btn-sena-outline">
+            <i class="bi bi-arrow-left me-2"></i>Volver al Listado
         </a>
     </div>
-    
-    <div class="card shadow-lg border-info">
-        <div class="card-header bg-info text-white">
-            <h5 class="mb-0">Modificando: <strong>{{ sector.nombre }}</strong></h5>
+
+    <!-- Card de edición -->
+    <div class="card card-edit shadow-lg">
+        <div class="card-header card-header-edit">
+            <h5 class="mb-0">
+                <i class="bi bi-pencil-square me-2"></i>Modificando: <strong>{{ sector.nombre }}</strong>
+            </h5>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
             <form method="POST" novalidate>
                 {% csrf_token %}
 
                 {% if form.non_field_errors %}
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger mb-4" role="alert">
+                        <strong>
+                            <i class="bi bi-exclamation-circle me-2"></i>Error:
+                        </strong>
                         {% for error in form.non_field_errors %}
-                            {{ error }}
+                            <div>{{ error }}</div>
                         {% endfor %}
                     </div>
                 {% endif %}
 
-                <div class="mb-3">
-                    <label for="{{ form.nombre.id_for_label }}" class="form-label fw-bold">Nombre del Sector</label>
-                    {% render_field form.nombre class="form-control" %}
+                <div class="mb-4">
+                    <label for="{{ form.nombre.id_for_label }}" class="form-label">
+                        <i class="bi bi-tag-fill text-sena me-1"></i>Nombre del Sector
+                    </label>
+                    {% render_field form.nombre class="form-control" placeholder="Nombre del sector" %}
                     {% for error in form.nombre.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        <div class="invalid-feedback d-block mt-1">{{ error }}</div>
                     {% endfor %}
                 </div>
 
-                <div class="mb-3">
-                    <label for="{{ form.descripcion.id_for_label }}" class="form-label fw-bold">Descripción</label>
-                    {% render_field form.descripcion class="form-control" rows="4" %}
+                <div class="mb-4">
+                    <label for="{{ form.descripcion.id_for_label }}" class="form-label">
+                        <i class="bi bi-file-text-fill text-sena me-1"></i>Descripción
+                    </label>
+                    {% render_field form.descripcion class="form-control" rows="5" placeholder="Detalles del sector..." %}
                     {% for error in form.descripcion.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        <div class="invalid-feedback d-block mt-1">{{ error }}</div>
                     {% endfor %}
                 </div>
 
-                <hr>
-                <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-info btn-lg text-white">
-                        <i class="fas fa-save me-1"></i> Guardar Cambios
+                <hr class="my-4">
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{% url 'gestion:gestion_sectores' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-sena">
+                        <i class="bi bi-save me-1"></i>Guardar Cambios
                     </button>
                 </div>
             </form>
         </div>
     </div>
+
 </div>
 {% endblock %}
